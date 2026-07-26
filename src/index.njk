@@ -1,3 +1,4 @@
+{%- set pixel = "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" -%}
 <!DOCTYPE html>
 <html lang="{{ site.lang }}">
 <head>
@@ -82,48 +83,39 @@
     <!-- ===== 3. MÚSICA ===== -->
     <section class="section" id="musica">
       <div class="container">
-        <header class="section__title reveal"><span class="badge-num">02</span><h2>La Música</h2></header>
+        <header class="section__title reveal"><span class="badge-num">{{ musica.num }}</span><h2>{{ musica.titulo }}</h2></header>
 
         <div class="split">
           <div class="card card--purple tilt reveal">
-            <h3>Próximos lanzamientos</h3>
+            <h3>{{ musica.proximos.titulo }}</h3>
             <ul class="ticks">
-              <li>Medley Hay Libertad</li>
-              <li>ENCUENTRO</li>
-              <li>No Dejaré de Alabarte</li>
-              <li>Atmósfera Celestial</li>
+              {%- for item in musica.proximos.items %}
+              <li>{{ item }}</li>
+              {%- endfor %}
             </ul>
           </div>
           <div class="card card--red tilt reveal">
-            <h3>Lanzamientos recientes</h3>
+            <h3>{{ musica.recientes.titulo }}</h3>
             <ul class="ticks">
-              <li>Libre en Tu Presencia <em>feat. Bani Muñoz · En Vivo desde Honduras Adora 2025</em></li>
-              <li>Eres Mi Salvador <em>En Vivo</em></li>
-              <li>El Libro de la Vida <em>En Vivo</em></li>
+              {%- for item in musica.recientes.items %}
+              <li>{{ item.titulo }} <em>{{ item.nota }}</em></li>
+              {%- endfor %}
             </ul>
           </div>
         </div>
 
         <div class="music-grid">
-          <article class="yt-lite reveal" data-id="VIDEO_LIBRE" data-title="Libre en Tu Presencia">
-            <img src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-ph="640/360" alt="Libre en Tu Presencia" />
+          {%- for video in musica.videos %}
+          <article class="yt-lite reveal" data-id="{{ video.id }}" data-title="{{ video.titulo }}">
+            <img src="{{ pixel }}" data-ph="{{ video.ph }}" alt="{{ video.alt }}" />
             <button class="yt-lite__play" aria-label="Reproducir">▶</button>
-            <span class="yt-lite__cap">Libre en Tu Presencia · feat. Bani Muñoz</span>
+            <span class="yt-lite__cap">{{ video.caption }}</span>
           </article>
-          <article class="yt-lite reveal" data-id="VIDEO_SALVADOR" data-title="Eres Mi Salvador">
-            <img src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-ph="640/360" alt="Eres Mi Salvador" />
-            <button class="yt-lite__play" aria-label="Reproducir">▶</button>
-            <span class="yt-lite__cap">Eres Mi Salvador · En Vivo</span>
-          </article>
-          <article class="yt-lite reveal" data-id="VIDEO_LIBRO" data-title="El Libro de la Vida">
-            <img src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-ph="640/360" alt="El Libro de la Vida" />
-            <button class="yt-lite__play" aria-label="Reproducir">▶</button>
-            <span class="yt-lite__cap">El Libro de la Vida · En Vivo</span>
-          </article>
+          {%- endfor %}
         </div>
 
         <div class="spotify reveal">
-          <iframe title="WayBack en Spotify" style="border-radius:16px" src="https://open.spotify.com/embed/artist/15S8x4SA16werdAc7KkJMd?utm_source=generator" width="100%" height="352" frameborder="0" allowfullscreen allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" loading="lazy"></iframe>
+          <iframe title="WayBack en Spotify" style="border-radius:16px" src="https://open.spotify.com/embed/artist/{{ musica.spotifyArtistId }}?utm_source=generator" width="100%" height="352" frameborder="0" allowfullscreen allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" loading="lazy"></iframe>
         </div>
       </div>
     </section>
