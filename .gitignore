@@ -12,5 +12,8 @@
 .idea/
 *.swp
 
-# Dependencias (por si más adelante se agrega build)
+# Dependencias
 node_modules/
+
+# Andamiaje de agentes (scratch, no es parte del sitio)
+.superpowers/
