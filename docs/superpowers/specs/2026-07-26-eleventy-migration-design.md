@@ -211,8 +211,13 @@ the GitHub backend and the `_data` files. WayBack's origin is added to the
 existing `cms-auth.informaticahn.com` Worker allowlist; the editor receives a
 GitHub account with write access limited to this repository. No new
 authentication infrastructure is built, because the `cms-auth` Worker was
-designed for reuse across Informática HN clients. Note that Vercel preview URLs
-are unstable and cannot be allowlisted; only the production alias can.
+designed for reuse across Informática HN clients.
+
+The panel is wanted for testing before the real domain exists, so the Vercel
+production alias is allowlisted rather than waiting. Vercel preview URLs change
+on every deployment and cannot be allowlisted; only the production alias is
+stable. When the Cloudflare domain is added in Phase 4, its origin is added to
+the allowlist and the Vercel origin is removed.
 
 **Phase 4 — VPS.** GitHub Actions with atomic release and rollback, mirroring
 the Ágape deployment, plus the Cloudflare domain.
