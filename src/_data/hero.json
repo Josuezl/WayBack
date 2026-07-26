@@ -1,0 +1,14 @@
+{
+  "titulo": "WayBack",
+  "frases": ["De Regreso al Camino"],
+  "subtitulo": "Banda Hondureña de Electro-Pop Cristiano",
+  "acciones": [
+    { "clase": "btn--red", "href": "#sobre", "texto": "Explorar ↓", "externo": false },
+    { "clase": "btn--white", "href": "https://youtube.com/waybackoficial", "texto": "▶ Ver video", "externo": true }
+  ],
+  "foto": {
+    "src": "assets/wayback-banda.jpeg",
+    "alt": "Integrantes de WayBack",
+    "caption": "WayBack · Honduras"
+  }
+}
