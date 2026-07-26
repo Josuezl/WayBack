@@ -1,0 +1,14 @@
+{
+  "name": "wayback",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Sitio web de WayBack - De Regreso al Camino",
+  "scripts": {
+    "dev": "eleventy --serve",
+    "build": "eleventy",
+    "verify": "node tools/verify-html.mjs reference/index.html _site/index.html"
+  },
+  "devDependencies": {
+    "@11ty/eleventy": "^3.0.0"
+  }
+}
