@@ -10,7 +10,13 @@
 
 ## Global Constraints
 
-- **Node.js LTS must be installed first.** It is currently absent from the machine, along with npm and Homebrew. Eleventy 3.x requires Node 18+. Install from nodejs.org.
+- **Node is installed via nvm but is not on the PATH in non-interactive shells.** nvm is a shell function sourced from an interactive profile, so `node` and `npm` appear missing to any tooling that shells out. Every task must export the PATH first:
+
+  ```bash
+  export PATH="$HOME/.nvm/versions/node/v22.23.1/bin:$PATH"
+  ```
+
+  Available versions are v22.23.1 and v24.15.0; the plan uses v22.23.1, which satisfies Eleventy 3.x's Node 18+ floor. Without this line, `npm` fails with `env: node: No such file or directory` — a PATH problem, not a missing install. Do not install Node.
 - **No visual, layout, copy, or behavioural change.** Any rendered difference is a defect.
 - **`styles.css` and `script.js` are never edited.** They move verbatim and are verified by checksum.
 - **No dependency other than `@11ty/eleventy`.** The verification harness is written in plain Node.
@@ -50,14 +56,15 @@ Builds the pipeline and the test that guards every later task. At the end of thi
 - Consumes: nothing.
 - Produces: `npm run build` writes `_site/`. `npm run verify` exits 0 when `_site/index.html` matches `reference/index.html` after whitespace normalization, and exits 1 with the first differing line otherwise. Every later task calls `npm run verify`.
 
-- [ ] **Step 1: Confirm Node is installed**
+- [ ] **Step 1: Put Node on the PATH and confirm it runs**
 
 ```bash
-node --version   # must print v18 or higher
-npm --version
+export PATH="$HOME/.nvm/versions/node/v22.23.1/bin:$PATH"
+node --version   # expected: v22.23.1
+npm --version    # expected: 10.9.8
 ```
 
-If this fails, stop. Install Node LTS from nodejs.org before continuing.
+Node is already installed via nvm. If these fail, it is a PATH problem — do not install Node. Re-export the line above; it must be re-exported in every shell, including in every later task.
 
 - [ ] **Step 2: Freeze the reference snapshot**
 
