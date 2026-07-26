@@ -1,0 +1,24 @@
+{
+  "lang": "es",
+  "titulo": "WayBack – De Regreso al Camino | Electro-Pop Cristiano 🇭🇳",
+  "descripcion": "WayBack (De Regreso al Camino): banda hondureña de Electro-Pop Cristiano. Honduras es tierra de adoración.",
+  "themeColor": "#0a47a8",
+  "og": {
+    "type": "website",
+    "locale": "es_HN",
+    "siteName": "WayBack",
+    "titulo": "WayBack – De Regreso al Camino",
+    "descripcion": "Banda Hondureña de Electro-Pop Cristiano"
+  },
+  "marca": "WayBack",
+  "nav": [
+    { "href": "#sobre", "texto": "Sobre" },
+    { "href": "#musica", "texto": "Música" },
+    { "href": "#eventos", "texto": "Eventos" },
+    { "href": "#merch", "texto": "Merch" },
+    { "href": "#honduras-adora", "texto": "Honduras Adora" },
+    { "href": "#invitaciones", "texto": "Invitaciones" },
+    { "href": "#recursos", "texto": "Recursos" },
+    { "href": "#mahanaim", "texto": "Mahanaim" }
+  ]
+}

@@ -1,20 +1,20 @@
 <!DOCTYPE html>
-<html lang="es">
+<html lang="{{ site.lang }}">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>WayBack – De Regreso al Camino | Electro-Pop Cristiano 🇭🇳</title>
-  <meta name="description" content="WayBack (De Regreso al Camino): banda hondureña de Electro-Pop Cristiano. Honduras es tierra de adoración." />
-  <meta name="theme-color" content="#0a47a8" />
+  <title>{{ site.titulo }}</title>
+  <meta name="description" content="{{ site.descripcion }}" />
+  <meta name="theme-color" content="{{ site.themeColor }}" />
 
   <!-- Vista previa al compartir el enlace (WhatsApp, Facebook, etc.)
        TODO producción: og:url y og:image necesitan la URL ABSOLUTA del dominio final.
        Mientras tanto WhatsApp mostrará el enlace sin imagen. -->
-  <meta property="og:type" content="website" />
-  <meta property="og:locale" content="es_HN" />
-  <meta property="og:site_name" content="WayBack" />
-  <meta property="og:title" content="WayBack – De Regreso al Camino" />
-  <meta property="og:description" content="Banda Hondureña de Electro-Pop Cristiano" />
+  <meta property="og:type" content="{{ site.og.type }}" />
+  <meta property="og:locale" content="{{ site.og.locale }}" />
+  <meta property="og:site_name" content="{{ site.og.siteName }}" />
+  <meta property="og:title" content="{{ site.og.titulo }}" />
+  <meta property="og:description" content="{{ site.og.descripcion }}" />
   <!-- <meta property="og:url" content="https://DOMINIO-FINAL/" /> -->
   <!-- <meta property="og:image" content="https://DOMINIO-FINAL/assets/wayback-banda.jpeg" /> -->
   <meta name="twitter:card" content="summary_large_image" />
@@ -30,16 +30,11 @@
 <body>
   <!-- ===== NAV ===== -->
   <header class="nav" id="nav">
-    <a href="#hero" class="brand"><span class="brand__mark">W</span> WayBack</a>
+    <a href="#hero" class="brand"><span class="brand__mark">W</span> {{ site.marca }}</a>
     <nav class="nav__links" id="navLinks" aria-label="Navegación principal">
-      <a href="#sobre">Sobre</a>
-      <a href="#musica">Música</a>
-      <a href="#eventos">Eventos</a>
-      <a href="#merch">Merch</a>
-      <a href="#honduras-adora">Honduras Adora</a>
-      <a href="#invitaciones">Invitaciones</a>
-      <a href="#recursos">Recursos</a>
-      <a href="#mahanaim">Mahanaim</a>
+      {%- for enlace in site.nav %}
+      <a href="{{ enlace.href }}">{{ enlace.texto }}</a>
+      {%- endfor %}
     </nav>
     <button class="nav__toggle" id="navToggle" aria-label="Abrir menú" aria-expanded="false"><span></span><span></span><span></span></button>
   </header>
