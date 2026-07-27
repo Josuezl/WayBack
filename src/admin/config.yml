@@ -1,9 +1,19 @@
 # Panel de administración de WayBack (Decap CMS).
 #
+# ESTADO: el panel NO está entregado al cliente todavía. Se activa al migrar
+# al VPS. Hasta entonces el código está aquí pero el login no funciona,
+# porque falta agregar el origen a la lista del Worker.
+#
 # La autenticación NO se construye aquí: reutiliza el Cloudflare Worker
-# `cms-auth` de Informática HN, el mismo que usa Ágape. Para que funcione,
-# el origen de este sitio tiene que estar en la lista de permitidos del
-# Worker; si no, el login falla con "origin not allowed".
+# `cms-auth` de Informática HN, el mismo que usa Ágape.
+#
+# PARA ACTIVARLO HACEN FALTA TRES COSAS, ninguna en este repositorio:
+#   1. `site_domain` de abajo apuntando al dominio definitivo del VPS.
+#   2. Ese mismo origen agregado a la lista de permitidos del Worker, en el
+#      repo privado informatica-hn/cms-auth. Si falta, el login falla con
+#      "origin not allowed".
+#   3. Una cuenta de GitHub para el editor, con acceso de escritura SOLO a
+#      este repositorio.
 #
 # Los campos técnicos (idioma, tipo de Open Graph, rutas) quedan fuera a
 # propósito: el editor ve solo lo que tiene sentido que cambie.
@@ -16,7 +26,7 @@ backend:
   branch: main
   base_url: https://cms-auth.informaticahn.com
   auth_endpoint: auth
-  site_domain: way-back-git-main-josuezls-projects.vercel.app
+  site_domain: way-back-one.vercel.app
   use_graphql: true
   commit_messages:
     update: "content: actualizar {{collection}}"

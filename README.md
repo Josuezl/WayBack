@@ -90,6 +90,21 @@ Cada `git push` a `main` publica automáticamente.
 **Etapa final:** dominio propio (Cloudflare) apuntando al VPS de DigitalOcean.
 Al ser un sitio estático, el despliegue es copiar estos archivos al *document root* de nginx.
 
+## Panel de administración (`/admin`)
+
+Decap CMS, con 9 archivos de contenido editables. **El código está listo pero
+el panel todavía no se entrega al cliente**: se activa al migrar al VPS.
+
+La autenticación reutiliza el Cloudflare Worker `cms-auth` de Informática HN
+—el mismo de Ágape—, así que no hay infraestructura nueva que construir. Para
+activarlo hacen falta tres cosas, ninguna en este repositorio:
+
+1. `site_domain` en `src/admin/config.yml` apuntando al dominio del VPS.
+2. Ese origen agregado a la lista de permitidos del Worker, en el repo privado
+   `informatica-hn/cms-auth`. Si falta, el login falla con *origin not allowed*.
+3. Una cuenta de GitHub para el editor, con acceso de escritura **solo** a este
+   repositorio.
+
 ### Pendientes antes de producción
 
 - [ ] Quitar el header `X-Robots-Tag: noindex, nofollow` de `vercel.json`.
