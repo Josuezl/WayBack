@@ -167,7 +167,7 @@
 
         <div class="gallery">
           {%- for foto in hondurasAdora.galeria %}
-          <figure class="reveal"><img src="{{ pixel }}" data-ph="{{ foto.ph }}" alt="{{ foto.alt | safe }}" /><figcaption>{{ foto.caption | safe }}</figcaption></figure>
+          <figure class="reveal"><img src="{{ pixel }}" data-ph="{{ foto.ph }}" alt="{{ foto.alt | escapeAttrKeepAmp }}" /><figcaption>{{ foto.caption | safe }}</figcaption></figure>
           {%- endfor %}
         </div>
 
