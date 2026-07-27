@@ -317,6 +317,12 @@ function initCarrusel() {
     c.setAttribute('aria-hidden', 'true');
     // Fuera del recorrido de tabulacion: son los mismos videos, no otros.
     c.querySelectorAll('button').forEach(b => b.tabIndex = -1);
+    // Sin esto las copias son INVISIBLES: .reveal arranca en opacity 0 y solo
+    // se revela cuando el IntersectionObserver la ve, pero ese observador ya
+    // corrio antes de que existieran estas copias. Se veia un vacio del ancho
+    // exacto de los seis videos duplicados.
+    c.classList.remove('reveal');
+    c.classList.add('is-visible');
   });
   while (copia.firstChild) pista.appendChild(copia.firstChild);
   carrusel.classList.add('is-duplicado');

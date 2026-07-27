@@ -313,10 +313,15 @@ a { color: inherit; text-decoration: none; }
    deslizando fuera de pantalla no tiene defensa. */
 .carrusel { overflow: hidden; position: relative; margin-inline: calc(50% - 50vw); padding: 6px 0; }
 .carrusel__pista {
-  display: flex; gap: 22px; width: max-content;
-  padding-inline: 22px;
+  display: flex; width: max-content;
   animation: correr 46s linear infinite;
 }
+/* La separacion va como margen DE CADA tarjeta, no como `gap` de la pista, y
+   la pista no lleva padding. Es lo que hace que -50% caiga exacto: con 12
+   tarjetas de ancho (i + margen), la mitad son 6 tarjetas completas, asi que
+   la copia aterriza justo donde empezaba el original. Con `gap` y `padding`
+   el 50% queda corrido 11px y el bucle da un salto visible en cada vuelta. */
+.carrusel .yt-lite { margin-right: 22px; }
 .carrusel:hover .carrusel__pista,
 .carrusel:focus-within .carrusel__pista,
 .carrusel.is-paused .carrusel__pista { animation-play-state: paused; }
@@ -327,16 +332,17 @@ a { color: inherit; text-decoration: none; }
   to   { transform: translateX(-50%); }
 }
 
-/* Sin JS no hay duplicado, asi que animar dejaria huecos: se queda quieto y
-   se desliza a mano, que sigue siendo utilizable. */
-.carrusel:not(.is-duplicado) .carrusel__pista {
-  animation: none; overflow-x: auto; scroll-snap-type: x mandatory;
-}
+/* Sin JS no hay copias, asi que animar dejaria huecos: se queda quieto y se
+   desliza a mano. El scroll va en .carrusel, no en la pista: la pista es
+   `width: max-content` y por definicion nunca desborda de si misma. */
+.carrusel:not(.is-duplicado) { overflow-x: auto; scroll-snap-type: x mandatory; }
+.carrusel:not(.is-duplicado) .carrusel__pista { animation: none; }
 .carrusel:not(.is-duplicado) .yt-lite { scroll-snap-align: start; }
 
 @media (prefers-reduced-motion: reduce) {
+  .carrusel { overflow-x: auto; scroll-snap-type: x mandatory; }
   .carrusel__pista { animation: none; }
-  .carrusel { overflow-x: auto; }
+  .carrusel .yt-lite { scroll-snap-align: start; }
 }
 
 /* ---------- yt-lite ---------- */
