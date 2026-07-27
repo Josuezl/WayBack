@@ -84,8 +84,14 @@ Al ser un sitio estático, el despliegue es copiar estos archivos al *document r
 Lo que falta viene del cliente, no es trabajo de código:
 
 - **Fotos reales.** Las 19 imágenes de merch, galerías y miniaturas son placeholders con la
-  marca WayBack y la leyenda *"Foto pendiente"*. Para reemplazar una: pon la foto en `src/assets/`,
-  cambia el `src` en el JSON de `src/_data/` correspondiente y **borra el atributo `data-ph`**.
+  marca WayBack y la leyenda *"Foto pendiente"*. Hoy esto **no es un cambio de datos**: cada
+  `<img>` placeholder trae `src="{{ pixel }}"` (el píxel transparente) y `data-ph="..."` fijos
+  en la plantilla `src/index.njk`, y el JSON de `src/_data/` correspondiente no tiene clave
+  `src`. Para reemplazar una foto hay que editar la plantilla: pon el archivo en
+  `src/assets/`, cambia ese `src="{{ pixel }}"` por la ruta real en el `<img>` de
+  `src/index.njk` que corresponda a esa foto, y borra su atributo `data-ph`. *(Pendiente: un
+  mecanismo para que esto sea un cambio solo de datos, sin tocar la plantilla — decisión de
+  alcance del dueño del repositorio.)*
 - **IDs de YouTube.** Los `data-id` de la sección Música son placeholders
   (`VIDEO_LIBRE`, `VIDEO_SALVADOR`, `VIDEO_LIBRO`). El de ISA LOPEZ (`FqAj3bXxmG`) tiene
   10 caracteres y los IDs de YouTube tienen 11 — hay que confirmarlo.
