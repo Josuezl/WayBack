@@ -230,7 +230,9 @@ who hits them then will not have this context unless it is written down now.
 
 ### (a) The remaining `| safe` inventory
 
-Five sites in `src/index.njk` still bypass Nunjucks autoescaping with `| safe`:
+Four sites in `src/index.njk` still bypass Nunjucks autoescaping with `| safe`.
+Line numbers shift as the template changes; treat the field names as the index
+and re-grep for `| safe` before starting.
 
 - Line 77 — `parrafo` (the `sobre.parrafos` loop, both the `.lead` and plain
   `<p>` branches).
@@ -242,9 +244,14 @@ Five sites in `src/index.njk` still bypass Nunjucks autoescaping with `| safe`:
   `foto.caption` was deliberately left as-is because it renders in element
   content, not inside an attribute, so it does not have the same breakout
   shape — but it is still unescaped HTML from a data file.
-- Line 211 — `tarjeta.titulo` (resource card heading).
 
-All five exist to reproduce literal `"` and bare `&` characters that are
+A fifth site, `tarjeta.titulo` on the Recursos resource cards, was part of this
+inventory until the Recursos and Invitaciones sections were removed from the
+page. If either section is ever restored, re-check it: the resource headings
+contained bare `&` characters ("Acordes & Charts", "Patches & Sonidos") and
+carried the same hazard.
+
+All four exist to reproduce literal `"` and bare `&` characters that are
 present verbatim in the original frozen copy (`reference/index.html`) —
 Nunjucks' default autoescaping would turn `"` into `&quot;` and `&` into
 `&amp;`, which would fail the byte-identity gate this migration is built

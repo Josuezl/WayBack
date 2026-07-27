@@ -28,16 +28,35 @@ y el build produce HTML estático puro — sin JS de servidor ni framework en el
 │       ├── recursos.json
 │       └── footer.json
 ├── eleventy.config.js     ← input/output dirs + passthrough de CSS/JS/assets
-├── reference/index.html   ← snapshot congelado del HTML original (para verificar)
+├── reference/index.html   ← HTML aprobado; el build falla si el generado no coincide
 ├── tools/verify-html.mjs  ← compara el build contra reference/ línea por línea
 ├── vercel.json            ← build command, output directory y headers de despliegue
 └── package.json
 ```
 
 El build (`_site/`) es un `index.html` con `styles.css`, `script.js` y `assets/` copiados
-tal cual. El chequeo *byte a byte* real contra el `index.html` original es
-`diff -u reference/index.html _site/index.html` (debe salir vacío, exit code 0); `npm run
-verify` hace una comparación más liviana de líneas normalizadas — ver más abajo.
+tal cual. El chequeo *byte a byte* real es `diff -u reference/index.html _site/index.html`
+(debe salir vacío, exit code 0); `npm run verify` hace una comparación más liviana de líneas
+normalizadas — ver más abajo.
+
+### Cómo usar `reference/index.html`
+
+Nació como el HTML original congelado, para probar que la migración a Eleventy no cambiaba
+ni un pixel. Ese trabajo terminó. Hoy es la **salida aprobada**: el build falla si lo
+generado no coincide, así que atrapa cambios accidentales en secciones que no tocaste.
+
+**Cuando cambies algo a propósito, el build va a fallar. Eso es correcto, no un estorbo.**
+El procedimiento es:
+
+```bash
+npm run build                                   # falla y te dice la primera línea distinta
+diff -u reference/index.html _site/index.html   # LEE este diff: ¿es solo lo que querías?
+cp _site/index.html reference/index.html        # solo si el diff es exactamente lo esperado
+npm run build                                   # vuelve a pasar
+```
+
+Revisar ese diff **es** la prueba. Copiar la referencia por reflejo, sin leerlo, convierte
+el chequeo en un sello de goma y deja pasar justo el error que existe para atrapar.
 
 ## Ejecutar en local
 
@@ -95,10 +114,21 @@ Lo que falta viene del cliente, no es trabajo de código:
 - **IDs de YouTube.** Los `data-id` de la sección Música son placeholders
   (`VIDEO_LIBRE`, `VIDEO_SALVADOR`, `VIDEO_LIBRO`). El de ISA LOPEZ (`FqAj3bXxmG`) tiene
   10 caracteres y los IDs de YouTube tienen 11 — hay que confirmarlo.
-- **Formulario de invitaciones.** Hoy solo valida y muestra un mensaje de éxito; **no envía
-  nada a ningún lado**. Falta conectarlo a un servicio de correo o a un endpoint en el VPS.
-- **Sección Recursos.** Los tres enlaces (pistas, acordes, patches) están desactivados
-  a la espera de los archivos.
+## Secciones retiradas
+
+Dos secciones se quitaron a propósito, para no mostrarle al cliente cosas que no funcionan.
+Se reponen si las pide:
+
+- **Invitaciones.** Era un formulario que validaba y mostraba "✓ ¡Gracias!" pero **no enviaba
+  nada a ningún lado** — quien lo llenara se quedaba esperando una respuesta que nunca
+  llegaría. Su llamado a la acción vive ahora en el botón "Quiero participar" de Honduras
+  Adora, que abre WhatsApp con un mensaje ya redactado. Para reponerla hace falta primero
+  conectarla a un servicio de correo o a un endpoint en el VPS.
+- **Recursos.** Pistas, acordes y patches para músicos. Los tres enlaces estaban desactivados
+  (`href="#"` con `onclick="return false"`) esperando archivos del cliente.
+
+El CSS de ambas sigue en `styles.css` y el manejador de formularios sigue en `script.js`, sin
+uso. No estorban y facilitan reponerlas; si se decide que no vuelven, se pueden borrar.
 
 ## Personalizar
 
