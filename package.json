@@ -6,7 +6,9 @@
   "scripts": {
     "dev": "eleventy --serve",
     "build": "eleventy",
-    "verify": "node tools/verify-html.mjs reference/index.html _site/index.html"
+    "postbuild": "npm run compare",
+    "compare": "node tools/verify-html.mjs reference/index.html _site/index.html",
+    "verify": "npm run build"
   },
   "devDependencies": {
     "@11ty/eleventy": "^3.0.0"
