@@ -1,9 +1,29 @@
 {
-  "num": "03",
   "titulo": "Eventos",
   "items": [
-    { "fechaPrincipal": "2026", "fechaSecundaria": "Por confirmar", "titulo": "Honduras Adora 2026", "lugar": "Festival de adoración · Honduras", "etiqueta": "Próximamente", "destacado": true },
-    { "fechaPrincipal": "15", "fechaSecundaria": "AGO 2026", "titulo": "Noche de Adoración", "lugar": "Tegucigalpa, Honduras", "etiqueta": "Concierto", "destacado": false },
-    { "fechaPrincipal": "27", "fechaSecundaria": "SEP 2026", "titulo": "WayBack en Vivo", "lugar": "San Pedro Sula, Honduras", "etiqueta": "Concierto", "destacado": false }
+    {
+      "fechaPrincipal": "2026",
+      "fechaSecundaria": "Por confirmar",
+      "titulo": "Honduras Adora 2026",
+      "lugar": "Festival de adoración · Honduras",
+      "etiqueta": "Próximamente",
+      "destacado": true
+    },
+    {
+      "fechaPrincipal": "15",
+      "fechaSecundaria": "AGO 2026",
+      "titulo": "Noche de Adoración",
+      "lugar": "Tegucigalpa, Honduras",
+      "etiqueta": "Concierto",
+      "destacado": false
+    },
+    {
+      "fechaPrincipal": "27",
+      "fechaSecundaria": "SEP 2026",
+      "titulo": "WayBack en Vivo",
+      "lugar": "San Pedro Sula, Honduras",
+      "etiqueta": "Concierto",
+      "destacado": false
+    }
   ]
 }

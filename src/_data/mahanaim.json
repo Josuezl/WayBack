@@ -1,9 +1,21 @@
 {
-  "num": "06",
   "titulo": "Mahanaim Records",
   "lead": "Mahanaim Records es un ministerio/ONG que apoya a personas que quieren lanzar su música y no tienen tanto recurso para lograrlo.",
   "videos": [
-    { "id": "FqAj3bXxmG", "titulo": "ISA LOPEZ", "ph": "640/360", "alt": "ISA LOPEZ", "caption": "ISA LOPEZ · Mahanaim Records", "comentario": "TODO: confirmar ID de YouTube de ISA LOPEZ" },
-    { "id": "G0D9iBJDhGA", "titulo": "JEFF CASTRO", "ph": "640/360", "alt": "JEFF CASTRO", "caption": "JEFF CASTRO · Mahanaim Records" }
+    {
+      "id": "FqAj3bXxmG",
+      "titulo": "ISA LOPEZ",
+      "ph": "640/360",
+      "alt": "ISA LOPEZ",
+      "caption": "ISA LOPEZ · Mahanaim Records",
+      "comentario": "TODO: confirmar ID de YouTube de ISA LOPEZ"
+    },
+    {
+      "id": "G0D9iBJDhGA",
+      "titulo": "JEFF CASTRO",
+      "ph": "640/360",
+      "alt": "JEFF CASTRO",
+      "caption": "JEFF CASTRO · Mahanaim Records"
+    }
   ]
 }
