@@ -35,7 +35,9 @@ y el build produce HTML estático puro — sin JS de servidor ni framework en el
 ```
 
 El build (`_site/`) es un `index.html` con `styles.css`, `script.js` y `assets/` copiados
-tal cual — comprobado byte a byte idéntico al `index.html` original.
+tal cual. El chequeo *byte a byte* real contra el `index.html` original es
+`diff -u reference/index.html _site/index.html` (debe salir vacío, exit code 0); `npm run
+verify` hace una comparación más liviana de líneas normalizadas — ver más abajo.
 
 ## Ejecutar en local
 
@@ -49,9 +51,17 @@ npm install
 
 ```bash
 npm run dev     # eleventy --serve, recarga en vivo en http://localhost:8080
-npm run build   # genera _site/ (lo que Vercel despliega)
-npm run verify  # compara _site/index.html contra reference/index.html
+npm run build   # genera _site/ y, vía postbuild, compara líneas normalizadas contra
+                # reference/index.html; falla el build si difieren (así falla el deploy de Vercel)
+npm run verify  # alias de build: siempre reconstruye antes de comparar, nunca compara contra
+                # un _site/ viejo
 ```
+
+`npm run verify` (y el `postbuild` de `npm run build`) usan `tools/verify-html.mjs`, que
+**normaliza líneas** (recorta espacios y descarta líneas vacías) antes de comparar — no es una
+comparación byte a byte. Para el chequeo exacto de bytes hay que correr
+`diff -u reference/index.html _site/index.html` aparte; solo eso garantiza que no cambió nada,
+ni siquiera un espacio.
 
 ## Despliegue
 
