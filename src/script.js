@@ -101,6 +101,9 @@ document.addEventListener('DOMContentLoaded', () => {
   /* ---- Video de fondo del hero ---- */
   initHeroVideo();
 
+  /* ---- Carrusel continuo de videos ---- */
+  initCarrusel();
+
   /* ---- YouTube lite-embed ---- */
   document.querySelectorAll('.yt-lite').forEach(card => {
     card.addEventListener('click', () => {
@@ -254,7 +257,9 @@ function initHeroVideo() {
   function sincronizarBoton() {
     if (!reproductor || typeof reproductor.isMuted !== 'function') return;
     const suena = !reproductor.isMuted();
-    boton.setAttribute('aria-pressed', String(suena));
+    // data-suena guarda el ESTADO; la etiqueta y el icono muestran la ACCION
+    // contraria, que es lo que pasa si haces clic.
+    boton.dataset.suena = String(suena);
     const txt = boton.querySelector('.hero__sound-txt');
     if (txt) txt.textContent = suena ? boton.dataset.silenciar : boton.dataset.activar;
   }
@@ -287,4 +292,36 @@ function cargarApi(cuandoEsteLista) {
   s.async = true;
   s.dataset.ytApi = '1';
   document.head.appendChild(s);
+}
+
+/* ===================== Carrusel continuo =====================
+   Duplica las tarjetas para que el bucle no tenga costura: la animacion
+   recorre el 50% del ancho de la pista, asi que al terminar la copia queda
+   exactamente donde estaba el original y el reinicio no se ve.
+
+   La copia lleva aria-hidden porque para un lector de pantalla los videos
+   estan una sola vez; verlos repetidos seria ruido.
+   ====================================================================== */
+function initCarrusel() {
+  const carrusel = document.getElementById('carruselMusica');
+  if (!carrusel) return;
+
+  const pista = carrusel.querySelector('.carrusel__pista');
+  if (!pista || !pista.children.length) return;
+
+  // Sin movimiento no hace falta duplicar nada: se deja deslizable a mano.
+  if (matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+
+  const copia = pista.cloneNode(true);
+  copia.querySelectorAll('.yt-lite').forEach(c => {
+    c.setAttribute('aria-hidden', 'true');
+    // Fuera del recorrido de tabulacion: son los mismos videos, no otros.
+    c.querySelectorAll('button').forEach(b => b.tabIndex = -1);
+  });
+  while (copia.firstChild) pista.appendChild(copia.firstChild);
+  carrusel.classList.add('is-duplicado');
+
+  // Al abrir un video el carrusel se detiene: dejarlo deslizando mientras
+  // algo se reproduce no tiene defensa posible.
+  pista.addEventListener('click', () => carrusel.classList.add('is-paused'));
 }

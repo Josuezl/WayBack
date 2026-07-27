@@ -25,9 +25,9 @@
 
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,400;12..96,700;12..96,800&family=DM+Sans:ital,opsz,wght@0,9..40,400;0,9..40,500;0,9..40,700&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Unbounded:wght@500..800&family=Manrope:wght@400..800&display=swap" rel="stylesheet" />
 
-  <link rel="stylesheet" href="styles.css?v=8" />
+  <link rel="stylesheet" href="styles.css?v=9" />
 </head>
 <body>
   <!-- ===== NAV ===== -->
@@ -75,15 +75,21 @@
         </figure>
       </div>
 
-      {#- Los navegadores prohiben el autoplay con audio, asi que el video
-          arranca en mudo y este boton lo activa con un toque. Nace oculto y
-          solo aparece si el video llego a reproducir. #}
+      {#- El video arranca en mudo porque los navegadores prohiben el autoplay
+          con audio; este boton lo activa. Nace oculto y solo aparece si el
+          video llego a reproducir.
+
+          El icono y el texto describen los dos la ACCION, no el estado. Antes
+          el texto decia "Silenciar" junto a una bocina sonando —uno la accion,
+          el otro el estado— y se leia al reves. Sin aria-pressed a proposito:
+          mezclar etiqueta cambiante con estado de pulsado es justo lo que
+          confunde; la etiqueta sola ya dice que pasa al hacer clic. #}
       <button class="hero__sound" id="heroSound" type="button" hidden
-              aria-pressed="false"
+              data-suena="false"
               data-activar="{{ hero.video.activarSonido }}"
               data-silenciar="{{ hero.video.silenciar }}">
-        <span class="hero__sound-ico hero__sound-ico--off" aria-hidden="true">{{ ic.sonido("mudo", 18) }}</span>
-        <span class="hero__sound-ico hero__sound-ico--on" aria-hidden="true">{{ ic.sonido("con", 18) }}</span>
+        <span class="hero__sound-ico hero__sound-ico--activar" aria-hidden="true">{{ ic.sonido("con", 18) }}</span>
+        <span class="hero__sound-ico hero__sound-ico--silenciar" aria-hidden="true">{{ ic.sonido("mudo", 18) }}</span>
         <span class="hero__sound-txt">{{ hero.video.activarSonido }}</span>
       </button>
     </section>
@@ -132,14 +138,19 @@
           </div>
         </div>
 
-        <div class="music-grid">
-          {%- for video in musica.videos %}
-          <article class="yt-lite reveal" data-id="{{ video.id }}" data-title="{{ video.titulo }}">
-            <img src="{{ video.thumb }}" alt="{{ video.alt }}" loading="lazy" onerror="imgFallback(this)" />
-            <button class="yt-lite__play" aria-label="Reproducir">{{ ic.play(24) }}</button>
-            <span class="yt-lite__cap">{{ video.caption }}</span>
-          </article>
-          {%- endfor %}
+        {#- Carrusel continuo. La pista se duplica por JS para que el bucle no
+            tenga costura; sin JS queda una fila deslizable a mano, que
+            funciona igual. #}
+        <div class="carrusel" id="carruselMusica">
+          <div class="carrusel__pista">
+            {%- for video in musica.videos %}
+            <article class="yt-lite reveal" data-id="{{ video.id }}" data-title="{{ video.titulo }}">
+              <img src="{{ video.thumb }}" alt="{{ video.alt }}" loading="lazy" onerror="imgFallback(this)" />
+              <button class="yt-lite__play" aria-label="Reproducir">{{ ic.play(24) }}</button>
+              <span class="yt-lite__cap">{{ video.caption }}</span>
+            </article>
+            {%- endfor %}
+          </div>
         </div>
 
         <div class="spotify reveal">
@@ -259,6 +270,6 @@
     </div>
   </footer>
 
-  <script src="script.js?v=8"></script>
+  <script src="script.js?v=9"></script>
 </body>
 </html>
