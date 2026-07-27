@@ -1,0 +1,17 @@
+{
+  "num": "04",
+  "titulo": "Merch",
+  "productos": [
+    { "ph": "600/600", "alt": "Hoodie WayBack", "titulo": "Hoodie \"De Regreso\"", "subtitulo": "Edición limitada" },
+    { "ph": "600/600", "alt": "Camiseta WayBack", "titulo": "Camiseta Catracha", "subtitulo": "Algodón premium" },
+    { "ph": "600/600", "alt": "Gorra WayBack", "titulo": "Gorra Bordada", "subtitulo": "Logo WayBack" },
+    { "ph": "600/600", "alt": "Tote bag WayBack", "titulo": "Tote Bag", "subtitulo": "Honduras Adora" }
+  ],
+  "cta": {
+    "textoAntes": "Adquiérela vía WhatsApp: ",
+    "telefono": "9623-6221",
+    "textoDespues": ". No tenemos tienda en línea por el momento.",
+    "whatsappUrl": "https://wa.me/50496236221",
+    "boton": "Comprar por WhatsApp"
+  }
+}
