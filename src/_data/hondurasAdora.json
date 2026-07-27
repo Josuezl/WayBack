@@ -1,0 +1,24 @@
+{
+  "num": "05",
+  "titulo": "Honduras Adora",
+  "lead": "\"Honduras Adora\", es un festival de música cristiana, que reúne a ministros de diferentes países, con la visión de interceder por la nación y declarar, que Honduras es tierra de adoración.",
+  "aviso": {
+    "textoAntes": "📍 Próximamente ",
+    "dominio": "hondurasadora.com",
+    "textoDespues": " redirigirá aquí."
+  },
+  "galeria": [
+    { "ph": "420/520", "alt": "Ágape Worship · 2024", "caption": "Ágape Worship · 2024" },
+    { "ph": "420/520", "alt": "WayBack · 2024", "caption": "WayBack · 2024" },
+    { "ph": "420/520", "alt": "Julián & Becky Collazos · 2024", "caption": "Julián &amp; Becky Collazos" },
+    { "ph": "420/520", "alt": "Bani Muñoz", "caption": "Bani Muñoz · 24/25" },
+    { "ph": "420/520", "alt": "Juan Carlos Alvarado · 2024", "caption": "Juan Carlos Alvarado" },
+    { "ph": "420/520", "alt": "Averly Morillo · 2025", "caption": "Averly Morillo · 2025" }
+  ],
+  "cta": {
+    "anio": "2026",
+    "texto": "La próxima edición está en camino. ¡Honduras es tierra de adoración!",
+    "boton": "Quiero participar",
+    "href": "#invitaciones"
+  }
+}

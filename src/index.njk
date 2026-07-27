@@ -161,23 +161,20 @@
     <section class="section section--festival" id="honduras-adora">
       <div class="hero__pattern hero__pattern--soft" aria-hidden="true"></div>
       <div class="container">
-        <header class="section__title section__title--light reveal"><span class="badge-num badge-num--light">05</span><h2>Honduras Adora</h2></header>
-        <p class="festival-lead reveal">"Honduras Adora", es un festival de música cristiana, que reúne a ministros de diferentes países, con la visión de interceder por la nación y declarar, que Honduras es tierra de adoración.</p>
-        <p class="notice reveal">📍 Próximamente <strong>hondurasadora.com</strong> redirigirá aquí.</p>
+        <header class="section__title section__title--light reveal"><span class="badge-num badge-num--light">{{ hondurasAdora.num }}</span><h2>{{ hondurasAdora.titulo }}</h2></header>
+        <p class="festival-lead reveal">{{ hondurasAdora.lead | safe }}</p>
+        <p class="notice reveal">{{ hondurasAdora.aviso.textoAntes }}<strong>{{ hondurasAdora.aviso.dominio }}</strong>{{ hondurasAdora.aviso.textoDespues }}</p>
 
         <div class="gallery">
-          <figure class="reveal"><img src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-ph="420/520" alt="Ágape Worship · 2024" /><figcaption>Ágape Worship · 2024</figcaption></figure>
-          <figure class="reveal"><img src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-ph="420/520" alt="WayBack · 2024" /><figcaption>WayBack · 2024</figcaption></figure>
-          <figure class="reveal"><img src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-ph="420/520" alt="Julián & Becky Collazos · 2024" /><figcaption>Julián &amp; Becky Collazos</figcaption></figure>
-          <figure class="reveal"><img src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-ph="420/520" alt="Bani Muñoz" /><figcaption>Bani Muñoz · 24/25</figcaption></figure>
-          <figure class="reveal"><img src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-ph="420/520" alt="Juan Carlos Alvarado · 2024" /><figcaption>Juan Carlos Alvarado</figcaption></figure>
-          <figure class="reveal"><img src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-ph="420/520" alt="Averly Morillo · 2025" /><figcaption>Averly Morillo · 2025</figcaption></figure>
+          {%- for foto in hondurasAdora.galeria %}
+          <figure class="reveal"><img src="{{ pixel }}" data-ph="{{ foto.ph }}" alt="{{ foto.alt | safe }}" /><figcaption>{{ foto.caption | safe }}</figcaption></figure>
+          {%- endfor %}
         </div>
 
         <div class="festival-cta reveal">
-          <span class="festival-cta__year">2026</span>
-          <p>La próxima edición está en camino. ¡Honduras es tierra de adoración!</p>
-          <a class="btn btn--white" href="#invitaciones">Quiero participar</a>
+          <span class="festival-cta__year">{{ hondurasAdora.cta.anio }}</span>
+          <p>{{ hondurasAdora.cta.texto }}</p>
+          <a class="btn btn--white" href="{{ hondurasAdora.cta.href }}">{{ hondurasAdora.cta.boton }}</a>
         </div>
       </div>
     </section>
@@ -207,19 +204,18 @@
     <!-- ===== 8. RECURSOS ===== -->
     <section class="section" id="recursos">
       <div class="container">
-        <header class="section__title reveal"><span class="badge-num">07</span><h2>Recursos</h2></header>
-        <p class="section__desc reveal">Para músicos y cantantes: pistas, acordes y recursos para tocar la música de WayBack.</p>
+        <header class="section__title reveal"><span class="badge-num">{{ recursos.num }}</span><h2>{{ recursos.titulo }}</h2></header>
+        <p class="section__desc reveal">{{ recursos.descripcion }}</p>
         <div class="split split--3">
-          <a class="card card--blue tilt reveal resource" href="#" onclick="return false"><span class="resource__icon">🎚️</span><h3>Pistas / Multitracks</h3><p>Stems y pistas de acompañamiento.</p></a>
-          <a class="card card--purple tilt reveal resource" href="#" onclick="return false"><span class="resource__icon">🎸</span><h3>Acordes & Charts</h3><p>Cifrados y tonalidades por canción.</p></a>
-          <a class="card card--red tilt reveal resource" href="#" onclick="return false"><span class="resource__icon">🎹</span><h3>Patches & Sonidos</h3><p>Presets para recrear nuestro sonido.</p></a>
+          {%- for tarjeta in recursos.tarjetas %}
+          <a class="card {{ tarjeta.clase }} tilt reveal resource" href="#" onclick="return false"><span class="resource__icon">{{ tarjeta.icono }}</span><h3>{{ tarjeta.titulo | safe }}</h3><p>{{ tarjeta.descripcion }}</p></a>
+          {%- endfor %}
         </div>
-        <h3 class="subhead reveal">Galería de conciertos</h3>
+        <h3 class="subhead reveal">{{ recursos.subtituloGaleria }}</h3>
         <div class="gallery gallery--wide">
-          <figure class="reveal"><img src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-ph="440/320" alt="Concierto WayBack" /></figure>
-          <figure class="reveal"><img src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-ph="440/320" alt="Concierto WayBack" /></figure>
-          <figure class="reveal"><img src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-ph="440/320" alt="Concierto WayBack" /></figure>
-          <figure class="reveal"><img src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-ph="440/320" alt="Concierto WayBack" /></figure>
+          {%- for foto in recursos.galeria %}
+          <figure class="reveal"><img src="{{ pixel }}" data-ph="{{ foto.ph }}" alt="{{ foto.alt }}" /></figure>
+          {%- endfor %}
         </div>
       </div>
     </section>
