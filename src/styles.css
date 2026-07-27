@@ -476,12 +476,15 @@ a { color: inherit; text-decoration: none; }
     padding: 96px 20px 104px;
   }
   .hero__photo {
-    /* Centrada. Antes iba con `right: -54px`, que la colgaba fuera del borde
-       derecho: se veia descentrada y cortada. El transform repite el giro
-       porque sustituye por completo al de la regla base. */
-    position: absolute; top: 76px; left: 50%; right: auto; bottom: auto;
-    width: min(80vw, 360px);
-    transform: translateX(-50%) rotate(2deg);
+    /* Centrada con `left: 0; right: 0` + `margin-inline: auto`, NO con
+       translateX. La foto tambien es .reveal, y `.reveal.is-visible` declara
+       `transform: none` con mas especificidad que esta regla: cualquier
+       transform que se ponga aqui se descarta, y la foto quedaba en left: 50%
+       sin el desplazamiento que la centraria, es decir corrida media pantalla
+       a la derecha. Centrar por margenes no depende de transform y por tanto
+       no puede entrar en ese conflicto. */
+    position: absolute; top: 76px; left: 0; right: 0; bottom: auto;
+    width: min(80vw, 340px); margin-inline: auto;
     opacity: .75; z-index: -1;
   }
   .hero__photo::before { inset: -14px 18px 18px -16px; }
