@@ -235,6 +235,10 @@ function initHeroVideo() {
               e.target.mute();
               e.target.playVideo();
             }
+            // Si quedo mudo por bloqueo del navegador, el primer gesto
+            // deliberado del visitante sirve como el permiso que faltaba y
+            // el sonido entra solo, sin que tenga que buscar el boton.
+            if (e.target.isMuted()) armarPrimerGesto();
           }, 1000);
         },
         onStateChange: (e) => {
@@ -267,6 +271,26 @@ function initHeroVideo() {
     boton.setAttribute('aria-pressed', String(suena));
     const txt = boton.querySelector('.hero__sound-txt');
     if (txt) txt.textContent = suena ? boton.dataset.silenciar : boton.dataset.activar;
+  }
+
+  /* El navegador exige un gesto del usuario antes de permitir audio. En vez de
+     obligarlo a encontrar el boton, se toma el PRIMER gesto que haga en
+     cualquier parte de la pagina y ahi entra el sonido.
+
+     Solo cuentan gestos deliberados —tocar, hacer clic, teclear—. El scroll
+     queda fuera a proposito: es pasivo, y arrancar audio porque alguien
+     bajo la pagina es justo lo que hace odiosos a los sitios con video. */
+  function armarPrimerGesto() {
+    const eventos = ['pointerdown', 'touchstart', 'keydown'];
+    const alGesto = () => {
+      eventos.forEach(ev => document.removeEventListener(ev, alGesto));
+      if (!reproductor || typeof reproductor.isMuted !== 'function') return;
+      if (!reproductor.isMuted()) return; // ya lo activo por su cuenta
+      reproductor.unMute();
+      reproductor.setVolume(70);
+      sincronizarBoton();
+    };
+    eventos.forEach(ev => document.addEventListener(ev, alGesto, { once: true, passive: true }));
   }
 
   boton.addEventListener('click', () => {
