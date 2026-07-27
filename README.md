@@ -3,24 +3,55 @@
 Sitio web de **WayBack**, banda hondureña de Electro-Pop Cristiano y organizadora del festival
 **Honduras Adora**.
 
-Sitio estático: HTML + CSS + JS, sin build ni dependencias.
+Sitio generado con **Eleventy**: el contenido vive en JSON, la plantilla en Nunjucks,
+y el build produce HTML estático puro — sin JS de servidor ni framework en el cliente.
 
 ## Estructura
 
 ```
 .
-├── index.html   ← contenido (9 secciones)
-├── styles.css   ← estilos, patrones y responsive
-├── script.js    ← tilt, reveals, máquina de escribir, placeholders, formularios
-├── vercel.json  ← headers de despliegue
-└── assets/
-    └── wayback-banda.jpeg
+├── src/
+│   ├── index.njk         ← plantilla (Nunjucks) que arma las 9 secciones
+│   ├── styles.css        ← estilos, patrones y responsive
+│   ├── script.js         ← tilt, reveals, máquina de escribir, placeholders, formularios
+│   ├── assets/
+│   │   └── wayback-banda.jpeg
+│   └── _data/            ← contenido de cada sección, un JSON por bloque
+│       ├── site.json         (metadata, nav, Open Graph)
+│       ├── hero.json
+│       ├── sobre.json
+│       ├── musica.json
+│       ├── eventos.json
+│       ├── merch.json
+│       ├── hondurasAdora.json
+│       ├── mahanaim.json
+│       ├── recursos.json
+│       └── footer.json
+├── eleventy.config.js     ← input/output dirs + passthrough de CSS/JS/assets
+├── reference/index.html   ← snapshot congelado del HTML original (para verificar)
+├── tools/verify-html.mjs  ← compara el build contra reference/ línea por línea
+├── vercel.json            ← build command, output directory y headers de despliegue
+└── package.json
 ```
+
+El build (`_site/`) es un `index.html` con `styles.css`, `script.js` y `assets/` copiados
+tal cual — comprobado byte a byte idéntico al `index.html` original.
 
 ## Ejecutar en local
 
-Abrir `index.html` directo en el navegador, o levantar cualquier servidor estático
-(por ejemplo la extensión *Live Server* de VS Code, que sirve en `http://localhost:5500`).
+Requiere Node (instalado vía [nvm](https://github.com/nvm-sh/nvm)). En una shell no interactiva
+nvm no queda en el `PATH` por defecto; hay que exportarlo antes de correr `npm`:
+
+```bash
+export PATH="$HOME/.nvm/versions/node/v22.23.1/bin:$PATH"
+npm install
+```
+
+```bash
+npm run dev     # eleventy --serve, recarga en vivo en http://localhost:8080
+npm run build   # genera _site/ (lo que Vercel despliega)
+npm run verify  # compara _site/index.html contra reference/index.html
+```
 
 ## Despliegue
 
@@ -35,7 +66,7 @@ Al ser un sitio estático, el despliegue es copiar estos archivos al *document r
 - [ ] Quitar el header `X-Robots-Tag: noindex, nofollow` de `vercel.json`.
       Está puesto a propósito para que Google **no** indexe la URL temporal de Vercel y no
       compita después con el dominio real.
-- [ ] Completar `og:url` y `og:image` en `index.html` con el dominio final
+- [ ] Completar `og:url` y `og:image` en `src/index.njk` con el dominio final
       (hacen falta URLs absolutas para que WhatsApp muestre la vista previa del enlace).
 
 ## Contenido pendiente
@@ -43,8 +74,8 @@ Al ser un sitio estático, el despliegue es copiar estos archivos al *document r
 Lo que falta viene del cliente, no es trabajo de código:
 
 - **Fotos reales.** Las 19 imágenes de merch, galerías y miniaturas son placeholders con la
-  marca WayBack y la leyenda *"Foto pendiente"*. Para reemplazar una: pon la foto en `assets/`,
-  cambia el `src` y **borra el atributo `data-ph`**.
+  marca WayBack y la leyenda *"Foto pendiente"*. Para reemplazar una: pon la foto en `src/assets/`,
+  cambia el `src` en el JSON de `src/_data/` correspondiente y **borra el atributo `data-ph`**.
 - **IDs de YouTube.** Los `data-id` de la sección Música son placeholders
   (`VIDEO_LIBRE`, `VIDEO_SALVADOR`, `VIDEO_LIBRO`). El de ISA LOPEZ (`FqAj3bXxmG`) tiene
   10 caracteres y los IDs de YouTube tienen 11 — hay que confirmarlo.
@@ -57,7 +88,7 @@ Lo que falta viene del cliente, no es trabajo de código:
 
 - **Colores:** variables en `:root` de `styles.css` (`--rojo`, `--azul`, `--morado`,
   `--azul-cielo`, `--crema`, …).
-- **Tipografías:** `<link>` de Google Fonts en `index.html` + `--font-display` / `--font-body`.
+- **Tipografías:** `<link>` de Google Fonts en `src/index.njk` + `--font-display` / `--font-body`.
 - **Texto que se escribe solo:** arreglo `phrases` en `initTypewriter()` de `script.js`.
   Acepta varias frases y las alterna (escribe → borra → siguiente).
 - **Patrón cultural:** está en `.hero__pattern` (CSS). Se puede sustituir por un SVG de
@@ -65,7 +96,7 @@ Lo que falta viene del cliente, no es trabajo de código:
 - **WhatsApp:** botón de merch a `https://wa.me/50496236221` (9623-6221).
 - **Spotify:** el `iframe` ya apunta al artista real.
 - **Caché durante la revisión:** si cambias `styles.css` o `script.js`, sube el número de
-  `?v=` en los `<link>`/`<script>` de `index.html` para que el cliente no vea una versión vieja.
+  `?v=` en los `<link>`/`<script>` de `src/index.njk` para que el cliente no vea una versión vieja.
 
 > Nota: próximamente `hondurasadora.com` redirigirá a la sección de Honduras Adora.
 
