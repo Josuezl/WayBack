@@ -221,3 +221,73 @@ the allowlist and the Vercel origin is removed.
 
 **Phase 4 — VPS.** GitHub Actions with atomic release and rollback, mirroring
 the Ágape deployment, plus the Cloudflare domain.
+
+## Phase-3 hazards (read before wiring up the CMS)
+
+Recorded here, ahead of time, because both of these will only bite once fields
+that currently use `| safe` become editable through Decap CMS, and the person
+who hits them then will not have this context unless it is written down now.
+
+### (a) The remaining `| safe` inventory
+
+Five sites in `src/index.njk` still bypass Nunjucks autoescaping with `| safe`:
+
+- Line 77 — `parrafo` (the `sobre.parrafos` loop, both the `.lead` and plain
+  `<p>` branches).
+- Line 146 — `producto.titulo` (merch card caption).
+- Line 165 — `hondurasAdora.lead` (festival lead paragraph).
+- Line 170 — `foto.caption` only. `foto.alt` on this same line was moved off
+  `| safe` and onto the `escapeAttrKeepAmp` filter (see `eleventy.config.js`)
+  as part of the fix-wave that closed an attribute-breakout XSS on that field;
+  `foto.caption` was deliberately left as-is because it renders in element
+  content, not inside an attribute, so it does not have the same breakout
+  shape — but it is still unescaped HTML from a data file.
+- Line 211 — `tarjeta.titulo` (resource card heading).
+
+All five exist to reproduce literal `"` and bare `&` characters that are
+present verbatim in the original frozen copy (`reference/index.html`) —
+Nunjucks' default autoescaping would turn `"` into `&quot;` and `&` into
+`&amp;`, which would fail the byte-identity gate this migration is built
+around. `| safe` was the fastest way to keep the diff clean during the
+migration; it was never meant to be the permanent answer once these fields
+stop being edited by a developer with repo access and start being edited by
+whoever has the CMS login. Once that happens, every one of these five sites
+renders operator-supplied HTML — including `<script>`, event-handler
+attributes typed as plain text, iframes, anything — with no sanitization.
+
+Restructuring these five is explicitly **out of scope** for the fix wave that
+added this note (deferred as Phase-3 work, since it is the CMS phase that
+actually exposes them to non-developer input). Whoever picks up Phase 3
+should not wire CMS write access to any of these five fields until each has
+either a targeted escaping filter (same pattern as `escapeAttrKeepAmp`, or a
+plain autoescape if the literal `"`/`&` byte can be sourced a different way)
+or a sanitizer appropriate to the context.
+
+### (b) The trap in the obvious fix for `hondurasAdora.galeria[].caption`
+
+`src/_data/hondurasAdora.json` stores one caption **pre-encoded**:
+
+```json
+{ "caption": "Julián &amp; Becky Collazos" }
+```
+
+That `&amp;` is not a typo — it is there because the field is rendered with
+`| safe` (line 170), so Nunjucks passes it through unescaped, and the raw
+bytes `&amp;` in the JSON become the raw bytes `&amp;` in the HTML, which a
+browser then displays as `&`. That is how the reference page renders it
+today.
+
+The obvious-looking fix — "just drop `| safe`, autoescaping is safer" — is
+**wrong on its own**: with `| safe` removed but the JSON value left as
+`Julián &amp; Becky Collazos`, Nunjucks' autoescaper will encode the `&` in
+`&amp;` a second time, producing `&amp;amp;` in the HTML, which a browser
+renders as the literal text `Julián &amp; Becky Collazos` — visibly wrong,
+and a byte-identity regression against `reference/index.html`.
+
+**Whoever removes `| safe` from this field must, in the same commit,**
+normalize the stored value in `src/_data/hondurasAdora.json` from
+`Julián &amp; Becky Collazos` back to the literal `Julián & Becky Collazos`,
+so plain autoescaping produces `&amp;` exactly once. This was verified during
+the fix wave that added this note: with both changes made together (filter
+removed *and* JSON value un-encoded), the rendered output is byte-identical
+to `reference/index.html`. Making only one of the two changes will not be.
