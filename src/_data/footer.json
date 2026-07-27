@@ -1,0 +1,27 @@
+{
+  "marca": "WayBack",
+  "tagline": "De Regreso al Camino · Banda Hondureña de Electro-Pop Cristiano · wayback.org",
+  "redes": [
+    { "nombre": "Facebook", "href": "https://facebook.com/WayBackOficialHN" },
+    { "nombre": "Instagram", "href": "https://instagram.com/waybackoficial" },
+    { "nombre": "TikTok", "href": "https://tiktok.com/@waybackoficial" },
+    { "nombre": "YouTube", "href": "https://youtube.com/waybackoficial" }
+  ],
+  "plataformas": [
+    { "nombre": "Spotify", "href": "https://open.spotify.com/artist/15S8x4SA16werdAc7KkJMd" },
+    { "nombre": "YouTube Music", "href": "https://music.youtube.com/@WayBackOficial" }
+  ],
+  "mision": {
+    "titulo": "Misión",
+    "texto": "Ser un instrumento en las manos de Dios, creando música y espacios para que los hijos pródigos vuelvan al camino y aquellos que no le conocen, puedan aceptarlo como su Señor y Salvador."
+  },
+  "vision": {
+    "titulo": "Visión",
+    "texto": "Ser un ministerio orgullosamente hondureño, sano y enfocado, que llegue a todas las partes de Honduras, Centroamérica y el mundo, siendo íntegros en todo lo que hacemos."
+  },
+  "copyright": {
+    "textoAntes": "© ",
+    "textoDespues": " WayBack · Hecho con fe en Honduras 🇭🇳"
+  },
+  "volverArriba": "Volver arriba ↑"
+}

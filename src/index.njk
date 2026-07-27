@@ -223,21 +223,18 @@
     <!-- ===== 9. MAHANAIM RECORDS ===== -->
     <section class="section" id="mahanaim">
       <div class="container">
-        <header class="section__title reveal"><span class="badge-num">08</span><h2>Mahanaim Records</h2></header>
+        <header class="section__title reveal"><span class="badge-num">{{ mahanaim.num }}</span><h2>{{ mahanaim.titulo }}</h2></header>
         <div class="card card--purple reveal" style="margin-bottom:28px">
-          <p class="lead" style="margin:0">Mahanaim Records es un ministerio/ONG que apoya a personas que quieren lanzar su música y no tienen tanto recurso para lograrlo.</p>
+          <p class="lead" style="margin:0">{{ mahanaim.lead }}</p>
         </div>
         <div class="music-grid">
-          <article class="yt-lite reveal" data-id="FqAj3bXxmG" data-title="ISA LOPEZ"><!-- TODO: confirmar ID de YouTube de ISA LOPEZ -->
-            <img src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-ph="640/360" alt="ISA LOPEZ" />
+          {%- for video in mahanaim.videos %}
+          <article class="yt-lite reveal" data-id="{{ video.id }}" data-title="{{ video.titulo }}">{% if video.comentario %}<!-- {{ video.comentario }} -->{% endif %}
+            <img src="{{ pixel }}" data-ph="{{ video.ph }}" alt="{{ video.alt }}" />
             <button class="yt-lite__play" aria-label="Reproducir">▶</button>
-            <span class="yt-lite__cap">ISA LOPEZ · Mahanaim Records</span>
+            <span class="yt-lite__cap">{{ video.caption }}</span>
           </article>
-          <article class="yt-lite reveal" data-id="G0D9iBJDhGA" data-title="JEFF CASTRO">
-            <img src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-ph="640/360" alt="JEFF CASTRO" />
-            <button class="yt-lite__play" aria-label="Reproducir">▶</button>
-            <span class="yt-lite__cap">JEFF CASTRO · Mahanaim Records</span>
-          </article>
+          {%- endfor %}
         </div>
       </div>
     </section>
@@ -249,29 +246,30 @@
     <div class="container">
       <div class="footer__top">
         <div class="footer__brand">
-          <a href="#hero" class="brand"><span class="brand__mark">W</span> WayBack</a>
-          <p>De Regreso al Camino · Banda Hondureña de Electro-Pop Cristiano · wayback.org</p>
+          <a href="#hero" class="brand"><span class="brand__mark">W</span> {{ footer.marca }}</a>
+          <p>{{ footer.tagline }}</p>
           <div class="socials">
-            <a href="https://facebook.com/WayBackOficialHN" target="_blank" rel="noopener" aria-label="Facebook"><svg viewBox="0 0 24 24" width="20" height="20" fill="currentColor"><path d="M24 12.07C24 5.4 18.63 0 12 0S0 5.4 0 12.07c0 6.02 4.39 11.01 10.13 11.93v-8.44H7.08v-3.49h3.05V9.41c0-3.02 1.79-4.69 4.53-4.69 1.31 0 2.68.24 2.68.24v2.97h-1.51c-1.49 0-1.96.93-1.96 1.89v2.25h3.33l-.53 3.49h-2.8V24C19.61 23.08 24 18.09 24 12.07z"/></svg></a>
-            <a href="https://instagram.com/waybackoficial" target="_blank" rel="noopener" aria-label="Instagram"><svg viewBox="0 0 24 24" width="20" height="20" fill="currentColor"><path d="M12 2.16c3.2 0 3.58.01 4.85.07 3.25.15 4.77 1.69 4.92 4.92.06 1.27.07 1.65.07 4.85s-.01 3.58-.07 4.85c-.15 3.23-1.66 4.77-4.92 4.92-1.27.06-1.65.07-4.85.07s-3.58-.01-4.85-.07c-3.26-.15-4.77-1.7-4.92-4.92-.06-1.27-.07-1.65-.07-4.85s.01-3.58.07-4.85C2.38 3.92 3.9 2.38 7.15 2.23 8.42 2.17 8.8 2.16 12 2.16zM12 0C8.74 0 8.33.01 7.05.07 2.7.27.27 2.69.07 7.05.01 8.33 0 8.74 0 12s.01 3.67.07 4.95c.2 4.36 2.62 6.78 6.98 6.98C8.33 23.99 8.74 24 12 24s3.67-.01 4.95-.07c4.35-.2 6.78-2.62 6.98-6.98.06-1.28.07-1.69.07-4.95s-.01-3.67-.07-4.95c-.2-4.35-2.62-6.78-6.98-6.98C15.67.01 15.26 0 12 0zm0 5.84a6.16 6.16 0 100 12.32 6.16 6.16 0 000-12.32zM12 16a4 4 0 110-8 4 4 0 010 8zm6.41-10.85a1.44 1.44 0 100 2.88 1.44 1.44 0 000-2.88z"/></svg></a>
-            <a href="https://tiktok.com/@waybackoficial" target="_blank" rel="noopener" aria-label="TikTok"><svg viewBox="0 0 24 24" width="20" height="20" fill="currentColor"><path d="M19.59 6.69a4.83 4.83 0 01-3.77-4.25V2h-3.45v13.67a2.89 2.89 0 01-5.2 1.74 2.89 2.89 0 012.31-4.64c.3 0 .59.04.86.13V9.4a6.33 6.33 0 00-1-.05A6.34 6.34 0 005 20.1a6.34 6.34 0 0010.86-4.43V8.69a8.16 8.16 0 004.77 1.52v-3.4a4.85 4.85 0 01-1.04-.12z"/></svg></a>
-            <a href="https://youtube.com/waybackoficial" target="_blank" rel="noopener" aria-label="YouTube"><svg viewBox="0 0 24 24" width="20" height="20" fill="currentColor"><path d="M23.5 6.2a3.02 3.02 0 00-2.12-2.14C19.5 3.55 12 3.55 12 3.55s-7.5 0-9.38.51A3.02 3.02 0 00.5 6.2C0 8.07 0 12 0 12s0 3.93.5 5.8a3.02 3.02 0 002.12 2.14c1.88.51 9.38.51 9.38.51s7.5 0 9.38-.51a3.02 3.02 0 002.12-2.14C24 15.93 24 12 24 12s0-3.93-.5-5.8zM9.6 15.6V8.4l6.27 3.6-6.27 3.6z"/></svg></a>
+            <a href="{{ footer.redes[0].href }}" target="_blank" rel="noopener" aria-label="{{ footer.redes[0].nombre }}"><svg viewBox="0 0 24 24" width="20" height="20" fill="currentColor"><path d="M24 12.07C24 5.4 18.63 0 12 0S0 5.4 0 12.07c0 6.02 4.39 11.01 10.13 11.93v-8.44H7.08v-3.49h3.05V9.41c0-3.02 1.79-4.69 4.53-4.69 1.31 0 2.68.24 2.68.24v2.97h-1.51c-1.49 0-1.96.93-1.96 1.89v2.25h3.33l-.53 3.49h-2.8V24C19.61 23.08 24 18.09 24 12.07z"/></svg></a>
+            <a href="{{ footer.redes[1].href }}" target="_blank" rel="noopener" aria-label="{{ footer.redes[1].nombre }}"><svg viewBox="0 0 24 24" width="20" height="20" fill="currentColor"><path d="M12 2.16c3.2 0 3.58.01 4.85.07 3.25.15 4.77 1.69 4.92 4.92.06 1.27.07 1.65.07 4.85s-.01 3.58-.07 4.85c-.15 3.23-1.66 4.77-4.92 4.92-1.27.06-1.65.07-4.85.07s-3.58-.01-4.85-.07c-3.26-.15-4.77-1.7-4.92-4.92-.06-1.27-.07-1.65-.07-4.85s.01-3.58.07-4.85C2.38 3.92 3.9 2.38 7.15 2.23 8.42 2.17 8.8 2.16 12 2.16zM12 0C8.74 0 8.33.01 7.05.07 2.7.27.27 2.69.07 7.05.01 8.33 0 8.74 0 12s.01 3.67.07 4.95c.2 4.36 2.62 6.78 6.98 6.98C8.33 23.99 8.74 24 12 24s3.67-.01 4.95-.07c4.35-.2 6.78-2.62 6.98-6.98.06-1.28.07-1.69.07-4.95s-.01-3.67-.07-4.95c-.2-4.35-2.62-6.78-6.98-6.98C15.67.01 15.26 0 12 0zm0 5.84a6.16 6.16 0 100 12.32 6.16 6.16 0 000-12.32zM12 16a4 4 0 110-8 4 4 0 010 8zm6.41-10.85a1.44 1.44 0 100 2.88 1.44 1.44 0 000-2.88z"/></svg></a>
+            <a href="{{ footer.redes[2].href }}" target="_blank" rel="noopener" aria-label="{{ footer.redes[2].nombre }}"><svg viewBox="0 0 24 24" width="20" height="20" fill="currentColor"><path d="M19.59 6.69a4.83 4.83 0 01-3.77-4.25V2h-3.45v13.67a2.89 2.89 0 01-5.2 1.74 2.89 2.89 0 012.31-4.64c.3 0 .59.04.86.13V9.4a6.33 6.33 0 00-1-.05A6.34 6.34 0 005 20.1a6.34 6.34 0 0010.86-4.43V8.69a8.16 8.16 0 004.77 1.52v-3.4a4.85 4.85 0 01-1.04-.12z"/></svg></a>
+            <a href="{{ footer.redes[3].href }}" target="_blank" rel="noopener" aria-label="{{ footer.redes[3].nombre }}"><svg viewBox="0 0 24 24" width="20" height="20" fill="currentColor"><path d="M23.5 6.2a3.02 3.02 0 00-2.12-2.14C19.5 3.55 12 3.55 12 3.55s-7.5 0-9.38.51A3.02 3.02 0 00.5 6.2C0 8.07 0 12 0 12s0 3.93.5 5.8a3.02 3.02 0 002.12 2.14c1.88.51 9.38.51 9.38.51s7.5 0 9.38-.51a3.02 3.02 0 002.12-2.14C24 15.93 24 12 24 12s0-3.93-.5-5.8zM9.6 15.6V8.4l6.27 3.6-6.27 3.6z"/></svg></a>
           </div>
           <div class="platforms">
-            <a href="https://open.spotify.com/artist/15S8x4SA16werdAc7KkJMd" target="_blank" rel="noopener">Spotify</a>
-            <a href="https://music.youtube.com/@WayBackOficial" target="_blank" rel="noopener">YouTube Music</a>
+            {%- for plataforma in footer.plataformas %}
+            <a href="{{ plataforma.href }}" target="_blank" rel="noopener">{{ plataforma.nombre }}</a>
+            {%- endfor %}
           </div>
         </div>
         <div class="footer__mv">
-          <h4>Misión</h4>
-          <p>Ser un instrumento en las manos de Dios, creando música y espacios para que los hijos pródigos vuelvan al camino y aquellos que no le conocen, puedan aceptarlo como su Señor y Salvador.</p>
-          <h4>Visión</h4>
-          <p>Ser un ministerio orgullosamente hondureño, sano y enfocado, que llegue a todas las partes de Honduras, Centroamérica y el mundo, siendo íntegros en todo lo que hacemos.</p>
+          <h4>{{ footer.mision.titulo }}</h4>
+          <p>{{ footer.mision.texto }}</p>
+          <h4>{{ footer.vision.titulo }}</h4>
+          <p>{{ footer.vision.texto }}</p>
         </div>
       </div>
       <div class="footer__bottom">
-        <span>© <span id="year"></span> WayBack · Hecho con fe en Honduras 🇭🇳</span>
-        <a href="#hero">Volver arriba ↑</a>
+        <span>{{ footer.copyright.textoAntes }}<span id="year"></span>{{ footer.copyright.textoDespues }}</span>
+        <a href="#hero">{{ footer.volverArriba }}</a>
       </div>
     </div>
   </footer>
