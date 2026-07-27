@@ -203,6 +203,12 @@ function initHeroVideo() {
 
   let reproductor = null;
 
+  // Fuente de verdad del sonido. Arranca en false porque el video se lanza en
+  // mudo a proposito. NO se usa isMuted(): la API de YouTube no lo actualiza
+  // de forma sincrona, asi que leerlo justo despues de unMute() devuelve el
+  // valor anterior y la etiqueta queda desfasada un clic.
+  let suena = false;
+
   cargarApi(() => {
     reproductor = new YT.Player(montaje, {
       videoId: id,
@@ -238,8 +244,10 @@ function initHeroVideo() {
             caja.classList.add('is-playing');
             hero.classList.add('has-video');
             boton.hidden = false;
-            // Aqui si vale consultar: paso tiempo desde el mute() inicial.
-            pintarBoton(!e.target.isMuted());
+            // Se pinta con NUESTRO estado, no consultando al reproductor.
+            // Este evento se dispara en cada vuelta del bucle, y consultarlo
+            // aqui pisaba la etiqueta correcta que acababa de poner el clic.
+            pintarBoton(suena);
           }
         },
         onError: () => {
@@ -255,29 +263,24 @@ function initHeroVideo() {
   // aparte. Asi da igual si el audio arranco solo o si el navegador lo
   // bloqueo: lo que se ve y lo que anuncia el lector de pantalla siempre
   // coinciden con lo que de verdad esta pasando.
-  // Recibe el estado explicito en vez de volver a preguntarle al reproductor.
-  // La API de YouTube no actualiza isMuted() de forma sincrona despues de
-  // unMute(), asi que consultarla justo despues devuelve el valor ANTERIOR y
-  // la etiqueta queda desfasada un clic.
-  function pintarBoton(suena) {
+  function pintarBoton(estaSonando) {
     // data-suena guarda el ESTADO; la etiqueta y el icono muestran la ACCION
     // contraria, que es lo que pasa si haces clic.
-    boton.dataset.suena = String(suena);
+    boton.dataset.suena = String(estaSonando);
     const txt = boton.querySelector('.hero__sound-txt');
-    if (txt) txt.textContent = suena ? boton.dataset.silenciar : boton.dataset.activar;
+    if (txt) txt.textContent = estaSonando ? boton.dataset.silenciar : boton.dataset.activar;
   }
 
   boton.addEventListener('click', () => {
-    if (!reproductor || typeof reproductor.isMuted !== 'function') return;
-    const estabaMudo = reproductor.isMuted();
-    if (estabaMudo) {
+    if (!reproductor || typeof reproductor.mute !== 'function') return;
+    suena = !suena;                 // nuestra variable manda, no isMuted()
+    if (suena) {
       reproductor.unMute();
       reproductor.setVolume(70);
     } else {
       reproductor.mute();
     }
-    // Si estaba mudo, ahora suena. Se deduce de la accion, no se re-consulta.
-    pintarBoton(estabaMudo);
+    pintarBoton(suena);
   });
 }
 
