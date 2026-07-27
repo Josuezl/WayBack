@@ -27,7 +27,7 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,400;12..96,700;12..96,800&family=DM+Sans:ital,opsz,wght@0,9..40,400;0,9..40,500;0,9..40,700&display=swap" rel="stylesheet" />
 
-  <link rel="stylesheet" href="styles.css?v=7" />
+  <link rel="stylesheet" href="styles.css?v=8" />
 </head>
 <body>
   <!-- ===== NAV ===== -->
@@ -55,7 +55,6 @@
         <div class="hero__content">
           <h1 class="hero__title reveal">{{ hero.titulo }}</h1>
           <p class="hero__line reveal" aria-label="{{ hero.frases[0] }}"><span id="typeLine" class="type"></span><span class="caret" aria-hidden="true"></span></p>
-          <p class="hero__subtitle reveal">{{ hero.subtitulo }}</p>
           <div class="hero__actions reveal">
             {%- for accion in hero.acciones %}
             <a class="btn {{ accion.clase }}" href="{{ accion.href }}"{% if accion.externo %} target="_blank" rel="noopener"{% endif %}>{{ accion.texto }}</a>
@@ -92,11 +91,19 @@
     <!-- ===== 2. SOBRE NOSOTROS ===== -->
     <section class="section" id="sobre">
       <div class="container">
-        <div class="card card--blue tilt reveal">
-          <h2 class="card__title">{{ sobre.titulo }}</h2>
-          {%- for parrafo in sobre.parrafos %}
-          {% if loop.first %}<p class="lead">{{ parrafo | safe }}</p>{% else %}<p>{{ parrafo | safe }}</p>{% endif %}
-          {%- endfor %}
+        <div class="card card--blue reveal sobre">
+          <div class="sobre__texto">
+            <h2 class="card__title">{{ sobre.titulo }}</h2>
+            {%- for parrafo in sobre.parrafos %}
+            {% if loop.first %}<p class="lead">{{ parrafo | safe }}</p>{% else %}<p>{{ parrafo | safe }}</p>{% endif %}
+            {%- endfor %}
+          </div>
+          <figure class="sobre__foto">
+            <div class="sobre__foto-frame">
+              <img src="{{ sobre.foto.src }}" alt="{{ sobre.foto.alt }}" loading="lazy" />
+            </div>
+            <figcaption>{{ sobre.foto.caption }}</figcaption>
+          </figure>
         </div>
       </div>
     </section>
@@ -252,6 +259,6 @@
     </div>
   </footer>
 
-  <script src="script.js?v=7"></script>
+  <script src="script.js?v=8"></script>
 </body>
 </html>

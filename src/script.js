@@ -205,7 +205,7 @@ function initHeroVideo() {
       videoId: id,
       playerVars: {
         autoplay: 1,
-        mute: 0,            // se INTENTA con sonido; si el navegador lo bloquea, cae a mudo
+        mute: 1,            // unica forma de que el autoplay sea permitido siempre
         controls: 0,
         disablekb: 1,
         fs: 0,
@@ -220,26 +220,12 @@ function initHeroVideo() {
         onReady: (e) => {
           if (innerWidth <= 680) e.target.setPlaybackQuality('small');
 
-          // Primero se intenta CON sonido. Donde el navegador lo permite
-          // —Chrome de escritorio, o cualquier navegador donde el visitante
-          // ya estuvo antes— el audio suena de entrada, que es lo pedido.
-          e.target.unMute();
-          e.target.setVolume(70);
+          // Arranca en mudo a proposito. Intentarlo con sonido hacia que
+          // navegadores como Brave o Safari en iOS mostraran un aviso de
+          // "contenido bloqueado" al visitante — peor experiencia que
+          // simplemente empezar en silencio. El boton queda para activarlo.
+          e.target.mute();
           e.target.playVideo();
-
-          // Si al segundo no arranco, el navegador bloqueo el autoplay con
-          // audio. Entonces se silencia y se reintenta: mudo si esta
-          // permitido siempre. El boton queda para activarlo a mano.
-          setTimeout(() => {
-            if (e.target.getPlayerState() !== YT.PlayerState.PLAYING) {
-              e.target.mute();
-              e.target.playVideo();
-            }
-            // Si quedo mudo por bloqueo del navegador, el primer gesto
-            // deliberado del visitante sirve como el permiso que faltaba y
-            // el sonido entra solo, sin que tenga que buscar el boton.
-            if (e.target.isMuted()) armarPrimerGesto();
-          }, 1000);
         },
         onStateChange: (e) => {
           // Recien cuando de verdad esta reproduciendo se revela el video,
@@ -271,26 +257,6 @@ function initHeroVideo() {
     boton.setAttribute('aria-pressed', String(suena));
     const txt = boton.querySelector('.hero__sound-txt');
     if (txt) txt.textContent = suena ? boton.dataset.silenciar : boton.dataset.activar;
-  }
-
-  /* El navegador exige un gesto del usuario antes de permitir audio. En vez de
-     obligarlo a encontrar el boton, se toma el PRIMER gesto que haga en
-     cualquier parte de la pagina y ahi entra el sonido.
-
-     Solo cuentan gestos deliberados —tocar, hacer clic, teclear—. El scroll
-     queda fuera a proposito: es pasivo, y arrancar audio porque alguien
-     bajo la pagina es justo lo que hace odiosos a los sitios con video. */
-  function armarPrimerGesto() {
-    const eventos = ['pointerdown', 'touchstart', 'keydown'];
-    const alGesto = () => {
-      eventos.forEach(ev => document.removeEventListener(ev, alGesto));
-      if (!reproductor || typeof reproductor.isMuted !== 'function') return;
-      if (!reproductor.isMuted()) return; // ya lo activo por su cuenta
-      reproductor.unMute();
-      reproductor.setVolume(70);
-      sincronizarBoton();
-    };
-    eventos.forEach(ev => document.addEventListener(ev, alGesto, { once: true, passive: true }));
   }
 
   boton.addEventListener('click', () => {

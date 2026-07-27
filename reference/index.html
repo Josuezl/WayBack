@@ -25,7 +25,7 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,400;12..96,700;12..96,800&family=DM+Sans:ital,opsz,wght@0,9..40,400;0,9..40,500;0,9..40,700&display=swap" rel="stylesheet" />
 
-  <link rel="stylesheet" href="styles.css?v=7" />
+  <link rel="stylesheet" href="styles.css?v=8" />
 </head>
 <body>
   <!-- ===== NAV ===== -->
@@ -54,7 +54,6 @@
         <div class="hero__content">
           <h1 class="hero__title reveal">WayBack</h1>
           <p class="hero__line reveal" aria-label="De Regreso al Camino"><span id="typeLine" class="type"></span><span class="caret" aria-hidden="true"></span></p>
-          <p class="hero__subtitle reveal">Banda Hondureña de Electro-Pop Cristiano</p>
           <div class="hero__actions reveal">
             <a class="btn btn--red" href="#sobre">Explorar ↓</a>
           </div>
@@ -86,11 +85,19 @@
     <!-- ===== 2. SOBRE NOSOTROS ===== -->
     <section class="section" id="sobre">
       <div class="container">
-        <div class="card card--blue tilt reveal">
-          <h2 class="card__title">Sobre Nosotros</h2>
-          <p class="lead">WayBack (en español "De Regreso al Camino"), es un ministerio musical hondureño conformado por jóvenes hondureños, unidos con el mismo sentir de producir y hacer música que le de exaltación al Señor Jesucristo, y que aquellos que se han alejado del camino de Dios, puedan regresar y ser restaurados por Él.</p>
-          <p>Musicalmente, es una banda de Pop-Electrónico/Alternativo, combinando sonidos modernos y digitales con instrumentación en vivo, letras Bíblicas y melodías congregacionales, buscando producir canciones cristocéntricas y que conecten con la presencia de Dios.</p>
-          <p>Además, WayBack es el organizador y anfitrión del festival de adoración "Honduras Adora", que reúne a ministros de diferentes países, con la visión de interceder por la nación y declarar, que Honduras es tierra de adoración.</p>
+        <div class="card card--blue reveal sobre">
+          <div class="sobre__texto">
+            <h2 class="card__title">Sobre Nosotros</h2>
+            <p class="lead">WayBack (en español "De Regreso al Camino"), es un ministerio musical hondureño conformado por jóvenes hondureños, unidos con el mismo sentir de producir y hacer música que le de exaltación al Señor Jesucristo, y que aquellos que se han alejado del camino de Dios, puedan regresar y ser restaurados por Él.</p>
+            <p>Musicalmente, es una banda de Pop-Electrónico/Alternativo, combinando sonidos modernos y digitales con instrumentación en vivo, letras Bíblicas y melodías congregacionales, buscando producir canciones cristocéntricas y que conecten con la presencia de Dios.</p>
+            <p>Además, WayBack es el organizador y anfitrión del festival de adoración "Honduras Adora", que reúne a ministros de diferentes países, con la visión de interceder por la nación y declarar, que Honduras es tierra de adoración.</p>
+          </div>
+          <figure class="sobre__foto">
+            <div class="sobre__foto-frame">
+              <img src="assets/wayback-banda.jpeg" alt="Integrantes de WayBack" loading="lazy" />
+            </div>
+            <figcaption>WayBack · Honduras</figcaption>
+          </figure>
         </div>
       </div>
     </section>
@@ -286,6 +293,6 @@
     </div>
   </footer>
 
-  <script src="script.js?v=7"></script>
+  <script src="script.js?v=8"></script>
 </body>
 </html>
