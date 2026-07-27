@@ -1,0 +1,290 @@
+# Panel de administración de WayBack (Decap CMS).
+#
+# La autenticación NO se construye aquí: reutiliza el Cloudflare Worker
+# `cms-auth` de Informática HN, el mismo que usa Ágape. Para que funcione,
+# el origen de este sitio tiene que estar en la lista de permitidos del
+# Worker; si no, el login falla con "origin not allowed".
+#
+# Los campos técnicos (idioma, tipo de Open Graph, rutas) quedan fuera a
+# propósito: el editor ve solo lo que tiene sentido que cambie.
+
+locale: es
+
+backend:
+  name: github
+  repo: Josuezl/WayBack
+  branch: main
+  base_url: https://cms-auth.informaticahn.com
+  auth_endpoint: auth
+  site_domain: way-back-git-main-josuezls-projects.vercel.app
+  use_graphql: true
+  commit_messages:
+    update: "content: actualizar {{collection}}"
+    uploadMedia: "content: agregar imagen {{path}}"
+    deleteMedia: "content: eliminar imagen {{path}}"
+
+publish_mode: simple
+
+# La vista previa de Decap no conoce los estilos del sitio, así que muestra
+# algo que no se parece al resultado. Mejor no prometerla.
+editor:
+  preview: false
+
+media_folder: src/assets
+public_folder: /assets
+
+collections:
+  - name: portada
+    label: Portada
+    files:
+      - name: hero
+        label: Portada (lo primero que se ve)
+        file: src/_data/hero.json
+        format: json
+        fields:
+          - { label: Nombre de la banda, name: titulo, widget: string }
+          - label: Frases que se escriben solas
+            name: frases
+            widget: list
+            field: { label: Frase, name: frase, widget: string }
+            hint: Se escriben y se borran en bucle, una tras otra.
+          - label: Video de fondo
+            name: video
+            widget: object
+            fields:
+              - { label: ID del video de YouTube, name: id, widget: string, hint: "Solo el ID, no el enlace completo. En youtube.com/watch?v=ABC123 el ID es ABC123." }
+              - { label: Título del video, name: titulo, widget: string }
+              - { label: Texto del botón para activar sonido, name: activarSonido, widget: string }
+              - { label: Texto del botón para silenciar, name: silenciar, widget: string }
+          - label: Foto de la banda
+            name: foto
+            widget: object
+            fields:
+              - { label: Imagen, name: src, widget: image, choose_url: false }
+              - { label: Descripción para lectores de pantalla, name: alt, widget: string }
+              - { label: Etiqueta sobre la foto, name: caption, widget: string }
+          - label: Botones
+            name: acciones
+            widget: list
+            fields:
+              - { label: Texto, name: texto, widget: string }
+              - { label: Enlace, name: href, widget: string }
+              - { label: Color, name: clase, widget: select, options: ["btn--red", "btn--purple", "btn--white"] }
+              - { label: Abre en pestaña nueva, name: externo, widget: boolean, default: false }
+          - label: Redes sociales
+            name: redes
+            widget: list
+            fields:
+              - { label: Red, name: nombre, widget: select, options: [Facebook, Instagram, TikTok, YouTube] }
+              - { label: Enlace, name: href, widget: string }
+
+  - name: secciones
+    label: Secciones
+    files:
+      - name: sobre
+        label: Sobre Nosotros
+        file: src/_data/sobre.json
+        format: json
+        fields:
+          - { label: Título, name: titulo, widget: string }
+          - label: Párrafos
+            name: parrafos
+            widget: list
+            field: { label: Párrafo, name: parrafo, widget: text }
+          - label: Foto
+            name: foto
+            widget: object
+            fields:
+              - { label: Imagen, name: src, widget: image, choose_url: false }
+              - { label: Descripción para lectores de pantalla, name: alt, widget: string }
+              - { label: Etiqueta sobre la foto, name: caption, widget: string }
+
+      - name: musica
+        label: Nuestra Música
+        file: src/_data/musica.json
+        format: json
+        fields:
+          - { label: Título de la sección, name: titulo, widget: string }
+          - label: Próximos lanzamientos
+            name: proximos
+            widget: object
+            fields:
+              - { label: Título, name: titulo, widget: string }
+              - label: Canciones
+                name: items
+                widget: list
+                field: { label: Canción, name: cancion, widget: string }
+          - label: Lanzamientos recientes
+            name: recientes
+            widget: object
+            fields:
+              - { label: Título, name: titulo, widget: string }
+              - label: Canciones
+                name: items
+                widget: list
+                fields:
+                  - { label: Canción, name: titulo, widget: string }
+                  - { label: Detalle, name: nota, widget: string, required: false }
+          - label: Videos del carrusel
+            name: videos
+            widget: list
+            summary: "{{fields.titulo}}"
+            fields:
+              - { label: ID del video de YouTube, name: id, widget: string, hint: "Solo el ID. La miniatura se toma sola de YouTube." }
+              - { label: Título, name: titulo, widget: string }
+              - { label: Texto alternativo, name: alt, widget: string }
+              - { label: Pie del video, name: caption, widget: string }
+          - { label: ID del artista en Spotify, name: spotifyArtistId, widget: string }
+
+      - name: eventos
+        label: Próximos Eventos
+        file: src/_data/eventos.json
+        format: json
+        fields:
+          - { label: Título de la sección, name: titulo, widget: string }
+          - label: Eventos
+            name: items
+            widget: list
+            summary: "{{fields.titulo}} — {{fields.fechaPrincipal}}"
+            fields:
+              - { label: Fecha grande, name: fechaPrincipal, widget: string, hint: "El día, o el año si aún no hay fecha." }
+              - { label: Fecha pequeña, name: fechaSecundaria, widget: string, hint: "Mes y año, o 'Por confirmar'." }
+              - { label: Nombre del evento, name: titulo, widget: string }
+              - { label: Lugar, name: lugar, widget: string }
+              - { label: Etiqueta, name: etiqueta, widget: string }
+              - { label: Destacado, name: destacado, widget: boolean, default: false, hint: "Lo resalta con otro color." }
+
+      - name: merch
+        label: Nuestros Productos
+        file: src/_data/merch.json
+        format: json
+        fields:
+          - { label: Título de la sección, name: titulo, widget: string }
+          - label: Productos
+            name: productos
+            widget: list
+            summary: "{{fields.titulo}}"
+            fields:
+              - { label: Nombre, name: titulo, widget: string }
+              - { label: Detalle, name: subtitulo, widget: string }
+              - { label: Texto alternativo, name: alt, widget: string }
+              - { label: Proporción del hueco, name: ph, widget: string, required: false, hint: "Déjalo así mientras no haya foto real." }
+          - label: Llamado a la acción
+            name: cta
+            widget: object
+            fields:
+              - { label: Texto antes del número, name: textoAntes, widget: string }
+              - { label: Número de WhatsApp visible, name: telefono, widget: string }
+              - { label: Texto después del número, name: textoDespues, widget: string }
+              - { label: Enlace de WhatsApp, name: whatsappUrl, widget: string }
+              - { label: Texto del botón, name: boton, widget: string }
+
+      - name: hondurasAdora
+        label: Honduras Adora
+        file: src/_data/hondurasAdora.json
+        format: json
+        fields:
+          - { label: Título de la sección, name: titulo, widget: string }
+          - { label: Texto principal, name: lead, widget: text }
+          - label: Galería
+            name: galeria
+            widget: list
+            summary: "{{fields.caption}}"
+            fields:
+              - { label: Texto alternativo, name: alt, widget: string }
+              - { label: Pie de foto, name: caption, widget: string }
+              - { label: Proporción del hueco, name: ph, widget: string, required: false }
+          - label: Llamado a la acción
+            name: cta
+            widget: object
+            fields:
+              - { label: Año, name: anio, widget: string }
+              - { label: Texto, name: texto, widget: text }
+              - { label: Texto del botón, name: boton, widget: string }
+              - { label: Enlace del botón, name: href, widget: string }
+
+      - name: mahanaim
+        label: Mahanaim Records
+        file: src/_data/mahanaim.json
+        format: json
+        fields:
+          - { label: Título de la sección, name: titulo, widget: string }
+          - { label: Texto principal, name: lead, widget: text }
+          - label: Videos
+            name: videos
+            widget: list
+            summary: "{{fields.titulo}}"
+            fields:
+              - { label: ID del video de YouTube, name: id, widget: string }
+              - { label: Título, name: titulo, widget: string }
+              - { label: Texto alternativo, name: alt, widget: string }
+              - { label: Pie del video, name: caption, widget: string }
+
+  - name: general
+    label: General
+    files:
+      - name: footer
+        label: Pie de página
+        file: src/_data/footer.json
+        format: json
+        fields:
+          - { label: Nombre de la marca, name: marca, widget: string }
+          - { label: Frase del pie, name: tagline, widget: text }
+          - label: Redes sociales
+            name: redes
+            widget: list
+            fields:
+              - { label: Red, name: nombre, widget: select, options: [Facebook, Instagram, TikTok, YouTube] }
+              - { label: Enlace, name: href, widget: string }
+          - label: Plataformas de música
+            name: plataformas
+            widget: list
+            fields:
+              - { label: Nombre, name: nombre, widget: string }
+              - { label: Enlace, name: href, widget: string }
+          - label: Misión
+            name: mision
+            widget: object
+            fields:
+              - { label: Título, name: titulo, widget: string }
+              - { label: Texto, name: texto, widget: text }
+          - label: Visión
+            name: vision
+            widget: object
+            fields:
+              - { label: Título, name: titulo, widget: string }
+              - { label: Texto, name: texto, widget: text }
+          - label: Derechos de autor
+            name: copyright
+            widget: object
+            fields:
+              - { label: Texto antes del año, name: textoAntes, widget: string }
+              - { label: Texto después del año, name: textoDespues, widget: string }
+          - { label: Texto para volver arriba, name: volverArriba, widget: string }
+
+      - name: site
+        label: Título y buscadores
+        file: src/_data/site.json
+        format: json
+        fields:
+          - { label: Título de la pestaña, name: titulo, widget: string }
+          - { label: Descripción para buscadores, name: descripcion, widget: text }
+          - { label: Nombre corto, name: marca, widget: string }
+          - label: Al compartir el enlace
+            name: og
+            widget: object
+            fields:
+              - { label: Título, name: titulo, widget: string }
+              - { label: Descripción, name: descripcion, widget: text }
+              - { label: Nombre del sitio, name: siteName, widget: string }
+              - { label: Tipo, name: type, widget: hidden, default: website }
+              - { label: Idioma, name: locale, widget: hidden, default: es_HN }
+          - label: Menú de navegación
+            name: nav
+            widget: list
+            summary: "{{fields.texto}}"
+            fields:
+              - { label: Texto, name: texto, widget: string }
+              - { label: Destino, name: href, widget: string, hint: "Empieza con # y es el id de la sección, por ejemplo #musica." }
+          - { label: Idioma del sitio, name: lang, widget: hidden, default: es }
+          - { label: Color del navegador, name: themeColor, widget: hidden, default: "#0a47a8" }

@@ -1,0 +1,41 @@
+/* Marca la pantalla de login de Decap con la identidad de WayBack, para que
+   el editor reconozca dónde está entrando. Decap no permite personalizar su
+   interior sin extensiones, así que esto alcanza solo al login — que es
+   justamente la pantalla donde importa la confianza. */
+
+:root {
+  --wb-rojo: #e11d2e;
+  --wb-morado: #6d28d9;
+  --wb-azul: #0a47a8;
+  --wb-tinta: #181222;
+}
+
+body {
+  font-family: "Manrope", -apple-system, BlinkMacSystemFont, sans-serif;
+}
+
+/* Pantalla de login */
+[class*="Notification"],
+section[class*="LoginPage"],
+div[class*="LoginPage"] {
+  background: linear-gradient(150deg, var(--wb-rojo) 0%, var(--wb-morado) 55%, var(--wb-azul) 100%) !important;
+}
+
+section[class*="LoginPage"] a,
+section[class*="LoginPage"] button,
+div[class*="LoginPage"] button {
+  background: var(--wb-rojo) !important;
+  color: #fff !important;
+  border: 3px solid var(--wb-tinta) !important;
+  border-radius: 100px !important;
+  box-shadow: 4px 4px 0 var(--wb-tinta) !important;
+  font-weight: 700 !important;
+  transition: transform .2s, box-shadow .2s !important;
+}
+
+section[class*="LoginPage"] a:hover,
+section[class*="LoginPage"] button:hover,
+div[class*="LoginPage"] button:hover {
+  transform: translate(-2px, -2px) !important;
+  box-shadow: 6px 6px 0 var(--wb-tinta) !important;
+}

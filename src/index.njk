@@ -101,7 +101,7 @@
           <div class="sobre__texto">
             <h2 class="card__title">{{ sobre.titulo }}</h2>
             {%- for parrafo in sobre.parrafos %}
-            {% if loop.first %}<p class="lead">{{ parrafo | safe }}</p>{% else %}<p>{{ parrafo | safe }}</p>{% endif %}
+            {% if loop.first %}<p class="lead">{{ parrafo }}</p>{% else %}<p>{{ parrafo }}</p>{% endif %}
             {%- endfor %}
           </div>
           <figure class="sobre__foto">
@@ -145,7 +145,7 @@
           <div class="carrusel__pista">
             {%- for video in musica.videos %}
             <article class="yt-lite reveal" data-id="{{ video.id }}" data-title="{{ video.titulo }}">
-              <img src="{{ video.thumb }}" alt="{{ video.alt }}" loading="lazy" onerror="imgFallback(this)" />
+              <img src="https://i.ytimg.com/vi/{{ video.id }}/maxresdefault.jpg" alt="{{ video.alt }}" loading="lazy" onerror="imgFallback(this)" />
               <button class="yt-lite__play" aria-label="Reproducir">{{ ic.play(24) }}</button>
               <span class="yt-lite__cap">{{ video.caption }}</span>
             </article>
@@ -182,7 +182,7 @@
         <header class="section__title reveal"><h2>{{ merch.titulo }}</h2></header>
         <div class="merch-grid">
           {%- for producto in merch.productos %}
-          <figure class="merch-card tilt reveal"><img src="{{ pixel }}" data-ph="{{ producto.ph }}" alt="{{ producto.alt }}" /><figcaption><strong>{{ producto.titulo | safe }}</strong><span>{{ producto.subtitulo }}</span></figcaption></figure>
+          <figure class="merch-card tilt reveal"><img src="{{ pixel }}" data-ph="{{ producto.ph }}" alt="{{ producto.alt }}" /><figcaption><strong>{{ producto.titulo }}</strong><span>{{ producto.subtitulo }}</span></figcaption></figure>
           {%- endfor %}
         </div>
         <div class="card card--white merch-cta reveal">
@@ -200,11 +200,11 @@
       <div class="hero__pattern hero__pattern--soft" aria-hidden="true"></div>
       <div class="container">
         <header class="section__title section__title--light reveal"><h2>{{ hondurasAdora.titulo }}</h2></header>
-        <p class="festival-lead reveal">{{ hondurasAdora.lead | safe }}</p>
+        <p class="festival-lead reveal">{{ hondurasAdora.lead }}</p>
 
         <div class="gallery">
           {%- for foto in hondurasAdora.galeria %}
-          <figure class="reveal"><img src="{{ pixel }}" data-ph="{{ foto.ph }}" alt="{{ foto.alt | escapeAttrKeepAmp }}" /><figcaption>{{ foto.caption | safe }}</figcaption></figure>
+          <figure class="reveal"><img src="{{ pixel }}" data-ph="{{ foto.ph }}" alt="{{ foto.alt }}" /><figcaption>{{ foto.caption }}</figcaption></figure>
           {%- endfor %}
         </div>
 
@@ -226,7 +226,7 @@
         <div class="music-grid">
           {%- for video in mahanaim.videos %}
           <article class="yt-lite reveal" data-id="{{ video.id }}" data-title="{{ video.titulo }}">{% if video.comentario %}<!-- {{ video.comentario }} -->{% endif %}
-            <img src="{{ video.thumb }}" alt="{{ video.alt }}" loading="lazy" onerror="imgFallback(this)" />
+            <img src="https://i.ytimg.com/vi/{{ video.id }}/maxresdefault.jpg" alt="{{ video.alt }}" loading="lazy" onerror="imgFallback(this)" />
             <button class="yt-lite__play" aria-label="Reproducir">{{ ic.play(24) }}</button>
             <span class="yt-lite__cap">{{ video.caption }}</span>
           </article>
