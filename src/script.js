@@ -183,7 +183,8 @@ function initHeroVideo() {
   // delante la clase .hero__video y con ella el dimensionado y el fundido —
   // el video sonaria pero no se veria.
   const montaje = document.getElementById('heroVideoMount');
-  if (!caja || !boton || !montaje) return;
+  const hero = document.getElementById('hero');
+  if (!caja || !boton || !montaje || !hero) return;
 
   const id = caja.dataset.videoId;
   if (!id) return;
@@ -204,7 +205,7 @@ function initHeroVideo() {
       videoId: id,
       playerVars: {
         autoplay: 1,
-        mute: 1,            // unica forma de que el autoplay sea permitido
+        mute: 0,            // se INTENTA con sonido; si el navegador lo bloquea, cae a mudo
         controls: 0,
         disablekb: 1,
         fs: 0,
@@ -217,39 +218,66 @@ function initHeroVideo() {
       },
       events: {
         onReady: (e) => {
-          e.target.mute();
-          e.target.playVideo();
           if (innerWidth <= 680) e.target.setPlaybackQuality('small');
+
+          // Primero se intenta CON sonido. Donde el navegador lo permite
+          // —Chrome de escritorio, o cualquier navegador donde el visitante
+          // ya estuvo antes— el audio suena de entrada, que es lo pedido.
+          e.target.unMute();
+          e.target.setVolume(70);
+          e.target.playVideo();
+
+          // Si al segundo no arranco, el navegador bloqueo el autoplay con
+          // audio. Entonces se silencia y se reintenta: mudo si esta
+          // permitido siempre. El boton queda para activarlo a mano.
+          setTimeout(() => {
+            if (e.target.getPlayerState() !== YT.PlayerState.PLAYING) {
+              e.target.mute();
+              e.target.playVideo();
+            }
+          }, 1000);
         },
         onStateChange: (e) => {
-          // Recien cuando de verdad esta reproduciendo se revela el video y
-          // aparece el boton. Antes de eso el hero se ve como siempre.
+          // Recien cuando de verdad esta reproduciendo se revela el video,
+          // se desvanece la foto y aparece el boton. Antes de eso el hero se
+          // ve como siempre.
           if (e.data === YT.PlayerState.PLAYING) {
             caja.classList.add('is-playing');
+            hero.classList.add('has-video');
             boton.hidden = false;
+            sincronizarBoton();
           }
         },
         onError: () => {
           caja.classList.remove('is-playing');
+          hero.classList.remove('has-video');
           boton.hidden = true;
         },
       },
     });
   });
 
+  // El boton refleja el estado REAL del reproductor, no uno que llevemos por
+  // aparte. Asi da igual si el audio arranco solo o si el navegador lo
+  // bloqueo: lo que se ve y lo que anuncia el lector de pantalla siempre
+  // coinciden con lo que de verdad esta pasando.
+  function sincronizarBoton() {
+    if (!reproductor || typeof reproductor.isMuted !== 'function') return;
+    const suena = !reproductor.isMuted();
+    boton.setAttribute('aria-pressed', String(suena));
+    const txt = boton.querySelector('.hero__sound-txt');
+    if (txt) txt.textContent = suena ? boton.dataset.silenciar : boton.dataset.activar;
+  }
+
   boton.addEventListener('click', () => {
     if (!reproductor || typeof reproductor.isMuted !== 'function') return;
-    const estabaMudo = reproductor.isMuted();
-    if (estabaMudo) {
+    if (reproductor.isMuted()) {
       reproductor.unMute();
       reproductor.setVolume(70);
     } else {
       reproductor.mute();
     }
-    const ahoraSuena = estabaMudo;
-    boton.setAttribute('aria-pressed', String(ahoraSuena));
-    const txt = boton.querySelector('.hero__sound-txt');
-    if (txt) txt.textContent = ahoraSuena ? boton.dataset.silenciar : boton.dataset.activar;
+    sincronizarBoton();
   });
 }
 
