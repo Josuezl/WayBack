@@ -27,7 +27,7 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,400;12..96,700;12..96,800&family=DM+Sans:ital,opsz,wght@0,9..40,400;0,9..40,500;0,9..40,700&display=swap" rel="stylesheet" />
 
-  <link rel="stylesheet" href="styles.css?v=4" />
+  <link rel="stylesheet" href="styles.css?v=5" />
 </head>
 <body>
   <!-- ===== NAV ===== -->
@@ -46,7 +46,7 @@
     <section class="hero" id="hero">
       {#- El video se monta aqui por JS y aparece solo cuando ya esta
           reproduciendo. Si nunca carga, queda el hero de siempre. #}
-      <div class="hero__video" id="heroVideo" aria-hidden="true" data-video-id="{{ hero.video.id }}"></div>
+      <div class="hero__video" id="heroVideo" aria-hidden="true" data-video-id="{{ hero.video.id }}"><div id="heroVideoMount"></div></div>
       <div class="hero__scrim" aria-hidden="true"></div>
       <div class="hero__pattern" aria-hidden="true"></div>
       <div class="hero__shapes" aria-hidden="true"><span></span><span></span><span></span></div>
@@ -178,13 +178,11 @@
     </section>
 
     <!-- ===== 6. HONDURAS ADORA ===== -->
-    <!-- NOTA: Próximamente hondurasadora.com redirigirá a esta sección / sitio. -->
     <section class="section section--festival" id="honduras-adora">
       <div class="hero__pattern hero__pattern--soft" aria-hidden="true"></div>
       <div class="container">
         <header class="section__title section__title--light reveal"><h2>{{ hondurasAdora.titulo }}</h2></header>
         <p class="festival-lead reveal">{{ hondurasAdora.lead | safe }}</p>
-        <p class="notice reveal">{{ hondurasAdora.aviso.textoAntes }}<strong>{{ hondurasAdora.aviso.dominio }}</strong>{{ hondurasAdora.aviso.textoDespues }}</p>
 
         <div class="gallery">
           {%- for foto in hondurasAdora.galeria %}
@@ -254,6 +252,6 @@
     </div>
   </footer>
 
-  <script src="script.js?v=4"></script>
+  <script src="script.js?v=5"></script>
 </body>
 </html>

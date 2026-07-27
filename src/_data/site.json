@@ -12,11 +12,29 @@
   },
   "marca": "WayBack",
   "nav": [
-    { "href": "#sobre", "texto": "Sobre" },
-    { "href": "#musica", "texto": "Música" },
-    { "href": "#eventos", "texto": "Eventos" },
-    { "href": "#merch", "texto": "Merch" },
-    { "href": "#honduras-adora", "texto": "Honduras Adora" },
-    { "href": "#mahanaim", "texto": "Mahanaim" }
+    {
+      "href": "#sobre",
+      "texto": "Sobre"
+    },
+    {
+      "href": "#musica",
+      "texto": "Nuestra Música"
+    },
+    {
+      "href": "#eventos",
+      "texto": "Próximos Eventos"
+    },
+    {
+      "href": "#merch",
+      "texto": "Nuestros Productos"
+    },
+    {
+      "href": "#honduras-adora",
+      "texto": "Honduras Adora"
+    },
+    {
+      "href": "#mahanaim",
+      "texto": "Mahanaim"
+    }
   ]
 }

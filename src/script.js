@@ -7,9 +7,15 @@
    1. <img data-ph="640/360"> → foto pendiente de entregar por el cliente.
    2. onerror de una imagen real que no cargó.
    Al reemplazar un placeholder por la foto definitiva, borra el data-ph. */
+/* Un SVG es XML: un `&`, `<` o `>` suelto lo invalida entero y el navegador
+   lo rechaza mostrando el icono de imagen rota. Pasaba con "Julián & Becky". */
+function escaparXml(s) {
+  return s.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+}
+
 function imgFallback(img) {
   img.onerror = null;
-  const label = (img.alt || 'WayBack').slice(0, 40);
+  const label = escaparXml((img.alt || 'WayBack').slice(0, 40));
   const palette = [['#e11d2e', '#6d28d9'], ['#0a47a8', '#00a3e0'], ['#6d28d9', '#e11d2e']];
   const [c1, c2] = palette[(label.length) % palette.length];
 
@@ -172,7 +178,12 @@ function initTypewriter() {
 function initHeroVideo() {
   const caja = document.getElementById('heroVideo');
   const boton = document.getElementById('heroSound');
-  if (!caja || !boton) return;
+  // YT.Player REEMPLAZA el elemento que recibe por el iframe. Por eso se le
+  // pasa un div interno desechable: si le pasaramos `caja`, se llevaria por
+  // delante la clase .hero__video y con ella el dimensionado y el fundido —
+  // el video sonaria pero no se veria.
+  const montaje = document.getElementById('heroVideoMount');
+  if (!caja || !boton || !montaje) return;
 
   const id = caja.dataset.videoId;
   if (!id) return;
@@ -189,7 +200,7 @@ function initHeroVideo() {
   let reproductor = null;
 
   cargarApi(() => {
-    reproductor = new YT.Player(caja, {
+    reproductor = new YT.Player(montaje, {
       videoId: id,
       playerVars: {
         autoplay: 1,
