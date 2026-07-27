@@ -1,14 +1,44 @@
 {
   "titulo": "WayBack",
-  "frases": ["De Regreso al Camino"],
+  "frases": [
+    "De Regreso al Camino"
+  ],
   "subtitulo": "Banda Hondureña de Electro-Pop Cristiano",
   "acciones": [
-    { "clase": "btn--red", "href": "#sobre", "texto": "Explorar ↓", "externo": false },
-    { "clase": "btn--white", "href": "https://youtube.com/waybackoficial", "texto": "▶ Ver video", "externo": true }
+    {
+      "clase": "btn--red",
+      "href": "#sobre",
+      "texto": "Explorar ↓",
+      "externo": false
+    }
   ],
   "foto": {
     "src": "assets/wayback-banda.jpeg",
     "alt": "Integrantes de WayBack",
     "caption": "WayBack · Honduras"
-  }
+  },
+  "video": {
+    "id": "swcG_IQ8VF4",
+    "titulo": "Libre en Tu Presencia — WayBack feat. Bani Muñoz",
+    "activarSonido": "Activar sonido",
+    "silenciar": "Silenciar"
+  },
+  "redes": [
+    {
+      "nombre": "Facebook",
+      "href": "https://facebook.com/WayBackOficialHN"
+    },
+    {
+      "nombre": "Instagram",
+      "href": "https://instagram.com/waybackoficial"
+    },
+    {
+      "nombre": "TikTok",
+      "href": "https://tiktok.com/@waybackoficial"
+    },
+    {
+      "nombre": "YouTube",
+      "href": "https://youtube.com/@WayBackOficial"
+    }
+  ]
 }

@@ -2,14 +2,32 @@
   "marca": "WayBack",
   "tagline": "De Regreso al Camino · Banda Hondureña de Electro-Pop Cristiano · wayback.org",
   "redes": [
-    { "nombre": "Facebook", "href": "https://facebook.com/WayBackOficialHN" },
-    { "nombre": "Instagram", "href": "https://instagram.com/waybackoficial" },
-    { "nombre": "TikTok", "href": "https://tiktok.com/@waybackoficial" },
-    { "nombre": "YouTube", "href": "https://youtube.com/waybackoficial" }
+    {
+      "nombre": "Facebook",
+      "href": "https://facebook.com/WayBackOficialHN"
+    },
+    {
+      "nombre": "Instagram",
+      "href": "https://instagram.com/waybackoficial"
+    },
+    {
+      "nombre": "TikTok",
+      "href": "https://tiktok.com/@waybackoficial"
+    },
+    {
+      "nombre": "YouTube",
+      "href": "https://youtube.com/@WayBackOficial"
+    }
   ],
   "plataformas": [
-    { "nombre": "Spotify", "href": "https://open.spotify.com/artist/15S8x4SA16werdAc7KkJMd" },
-    { "nombre": "YouTube Music", "href": "https://music.youtube.com/@WayBackOficial" }
+    {
+      "nombre": "Spotify",
+      "href": "https://open.spotify.com/artist/15S8x4SA16werdAc7KkJMd"
+    },
+    {
+      "nombre": "YouTube Music",
+      "href": "https://music.youtube.com/@WayBackOficial"
+    }
   ],
   "mision": {
     "titulo": "Misión",

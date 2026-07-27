@@ -92,6 +92,9 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   }
 
+  /* ---- Video de fondo del hero ---- */
+  initHeroVideo();
+
   /* ---- YouTube lite-embed ---- */
   document.querySelectorAll('.yt-lite').forEach(card => {
     card.addEventListener('click', () => {
@@ -150,4 +153,109 @@ function initTypewriter() {
     setTimeout(tick, delay);
   }
   tick();
+}
+
+/* ===================== Video de fondo del hero =====================
+   Los navegadores prohiben el autoplay CON audio: iOS nunca lo permite sin un
+   gesto previo del usuario, y Chrome en Android solo si la persona ya visita
+   mucho el dominio. Por eso el video arranca en mudo y un boton visible activa
+   el sonido con un toque.
+
+   Se usa la IFrame Player API y no un <iframe> pelado porque hace falta
+   des-silenciar desde el click, saber cuando la reproduccion realmente empezo
+   (para no adivinar el fundido) y limitar la calidad en moviles.
+
+   Si algo falla —API bloqueada, video no embebible, red lenta— no pasa nada:
+   queda el hero estatico de siempre, que es una experiencia completa por si
+   sola. El video es una mejora, no un requisito.
+   ====================================================================== */
+function initHeroVideo() {
+  const caja = document.getElementById('heroVideo');
+  const boton = document.getElementById('heroSound');
+  if (!caja || !boton) return;
+
+  const id = caja.dataset.videoId;
+  if (!id) return;
+
+  // Tres razones para no cargarlo nunca.
+  const conexion = navigator.connection || {};
+  const lento = /(^|-)2g$/.test(conexion.effectiveType || '');
+  if (
+    matchMedia('(prefers-reduced-motion: reduce)').matches || // lo pidio el usuario
+    conexion.saveData ||                                      // pidio ahorrar datos
+    (lento && innerWidth <= 680)                              // 4:18 de video en 2G no
+  ) return;
+
+  let reproductor = null;
+
+  cargarApi(() => {
+    reproductor = new YT.Player(caja, {
+      videoId: id,
+      playerVars: {
+        autoplay: 1,
+        mute: 1,            // unica forma de que el autoplay sea permitido
+        controls: 0,
+        disablekb: 1,
+        fs: 0,
+        loop: 1,
+        playlist: id,       // YouTube ignora loop en un solo video sin esto
+        modestbranding: 1,
+        playsinline: 1,     // sin esto iOS se va a pantalla completa y secuestra la pagina
+        rel: 0,
+        iv_load_policy: 3,
+      },
+      events: {
+        onReady: (e) => {
+          e.target.mute();
+          e.target.playVideo();
+          if (innerWidth <= 680) e.target.setPlaybackQuality('small');
+        },
+        onStateChange: (e) => {
+          // Recien cuando de verdad esta reproduciendo se revela el video y
+          // aparece el boton. Antes de eso el hero se ve como siempre.
+          if (e.data === YT.PlayerState.PLAYING) {
+            caja.classList.add('is-playing');
+            boton.hidden = false;
+          }
+        },
+        onError: () => {
+          caja.classList.remove('is-playing');
+          boton.hidden = true;
+        },
+      },
+    });
+  });
+
+  boton.addEventListener('click', () => {
+    if (!reproductor || typeof reproductor.isMuted !== 'function') return;
+    const estabaMudo = reproductor.isMuted();
+    if (estabaMudo) {
+      reproductor.unMute();
+      reproductor.setVolume(70);
+    } else {
+      reproductor.mute();
+    }
+    const ahoraSuena = estabaMudo;
+    boton.setAttribute('aria-pressed', String(ahoraSuena));
+    const txt = boton.querySelector('.hero__sound-txt');
+    if (txt) txt.textContent = ahoraSuena ? boton.dataset.silenciar : boton.dataset.activar;
+  });
+}
+
+/* Carga la IFrame API una sola vez y avisa cuando este lista. */
+function cargarApi(cuandoEsteLista) {
+  if (window.YT && window.YT.Player) { cuandoEsteLista(); return; }
+
+  const previo = window.onYouTubeIframeAPIReady;
+  window.onYouTubeIframeAPIReady = () => {
+    if (typeof previo === 'function') previo();
+    cuandoEsteLista();
+  };
+
+  if (document.querySelector('script[data-yt-api]')) return; // ya se esta cargando
+  const s = document.createElement('script');
+  s.src = 'https://www.youtube.com/iframe_api';
+  s.async = true;
+  s.dataset.ytApi = '1';
+  document.head.appendChild(s);
 }
