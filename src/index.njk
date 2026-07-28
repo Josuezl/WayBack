@@ -26,7 +26,7 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Unbounded:wght@500..800&family=Manrope:wght@400..800&display=swap" rel="stylesheet" />
 
-  <link rel="stylesheet" href="styles.css?v=15" />
+  <link rel="stylesheet" href="styles.css?v=16" />
 </head>
 <body>
   <!-- ===== NAV ===== -->
@@ -202,10 +202,15 @@
         <header class="section__title section__title--light reveal"><h2>{{ hondurasAdora.titulo }}</h2></header>
         <p class="festival-lead reveal">{{ hondurasAdora.lead }}</p>
 
-        <div class="gallery">
-          {%- for foto in hondurasAdora.galeria %}
-          <figure class="reveal">{{ ic.foto(foto) }}<figcaption>{{ foto.caption }}</figcaption></figure>
-          {%- endfor %}
+        {#- Carrusel sin pie de foto: basta con que las imagenes sean del
+            festival. Nombrar a cada artista invitado exigiria identificarlos
+            uno por uno, y equivocarse ahi es peor que no decir nada. #}
+        <div class="carrusel carrusel--fotos">
+          <div class="carrusel__pista">
+            {%- for foto in hondurasAdora.galeria %}
+            <figure class="reveal">{{ ic.foto(foto) }}</figure>
+            {%- endfor %}
+          </div>
         </div>
 
         <div class="festival-cta reveal">
@@ -313,6 +318,6 @@
     </div>
   </footer>
 
-  <script src="script.js?v=15"></script>
+  <script src="script.js?v=16"></script>
 </body>
 </html>

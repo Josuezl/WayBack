@@ -101,8 +101,8 @@ document.addEventListener('DOMContentLoaded', () => {
   /* ---- Video de fondo del hero ---- */
   initHeroVideo();
 
-  /* ---- Carrusel continuo de videos ---- */
-  initCarrusel();
+  /* ---- Carruseles continuos (videos y galería del festival) ---- */
+  document.querySelectorAll('.carrusel').forEach(initCarrusel);
 
   /* ---- YouTube lite-embed ---- */
   document.querySelectorAll('.yt-lite').forEach(card => {
@@ -301,10 +301,7 @@ function cargarApi(cuandoEsteLista) {
    La copia lleva aria-hidden porque para un lector de pantalla los videos
    estan una sola vez; verlos repetidos seria ruido.
    ====================================================================== */
-function initCarrusel() {
-  const carrusel = document.getElementById('carruselMusica');
-  if (!carrusel) return;
-
+function initCarrusel(carrusel) {
   const pista = carrusel.querySelector('.carrusel__pista');
   if (!pista || !pista.children.length) return;
 
@@ -312,7 +309,7 @@ function initCarrusel() {
   if (matchMedia('(prefers-reduced-motion: reduce)').matches) return;
 
   const copia = pista.cloneNode(true);
-  copia.querySelectorAll('.yt-lite').forEach(c => {
+  copia.querySelectorAll('.yt-lite, figure').forEach(c => {
     c.setAttribute('aria-hidden', 'true');
     // Fuera del recorrido de tabulacion: son los mismos videos, no otros.
     c.querySelectorAll('button').forEach(b => b.tabIndex = -1);
