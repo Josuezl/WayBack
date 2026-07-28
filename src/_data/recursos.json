@@ -24,20 +24,20 @@
   "subtituloGaleria": "Galería de conciertos",
   "galeria": [
     {
-      "ph": "440/320",
-      "alt": "Concierto WayBack"
+      "src": "assets/concierto-1.webp",
+      "alt": "Público con las manos levantadas en Honduras Adora"
     },
     {
-      "ph": "440/320",
-      "alt": "Concierto WayBack"
+      "src": "assets/concierto-2.webp",
+      "alt": "Vista del escenario durante Honduras Adora"
     },
     {
-      "ph": "440/320",
-      "alt": "Concierto WayBack"
+      "src": "assets/concierto-3.webp",
+      "alt": "Luces y público en Honduras Adora"
     },
     {
-      "ph": "440/320",
-      "alt": "Concierto WayBack"
+      "src": "assets/concierto-4.webp",
+      "alt": "Asistentes cantando en primera fila"
     }
   ]
 }

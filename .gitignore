@@ -18,5 +18,10 @@ node_modules/
 # Andamiaje de agentes (scratch, no es parte del sitio)
 .superpowers/
 
+# Material original del cliente (734 MB de fotos en alta y sus zips).
+# Es la fuente, no el entregable: al sitio solo entran versiones optimizadas
+# en src/assets/. Commitear esto inflaria el repo para siempre.
+Public/
+
 # Salida del build
 _site/

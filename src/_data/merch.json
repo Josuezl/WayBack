@@ -2,28 +2,16 @@
   "titulo": "Merch",
   "productos": [
     {
-      "ph": "600/600",
-      "alt": "Hoodie WayBack",
-      "titulo": "Hoodie \"De Regreso\"",
-      "subtitulo": "Edición limitada"
+      "src": "assets/merch-libre.webp",
+      "alt": "Camiseta azul Libre en Tu Presencia",
+      "titulo": "Camiseta \"Libre en Tu Presencia\"",
+      "subtitulo": "Algodón · azul"
     },
     {
-      "ph": "600/600",
-      "alt": "Camiseta WayBack",
-      "titulo": "Camiseta Catracha",
-      "subtitulo": "Algodón premium"
-    },
-    {
-      "ph": "600/600",
-      "alt": "Gorra WayBack",
-      "titulo": "Gorra Bordada",
-      "subtitulo": "Logo WayBack"
-    },
-    {
-      "ph": "600/600",
-      "alt": "Tote bag WayBack",
-      "titulo": "Tote Bag",
-      "subtitulo": "Honduras Adora"
+      "src": "assets/merch-sisi.webp",
+      "alt": "Camiseta negra Sí Sí",
+      "titulo": "Camiseta \"Sí Sí\"",
+      "subtitulo": "Algodón · negra, frente y espalda"
     }
   ],
   "cta": {
