@@ -117,17 +117,8 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   });
 
-  /* ---- Formularios ---- */
-  document.querySelectorAll('form').forEach(form => {
-    form.addEventListener('submit', (e) => {
-      e.preventDefault();
-      if (!form.checkValidity()) { form.reportValidity(); return; }
-      const ok = form.querySelector('[data-success]');
-      if (ok) { ok.hidden = false; ok.scrollIntoView({ behavior: 'smooth', block: 'nearest' }); }
-      form.reset();
-      setTimeout(() => { if (ok) ok.hidden = true; }, 6000);
-    });
-  });
+  /* ---- Formularios que abren WhatsApp ---- */
+  document.querySelectorAll('form[data-whatsapp]').forEach(prepararFormularioWhatsApp);
 });
 
 /* ===================== Typewriter =====================
@@ -338,4 +329,36 @@ function initCarrusel() {
   // Al abrir un video el carrusel se detiene: dejarlo deslizando mientras
   // algo se reproduce no tiene defensa posible.
   pista.addEventListener('click', () => carrusel.classList.add('is-paused'));
+}
+
+/* ===================== Formularios por WhatsApp =====================
+   No hay backend ni servicio de correo, y WhatsApp es el canal que la banda
+   ya usa para todo (el merch se pide por ahi). En vez de fingir un envio que
+   no ocurre —el formulario anterior decia "Gracias" sin mandar nada a ningun
+   lado— estos redactan el mensaje con lo que la persona escribio y abren
+   WhatsApp para que lo envie ella misma.
+
+   Ventaja secundaria: el mensaje sale del numero de quien escribe, asi que la
+   banda puede responderle directo sin pedirle el contacto otra vez.
+   ====================================================================== */
+function prepararFormularioWhatsApp(form) {
+  const numero = form.dataset.whatsapp;
+  if (!numero) return;
+
+  form.addEventListener('submit', (e) => {
+    e.preventDefault();
+
+    // La validacion nativa del navegador ya marca los campos faltantes.
+    if (!form.checkValidity()) { form.reportValidity(); return; }
+
+    const lineas = [form.dataset.asunto || 'Mensaje desde el sitio', ''];
+    form.querySelectorAll('[data-label]').forEach((campo) => {
+      const valor = campo.value.trim();
+      if (valor) lineas.push(`${campo.dataset.label}: ${valor}`);
+    });
+
+    const texto = encodeURIComponent(lineas.join('\n'));
+    // noopener: sin esto la pestaña de WhatsApp podria manipular la nuestra.
+    window.open(`https://wa.me/${numero}?text=${texto}`, '_blank', 'noopener');
+  });
 }

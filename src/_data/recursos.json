@@ -1,0 +1,43 @@
+{
+  "titulo": "Recursos",
+  "descripcion": "Para músicos y cantantes: pistas, acordes y recursos para tocar la música de WayBack.",
+  "tarjetas": [
+    {
+      "clase": "card--blue",
+      "icono": "🎚️",
+      "titulo": "Pistas / Multitracks",
+      "descripcion": "Stems y pistas de acompañamiento."
+    },
+    {
+      "clase": "card--purple",
+      "icono": "🎸",
+      "titulo": "Acordes & Charts",
+      "descripcion": "Cifrados y tonalidades por canción."
+    },
+    {
+      "clase": "card--red",
+      "icono": "🎹",
+      "titulo": "Patches & Sonidos",
+      "descripcion": "Presets para recrear nuestro sonido."
+    }
+  ],
+  "subtituloGaleria": "Galería de conciertos",
+  "galeria": [
+    {
+      "ph": "440/320",
+      "alt": "Concierto WayBack"
+    },
+    {
+      "ph": "440/320",
+      "alt": "Concierto WayBack"
+    },
+    {
+      "ph": "440/320",
+      "alt": "Concierto WayBack"
+    },
+    {
+      "ph": "440/320",
+      "alt": "Concierto WayBack"
+    }
+  ]
+}

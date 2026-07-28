@@ -14,5 +14,49 @@
       "alt": "JEFF CASTRO",
       "caption": "JEFF CASTRO · Mahanaim Records"
     }
-  ]
+  ],
+  "formulario": {
+    "titulo": "¿Quieres lanzar tu música con nosotros?",
+    "descripcion": "Cuéntanos de tu proyecto y Mahanaim Records te contacta.",
+    "whatsapp": "50496236221",
+    "asunto": "Servicios de Mahanaim Records",
+    "boton": "Enviar por WhatsApp",
+    "campos": [
+      {
+        "name": "nombre",
+        "label": "Nombre",
+        "tipo": "text",
+        "requerido": true,
+        "ancho": "medio"
+      },
+      {
+        "name": "ubicacion",
+        "label": "Ubicación",
+        "tipo": "text",
+        "requerido": true,
+        "ancho": "medio"
+      },
+      {
+        "name": "genero",
+        "label": "Género musical",
+        "tipo": "text",
+        "requerido": true,
+        "ancho": "medio"
+      },
+      {
+        "name": "contacto",
+        "label": "Teléfono o correo",
+        "tipo": "text",
+        "requerido": true,
+        "ancho": "medio"
+      },
+      {
+        "name": "motivo",
+        "label": "¿Por qué quieres hacer música de alabanza y adoración?",
+        "tipo": "textarea",
+        "requerido": true,
+        "ancho": "completo"
+      }
+    ]
+  }
 }

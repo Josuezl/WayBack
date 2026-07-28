@@ -27,7 +27,7 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Unbounded:wght@500..800&family=Manrope:wght@400..800&display=swap" rel="stylesheet" />
 
-  <link rel="stylesheet" href="styles.css?v=13" />
+  <link rel="stylesheet" href="styles.css?v=14" />
 </head>
 <body>
   <!-- ===== NAV ===== -->
@@ -55,6 +55,7 @@
         <div class="hero__content">
           <h1 class="hero__title reveal">{{ hero.titulo }}</h1>
           <p class="hero__line reveal" aria-label="{{ hero.frases[0] }}"><span id="typeLine" class="type"></span><span class="caret" aria-hidden="true"></span></p>
+          <p class="hero__subtitle reveal">{{ hero.subtitulo }}</p>
           <div class="hero__actions reveal">
             {%- for accion in hero.acciones %}
             <a class="btn {{ accion.clase }}" href="{{ accion.href }}"{% if accion.externo %} target="_blank" rel="noopener"{% endif %}>{{ accion.texto }}</a>
@@ -216,7 +217,35 @@
       </div>
     </section>
 
-    <!-- ===== 7. MAHANAIM RECORDS ===== -->
+    <!-- ===== 7. INVITACIONES ===== -->
+    <section class="section" id="invitaciones">
+      <div class="container container--narrow">
+        <header class="section__title reveal"><h2>{{ invitaciones.titulo }}</h2></header>
+        <p class="section__desc reveal">{{ invitaciones.descripcion }}</p>
+        {{ ic.formulario(invitaciones, "formInvitacion") }}
+      </div>
+    </section>
+
+    <!-- ===== 8. RECURSOS ===== -->
+    <section class="section" id="recursos">
+      <div class="container">
+        <header class="section__title reveal"><h2>{{ recursos.titulo }}</h2></header>
+        <p class="section__desc reveal">{{ recursos.descripcion }}</p>
+        <div class="split split--3">
+          {%- for tarjeta in recursos.tarjetas %}
+          <a class="card {{ tarjeta.clase }} tilt reveal resource" href="#" onclick="return false"><span class="resource__icon">{{ tarjeta.icono }}</span><h3>{{ tarjeta.titulo }}</h3><p>{{ tarjeta.descripcion }}</p></a>
+          {%- endfor %}
+        </div>
+        <h3 class="subhead reveal">{{ recursos.subtituloGaleria }}</h3>
+        <div class="gallery gallery--wide">
+          {%- for foto in recursos.galeria %}
+          <figure class="reveal"><img src="{{ pixel }}" data-ph="{{ foto.ph }}" alt="{{ foto.alt }}" /></figure>
+          {%- endfor %}
+        </div>
+      </div>
+    </section>
+
+    <!-- ===== 9. MAHANAIM RECORDS ===== -->
     <section class="section" id="mahanaim">
       <div class="container">
         <header class="section__title reveal"><h2>{{ mahanaim.titulo }}</h2></header>
@@ -232,6 +261,21 @@
           </article>
           {%- endfor %}
         </div>
+
+        <div class="mahanaim-form reveal">
+          <h3 class="subhead">{{ mahanaim.formulario.titulo }}</h3>
+          <p class="section__desc">{{ mahanaim.formulario.descripcion }}</p>
+          {{ ic.formulario(mahanaim.formulario, "formMahanaim") }}
+        </div>
+      </div>
+    </section>
+
+    <!-- ===== 10. CONTACTO / NEWSLETTER ===== -->
+    <section class="section section--cta" id="contacto">
+      <div class="container container--narrow">
+        <header class="section__title section__title--light reveal"><h2>{{ contacto.titulo }}</h2></header>
+        <p class="section__desc section__desc--light reveal">{{ contacto.descripcion }}</p>
+        {{ ic.formulario(contacto, "formContacto") }}
       </div>
     </section>
 
@@ -270,6 +314,6 @@
     </div>
   </footer>
 
-  <script src="script.js?v=13"></script>
+  <script src="script.js?v=14"></script>
 </body>
 </html>

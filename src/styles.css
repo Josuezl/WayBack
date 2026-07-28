@@ -413,7 +413,23 @@ a { color: inherit; text-decoration: none; }
 .resource p { opacity: .9; font-size: .95rem; margin: 0; }
 
 /* ---------- Formularios ---------- */
-.form { max-width: 100%; }
+/* El formulario es una rejilla de dos columnas: los campos marcados como
+   `medio` ocupan una, el resto ocupa el ancho completo. Antes esto se hacia
+   envolviendo pares de campos en un .form__row, lo que obligaba a decidir la
+   maquetacion al escribir el HTML; con la rejilla cada campo declara su propio
+   ancho en los datos y el CMS puede reordenarlos sin romper nada. */
+.form { max-width: 100%; display: grid; grid-template-columns: repeat(2, 1fr); gap: 0 18px; }
+.form .field { grid-column: 1 / -1; }
+.form .field--medio { grid-column: span 1; }
+.form > button { grid-column: 1 / -1; margin-top: 4px; }
+@media (max-width: 680px) {
+  .form { grid-template-columns: 1fr; }
+  .form .field--medio { grid-column: 1 / -1; }
+}
+
+.mahanaim-form { margin-top: 44px; }
+.mahanaim-form .section__desc { margin: -12px 0 22px; }
+
 .form__row { display: grid; grid-template-columns: 1fr 1fr; gap: 18px; }
 .field { display: block; margin-bottom: 18px; }
 .field span:not(.sr-only) { display: block; font-weight: 700; font-size: .85rem; margin-bottom: 7px; }

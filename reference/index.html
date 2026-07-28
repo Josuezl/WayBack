@@ -25,7 +25,7 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Unbounded:wght@500..800&family=Manrope:wght@400..800&display=swap" rel="stylesheet" />
 
-  <link rel="stylesheet" href="styles.css?v=13" />
+  <link rel="stylesheet" href="styles.css?v=14" />
 </head>
 <body>
   <!-- ===== NAV ===== -->
@@ -33,11 +33,14 @@
     <a href="#hero" class="brand"><span class="brand__mark">W</span> WayBack</a>
     <nav class="nav__links" id="navLinks" aria-label="Navegación principal">
       <a href="#sobre">Sobre</a>
-      <a href="#musica">Nuestra Música</a>
-      <a href="#eventos">Próximos Eventos</a>
-      <a href="#merch">Nuestros Productos</a>
+      <a href="#musica">Música</a>
+      <a href="#eventos">Eventos</a>
+      <a href="#merch">Merch</a>
       <a href="#honduras-adora">Honduras Adora</a>
+      <a href="#invitaciones">Invitaciones</a>
+      <a href="#recursos">Recursos</a>
       <a href="#mahanaim">Mahanaim</a>
+      <a href="#contacto">Contacto</a>
     </nav>
     <button class="nav__toggle" id="navToggle" aria-label="Abrir menú" aria-expanded="false"><span></span><span></span><span></span></button>
   </header>
@@ -54,6 +57,7 @@
         <div class="hero__content">
           <h1 class="hero__title reveal">WayBack</h1>
           <p class="hero__line reveal" aria-label="De Regreso al Camino"><span id="typeLine" class="type"></span><span class="caret" aria-hidden="true"></span></p>
+          <p class="hero__subtitle reveal">Banda Hondureña de Electro-Pop Cristiano</p>
           <div class="hero__actions reveal">
             <a class="btn btn--red" href="#sobre">Explorar ↓</a>
           </div>
@@ -105,7 +109,7 @@
     <!-- ===== 3. MÚSICA ===== -->
     <section class="section" id="musica">
       <div class="container">
-        <header class="section__title reveal"><h2>Nuestra Música</h2></header>
+        <header class="section__title reveal"><h2>Música</h2></header>
 
         <div class="split">
           <div class="card card--purple tilt reveal">
@@ -170,7 +174,7 @@
     <!-- ===== 4. EVENTOS ===== -->
     <section class="section" id="eventos">
       <div class="container">
-        <header class="section__title reveal"><h2>Próximos Eventos</h2></header>
+        <header class="section__title reveal"><h2>Eventos</h2></header>
         <div class="events">
           <article class="event-card event-card--soon tilt reveal">
             <div class="event-card__date"><strong>2026</strong><span>Por confirmar</span></div>
@@ -197,7 +201,7 @@
     <!-- ===== 5. MERCH ===== -->
     <section class="section" id="merch">
       <div class="container">
-        <header class="section__title reveal"><h2>Nuestros Productos</h2></header>
+        <header class="section__title reveal"><h2>Merch</h2></header>
         <div class="merch-grid">
           <figure class="merch-card tilt reveal"><img src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-ph="600/600" alt="Hoodie WayBack" /><figcaption><strong>Hoodie &quot;De Regreso&quot;</strong><span>Edición limitada</span></figcaption></figure>
           <figure class="merch-card tilt reveal"><img src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-ph="600/600" alt="Camiseta WayBack" /><figcaption><strong>Camiseta Catracha</strong><span>Algodón premium</span></figcaption></figure>
@@ -238,7 +242,63 @@
       </div>
     </section>
 
-    <!-- ===== 7. MAHANAIM RECORDS ===== -->
+    <!-- ===== 7. INVITACIONES ===== -->
+    <section class="section" id="invitaciones">
+      <div class="container container--narrow">
+        <header class="section__title reveal"><h2>Invitaciones</h2></header>
+        <p class="section__desc reveal">¿Quieres que WayBack ministre en tu iglesia o evento? Escríbenos.</p>
+        <form class="card card--white form reveal" id="formInvitacion" novalidate
+      data-whatsapp="50496236221" data-asunto="Invitación para WayBack">
+  <label class="field field--medio">
+    <span>Nombre *</span>
+    <input type="text" name="nombre" data-label="Nombre" required />
+  </label>
+  <label class="field field--medio">
+    <span>Iglesia / Ministerio *</span>
+    <input type="text" name="iglesia" data-label="Iglesia / Ministerio" required />
+  </label>
+  <label class="field field--medio">
+    <span>Ciudad *</span>
+    <input type="text" name="ciudad" data-label="Ciudad" required />
+  </label>
+  <label class="field field--medio">
+    <span>Correo *</span>
+    <input type="email" name="correo" data-label="Correo" required />
+  </label>
+  <label class="field">
+    <span>Teléfono *</span>
+    <input type="tel" name="telefono" data-label="Teléfono" required inputmode="tel" />
+  </label>
+  <label class="field">
+    <span>Mensaje</span>
+    <textarea name="mensaje" rows="4" data-label="Mensaje"></textarea>
+  </label>
+  <button class="btn btn--green btn--block" type="submit"><svg viewBox="0 0 24 24" width="20" height="20" fill="currentColor" aria-hidden="true"><path d="M.057 24l1.687-6.163a11.867 11.867 0 01-1.587-5.946C.16 5.335 5.495 0 12.05 0a11.817 11.817 0 018.413 3.488 11.824 11.824 0 013.48 8.413c-.003 6.557-5.338 11.892-11.893 11.892a11.9 11.9 0 01-5.688-1.448L.057 24zm6.597-3.807c1.676.995 3.276 1.591 5.392 1.592 5.448 0 9.886-4.434 9.889-9.885.002-5.462-4.415-9.89-9.881-9.892-5.452 0-9.887 4.434-9.889 9.884a9.86 9.86 0 001.51 5.26l-.999 3.648 3.978-1.207z"/></svg>Enviar por WhatsApp</button>
+</form>
+      </div>
+    </section>
+
+    <!-- ===== 8. RECURSOS ===== -->
+    <section class="section" id="recursos">
+      <div class="container">
+        <header class="section__title reveal"><h2>Recursos</h2></header>
+        <p class="section__desc reveal">Para músicos y cantantes: pistas, acordes y recursos para tocar la música de WayBack.</p>
+        <div class="split split--3">
+          <a class="card card--blue tilt reveal resource" href="#" onclick="return false"><span class="resource__icon">🎚️</span><h3>Pistas / Multitracks</h3><p>Stems y pistas de acompañamiento.</p></a>
+          <a class="card card--purple tilt reveal resource" href="#" onclick="return false"><span class="resource__icon">🎸</span><h3>Acordes &amp; Charts</h3><p>Cifrados y tonalidades por canción.</p></a>
+          <a class="card card--red tilt reveal resource" href="#" onclick="return false"><span class="resource__icon">🎹</span><h3>Patches &amp; Sonidos</h3><p>Presets para recrear nuestro sonido.</p></a>
+        </div>
+        <h3 class="subhead reveal">Galería de conciertos</h3>
+        <div class="gallery gallery--wide">
+          <figure class="reveal"><img src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-ph="440/320" alt="Concierto WayBack" /></figure>
+          <figure class="reveal"><img src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-ph="440/320" alt="Concierto WayBack" /></figure>
+          <figure class="reveal"><img src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-ph="440/320" alt="Concierto WayBack" /></figure>
+          <figure class="reveal"><img src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-ph="440/320" alt="Concierto WayBack" /></figure>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===== 9. MAHANAIM RECORDS ===== -->
     <section class="section" id="mahanaim">
       <div class="container">
         <header class="section__title reveal"><h2>Mahanaim Records</h2></header>
@@ -257,6 +317,59 @@
             <span class="yt-lite__cap">JEFF CASTRO · Mahanaim Records</span>
           </article>
         </div>
+
+        <div class="mahanaim-form reveal">
+          <h3 class="subhead">¿Quieres lanzar tu música con nosotros?</h3>
+          <p class="section__desc">Cuéntanos de tu proyecto y Mahanaim Records te contacta.</p>
+          <form class="card card--white form reveal" id="formMahanaim" novalidate
+      data-whatsapp="50496236221" data-asunto="Servicios de Mahanaim Records">
+  <label class="field field--medio">
+    <span>Nombre *</span>
+    <input type="text" name="nombre" data-label="Nombre" required />
+  </label>
+  <label class="field field--medio">
+    <span>Ubicación *</span>
+    <input type="text" name="ubicacion" data-label="Ubicación" required />
+  </label>
+  <label class="field field--medio">
+    <span>Género musical *</span>
+    <input type="text" name="genero" data-label="Género musical" required />
+  </label>
+  <label class="field field--medio">
+    <span>Teléfono o correo *</span>
+    <input type="text" name="contacto" data-label="Teléfono o correo" required />
+  </label>
+  <label class="field">
+    <span>¿Por qué quieres hacer música de alabanza y adoración? *</span>
+    <textarea name="motivo" rows="4" data-label="¿Por qué quieres hacer música de alabanza y adoración?" required></textarea>
+  </label>
+  <button class="btn btn--green btn--block" type="submit"><svg viewBox="0 0 24 24" width="20" height="20" fill="currentColor" aria-hidden="true"><path d="M.057 24l1.687-6.163a11.867 11.867 0 01-1.587-5.946C.16 5.335 5.495 0 12.05 0a11.817 11.817 0 018.413 3.488 11.824 11.824 0 013.48 8.413c-.003 6.557-5.338 11.892-11.893 11.892a11.9 11.9 0 01-5.688-1.448L.057 24zm6.597-3.807c1.676.995 3.276 1.591 5.392 1.592 5.448 0 9.886-4.434 9.889-9.885.002-5.462-4.415-9.89-9.881-9.892-5.452 0-9.887 4.434-9.889 9.884a9.86 9.86 0 001.51 5.26l-.999 3.648 3.978-1.207z"/></svg>Enviar por WhatsApp</button>
+</form>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===== 10. CONTACTO / NEWSLETTER ===== -->
+    <section class="section section--cta" id="contacto">
+      <div class="container container--narrow">
+        <header class="section__title section__title--light reveal"><h2>Mantente al día</h2></header>
+        <p class="section__desc section__desc--light reveal">Déjanos tus datos y te avisamos de nuevos lanzamientos, conciertos y Honduras Adora.</p>
+        <form class="card card--white form reveal" id="formContacto" novalidate
+      data-whatsapp="50496236221" data-asunto="Quiero recibir noticias de WayBack">
+  <label class="field field--medio">
+    <span>Nombre *</span>
+    <input type="text" name="nombre" data-label="Nombre" required />
+  </label>
+  <label class="field field--medio">
+    <span>Celular *</span>
+    <input type="tel" name="celular" data-label="Celular" required inputmode="tel" />
+  </label>
+  <label class="field">
+    <span>Correo electrónico *</span>
+    <input type="email" name="correo" data-label="Correo electrónico" required />
+  </label>
+  <button class="btn btn--green btn--block" type="submit"><svg viewBox="0 0 24 24" width="20" height="20" fill="currentColor" aria-hidden="true"><path d="M.057 24l1.687-6.163a11.867 11.867 0 01-1.587-5.946C.16 5.335 5.495 0 12.05 0a11.817 11.817 0 018.413 3.488 11.824 11.824 0 013.48 8.413c-.003 6.557-5.338 11.892-11.893 11.892a11.9 11.9 0 01-5.688-1.448L.057 24zm6.597-3.807c1.676.995 3.276 1.591 5.392 1.592 5.448 0 9.886-4.434 9.889-9.885.002-5.462-4.415-9.89-9.881-9.892-5.452 0-9.887 4.434-9.889 9.884a9.86 9.86 0 001.51 5.26l-.999 3.648 3.978-1.207z"/></svg>Quiero enterarme</button>
+</form>
       </div>
     </section>
 
@@ -294,6 +407,6 @@
     </div>
   </footer>
 
-  <script src="script.js?v=13"></script>
+  <script src="script.js?v=14"></script>
 </body>
 </html>

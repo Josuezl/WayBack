@@ -18,23 +18,35 @@
     },
     {
       "href": "#musica",
-      "texto": "Nuestra Música"
+      "texto": "Música"
     },
     {
       "href": "#eventos",
-      "texto": "Próximos Eventos"
+      "texto": "Eventos"
     },
     {
       "href": "#merch",
-      "texto": "Nuestros Productos"
+      "texto": "Merch"
     },
     {
       "href": "#honduras-adora",
       "texto": "Honduras Adora"
     },
     {
+      "href": "#invitaciones",
+      "texto": "Invitaciones"
+    },
+    {
+      "href": "#recursos",
+      "texto": "Recursos"
+    },
+    {
       "href": "#mahanaim",
       "texto": "Mahanaim"
+    },
+    {
+      "href": "#contacto",
+      "texto": "Contacto"
     }
   ]
 }

@@ -1,0 +1,51 @@
+{
+  "titulo": "Invitaciones",
+  "descripcion": "¿Quieres que WayBack ministre en tu iglesia o evento? Escríbenos.",
+  "whatsapp": "50496236221",
+  "asunto": "Invitación para WayBack",
+  "boton": "Enviar por WhatsApp",
+  "campos": [
+    {
+      "name": "nombre",
+      "label": "Nombre",
+      "tipo": "text",
+      "requerido": true,
+      "ancho": "medio"
+    },
+    {
+      "name": "iglesia",
+      "label": "Iglesia / Ministerio",
+      "tipo": "text",
+      "requerido": true,
+      "ancho": "medio"
+    },
+    {
+      "name": "ciudad",
+      "label": "Ciudad",
+      "tipo": "text",
+      "requerido": true,
+      "ancho": "medio"
+    },
+    {
+      "name": "correo",
+      "label": "Correo",
+      "tipo": "email",
+      "requerido": true,
+      "ancho": "medio"
+    },
+    {
+      "name": "telefono",
+      "label": "Teléfono",
+      "tipo": "tel",
+      "requerido": true,
+      "ancho": "completo"
+    },
+    {
+      "name": "mensaje",
+      "label": "Mensaje",
+      "tipo": "textarea",
+      "requerido": false,
+      "ancho": "completo"
+    }
+  ]
+}

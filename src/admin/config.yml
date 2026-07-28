@@ -53,6 +53,7 @@ collections:
         format: json
         fields:
           - { label: Nombre de la banda, name: titulo, widget: string }
+          - { label: Subtítulo, name: subtitulo, widget: string }
           - label: Frases que se escriben solas
             name: frases
             widget: list
@@ -110,7 +111,7 @@ collections:
               - { label: Etiqueta sobre la foto, name: caption, widget: string }
 
       - name: musica
-        label: Nuestra Música
+        label: Música
         file: src/_data/musica.json
         format: json
         fields:
@@ -147,7 +148,7 @@ collections:
           - { label: ID del artista en Spotify, name: spotifyArtistId, widget: string }
 
       - name: eventos
-        label: Próximos Eventos
+        label: Eventos
         file: src/_data/eventos.json
         format: json
         fields:
@@ -165,7 +166,7 @@ collections:
               - { label: Destacado, name: destacado, widget: boolean, default: false, hint: "Lo resalta con otro color." }
 
       - name: merch
-        label: Nuestros Productos
+        label: Merch
         file: src/_data/merch.json
         format: json
         fields:
@@ -229,6 +230,72 @@ collections:
               - { label: Título, name: titulo, widget: string }
               - { label: Texto alternativo, name: alt, widget: string }
               - { label: Pie del video, name: caption, widget: string }
+
+      - name: invitaciones
+        label: Invitaciones
+        file: src/_data/invitaciones.json
+        format: json
+        fields:
+          - { label: Título, name: titulo, widget: string }
+          - { label: Texto de introducción, name: descripcion, widget: text }
+          - { label: Número de WhatsApp, name: whatsapp, widget: string, hint: "Con código de país y sin signos, por ejemplo 50496236221." }
+          - { label: Asunto del mensaje, name: asunto, widget: string, hint: "Primera línea del mensaje que se abre en WhatsApp." }
+          - { label: Texto del botón, name: boton, widget: string }
+          - label: Campos del formulario
+            name: campos
+            widget: list
+            summary: "{{fields.label}}"
+            fields:
+              - { label: Nombre interno, name: name, widget: string, hint: "Sin espacios ni acentos." }
+              - { label: Etiqueta visible, name: label, widget: string }
+              - { label: Tipo, name: tipo, widget: select, options: [text, email, tel, textarea] }
+              - { label: Obligatorio, name: requerido, widget: boolean, default: true }
+              - { label: Ancho, name: ancho, widget: select, options: [medio, completo] }
+
+      - name: recursos
+        label: Recursos
+        file: src/_data/recursos.json
+        format: json
+        fields:
+          - { label: Título, name: titulo, widget: string }
+          - { label: Texto de introducción, name: descripcion, widget: text }
+          - label: Tarjetas de recursos
+            name: tarjetas
+            widget: list
+            summary: "{{fields.titulo}}"
+            fields:
+              - { label: Título, name: titulo, widget: string }
+              - { label: Descripción, name: descripcion, widget: string }
+              - { label: Icono, name: icono, widget: string, hint: "Un emoji." }
+              - { label: Color, name: clase, widget: select, options: ["card--blue", "card--purple", "card--red"] }
+          - { label: Título de la galería, name: subtituloGaleria, widget: string }
+          - label: Galería de conciertos
+            name: galeria
+            widget: list
+            fields:
+              - { label: Texto alternativo, name: alt, widget: string }
+              - { label: Proporción del hueco, name: ph, widget: string, required: false }
+
+      - name: contacto
+        label: Contacto / Newsletter
+        file: src/_data/contacto.json
+        format: json
+        fields:
+          - { label: Título, name: titulo, widget: string }
+          - { label: Texto de introducción, name: descripcion, widget: text }
+          - { label: Número de WhatsApp, name: whatsapp, widget: string }
+          - { label: Asunto del mensaje, name: asunto, widget: string }
+          - { label: Texto del botón, name: boton, widget: string }
+          - label: Campos del formulario
+            name: campos
+            widget: list
+            summary: "{{fields.label}}"
+            fields:
+              - { label: Nombre interno, name: name, widget: string }
+              - { label: Etiqueta visible, name: label, widget: string }
+              - { label: Tipo, name: tipo, widget: select, options: [text, email, tel, textarea] }
+              - { label: Obligatorio, name: requerido, widget: boolean, default: true }
+              - { label: Ancho, name: ancho, widget: select, options: [medio, completo] }
 
   - name: general
     label: General
