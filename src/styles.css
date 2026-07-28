@@ -327,14 +327,22 @@ a { color: inherit; text-decoration: none; }
 .carrusel.is-paused .carrusel__pista { animation-play-state: paused; }
 .carrusel .yt-lite { flex: 0 0 min(78vw, 420px); }
 
-/* Galería del festival: mismo mecanismo, tarjetas más chicas y sin pie. */
-.carrusel--fotos .carrusel__pista { animation-duration: 64s; }
+/* Galerías de fotos: mismo mecanismo que el carrusel de videos, sin pie.
+   Las tarjetas van al mismo ancho que las de merch para que las fotos se
+   aprecien; las imágenes se generan a 1040px para que no se vean borrosas
+   en pantallas de alta densidad. */
 .carrusel--fotos figure {
-  flex: 0 0 min(70vw, 330px); margin-right: 22px;
-  border-radius: 18px; overflow: hidden;
-  border: 3px solid var(--ink); box-shadow: 5px 5px 0 var(--ink);
+  flex: 0 0 min(86vw, 520px); margin-right: 22px;
+  border-radius: 20px; overflow: hidden;
+  border: 3px solid var(--ink); box-shadow: 6px 6px 0 var(--ink);
 }
 .carrusel--fotos img { aspect-ratio: 3/2; object-fit: cover; width: 100%; }
+
+/* La animación recorre un porcentaje, no una distancia: una pista más larga
+   avanza más rápido con la misma duración. Por eso cada carrusel la ajusta
+   a cuántas tarjetas lleva, para que todos se muevan a la misma velocidad. */
+.carrusel--fotos.carrusel--12 .carrusel__pista { animation-duration: 100s; }
+.carrusel--fotos.carrusel--4 .carrusel__pista { animation-duration: 34s; }
 
 @keyframes correr {
   from { transform: translateX(0); }

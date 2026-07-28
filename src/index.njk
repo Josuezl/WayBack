@@ -26,7 +26,7 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Unbounded:wght@500..800&family=Manrope:wght@400..800&display=swap" rel="stylesheet" />
 
-  <link rel="stylesheet" href="styles.css?v=16" />
+  <link rel="stylesheet" href="styles.css?v=17" />
 </head>
 <body>
   <!-- ===== NAV ===== -->
@@ -205,7 +205,7 @@
         {#- Carrusel sin pie de foto: basta con que las imagenes sean del
             festival. Nombrar a cada artista invitado exigiria identificarlos
             uno por uno, y equivocarse ahi es peor que no decir nada. #}
-        <div class="carrusel carrusel--fotos">
+        <div class="carrusel carrusel--fotos carrusel--{{ hondurasAdora.galeria | length }}">
           <div class="carrusel__pista">
             {%- for foto in hondurasAdora.galeria %}
             <figure class="reveal">{{ ic.foto(foto) }}</figure>
@@ -241,10 +241,12 @@
           {%- endfor %}
         </div>
         <h3 class="subhead reveal">{{ recursos.subtituloGaleria }}</h3>
-        <div class="gallery gallery--wide">
-          {%- for foto in recursos.galeria %}
-          <figure class="reveal">{{ ic.foto(foto) }}</figure>
-          {%- endfor %}
+        <div class="carrusel carrusel--fotos carrusel--{{ recursos.galeria | length }}">
+          <div class="carrusel__pista">
+            {%- for foto in recursos.galeria %}
+            <figure class="reveal">{{ ic.foto(foto) }}</figure>
+            {%- endfor %}
+          </div>
         </div>
       </div>
     </section>
@@ -318,6 +320,6 @@
     </div>
   </footer>
 
-  <script src="script.js?v=16"></script>
+  <script src="script.js?v=17"></script>
 </body>
 </html>
