@@ -275,11 +275,9 @@ a { color: inherit; text-decoration: none; }
   display: grid; grid-template-columns: minmax(0, 1fr) minmax(280px, .95fr);
   gap: clamp(28px, 5vw, 56px); align-items: center;
 }
-/* Más ancha que alta porque la foto lo es: es una panorámica del auditorio
-   lleno, y un marco cuadrado le cortaba el escenario y media multitud. */
 .sobre__foto {
   position: relative; margin: 0; justify-self: center;
-  width: min(100%, 460px); transform: rotate(2deg);
+  width: min(100%, 400px); transform: rotate(2deg);
 }
 .sobre__foto::before,
 .sobre__foto::after {
@@ -295,7 +293,7 @@ a { color: inherit; text-decoration: none; }
 }
 .sobre__foto-frame {
   position: relative; z-index: 1;
-  aspect-ratio: 4/3; overflow: hidden; border: 4px solid var(--ink);
+  aspect-ratio: 1; overflow: hidden; border: 4px solid var(--ink);
   border-radius: 32% 68% 57% 43% / 42% 34% 66% 58%;
   background: #fff; box-shadow: 10px 12px 0 var(--ink);
 }
