@@ -1,38 +1,13 @@
 {
   "titulo": "Música",
-  "proximos": {
-    "titulo": "Próximos lanzamientos",
-    "items": [
-      "Medley Hay Libertad",
-      "ENCUENTRO",
-      "No Dejaré de Alabarte",
-      "Atmósfera Celestial"
-    ]
-  },
-  "recientes": {
-    "titulo": "Lanzamientos recientes",
-    "items": [
-      {
-        "titulo": "Libre en Tu Presencia",
-        "nota": "feat. Bani Muñoz · En Vivo desde Honduras Adora 2025"
-      },
-      {
-        "titulo": "Eres Mi Salvador",
-        "nota": "En Vivo"
-      },
-      {
-        "titulo": "El Libro de la Vida",
-        "nota": "En Vivo"
-      }
-    ]
+  "destacado": {
+    "etiqueta": "Lo más nuevo",
+    "id": "swcG_IQ8VF4",
+    "titulo": "Libre en Tu Presencia",
+    "caption": "Libre en Tu Presencia · feat. Bani Muñoz",
+    "alt": "Libre en Tu Presencia, feat. Bani Muñoz"
   },
   "videos": [
-    {
-      "id": "swcG_IQ8VF4",
-      "titulo": "Libre en Tu Presencia",
-      "caption": "Libre en Tu Presencia · feat. Bani Muñoz",
-      "alt": "Libre en Tu Presencia"
-    },
     {
       "id": "2I3WFLYv8Xc",
       "titulo": "Eres Mi Salvador",

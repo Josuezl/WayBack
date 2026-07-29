@@ -9,24 +9,25 @@
   <meta name="theme-color" content="{{ site.themeColor }}" />
 
   <!-- Vista previa al compartir el enlace (WhatsApp, Facebook, etc.)
-       TODO producción: og:url y og:image necesitan la URL ABSOLUTA del dominio final.
-       Mientras tanto WhatsApp mostrará el enlace sin imagen. -->
+       TODO producción: descomentar al apuntar waybackoficial.org. Las dos
+       etiquetas necesitan la URL ABSOLUTA; con una ruta relativa WhatsApp no
+       muestra nada. Hasta entonces el enlace se comparte sin imagen. -->
   <meta property="og:type" content="{{ site.og.type }}" />
   <meta property="og:locale" content="{{ site.og.locale }}" />
   <meta property="og:site_name" content="{{ site.og.siteName }}" />
   <meta property="og:title" content="{{ site.og.titulo }}" />
   <meta property="og:description" content="{{ site.og.descripcion }}" />
-  <!-- <meta property="og:url" content="https://DOMINIO-FINAL/" /> -->
-  <!-- <meta property="og:image" content="https://DOMINIO-FINAL/assets/wayback-banda.jpeg" /> -->
+  <!-- <meta property="og:url" content="https://waybackoficial.org/" /> -->
+  <!-- <meta property="og:image" content="https://waybackoficial.org/assets/wayback-banda.webp" /> -->
   <meta name="twitter:card" content="summary_large_image" />
 
   <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='8' fill='%23e11d2e'/%3E%3Ctext x='16' y='23' font-size='17' font-family='Arial' font-weight='900' fill='white' text-anchor='middle'%3EW%3C/text%3E%3C/svg%3E" />
 
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Unbounded:wght@500..800&family=Manrope:wght@400..800&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Bungee&family=Unbounded:wght@500..800&family=Manrope:wght@400..800&display=swap" rel="stylesheet" />
 
-  <link rel="stylesheet" href="styles.css?v=17" />
+  <link rel="stylesheet" href="styles.css?v=18" />
 </head>
 <body>
   <!-- ===== NAV ===== -->
@@ -119,38 +120,23 @@
       <div class="container">
         <header class="section__title reveal"><h2>{{ musica.titulo }}</h2></header>
 
-        <div class="split">
-          <div class="card card--purple tilt reveal">
-            <h3>{{ musica.proximos.titulo }}</h3>
-            <ul class="ticks">
-              {%- for item in musica.proximos.items %}
-              <li>{{ item }}</li>
-              {%- endfor %}
-            </ul>
-          </div>
-          <div class="card card--red tilt reveal">
-            <h3>{{ musica.recientes.titulo }}</h3>
-            <ul class="ticks">
-              {%- for item in musica.recientes.items %}
-              <li>{{ item.titulo }} <em>{{ item.nota }}</em></li>
-              {%- endfor %}
-            </ul>
-          </div>
-        </div>
+        {#- El lanzamiento mas reciente va aparte y al doble de tamaño: el resto
+            del catalogo queda debajo en la misma rejilla que usa Mahanaim. #}
+        <article class="yt-lite yt-lite--destacado reveal" data-id="{{ musica.destacado.id }}" data-title="{{ musica.destacado.titulo }}">
+          <span class="yt-lite__etiqueta">{{ musica.destacado.etiqueta }}</span>
+          <img src="https://i.ytimg.com/vi/{{ musica.destacado.id }}/maxresdefault.jpg" alt="{{ musica.destacado.alt }}" onerror="imgFallback(this)" />
+          <button class="yt-lite__play" aria-label="Reproducir">{{ ic.play(24) }}</button>
+          <span class="yt-lite__cap">{{ musica.destacado.caption }}</span>
+        </article>
 
-        {#- Carrusel continuo. La pista se duplica por JS para que el bucle no
-            tenga costura; sin JS queda una fila deslizable a mano, que
-            funciona igual. #}
-        <div class="carrusel" id="carruselMusica">
-          <div class="carrusel__pista">
-            {%- for video in musica.videos %}
-            <article class="yt-lite reveal" data-id="{{ video.id }}" data-title="{{ video.titulo }}">
-              <img src="https://i.ytimg.com/vi/{{ video.id }}/maxresdefault.jpg" alt="{{ video.alt }}" loading="lazy" onerror="imgFallback(this)" />
-              <button class="yt-lite__play" aria-label="Reproducir">{{ ic.play(24) }}</button>
-              <span class="yt-lite__cap">{{ video.caption }}</span>
-            </article>
-            {%- endfor %}
-          </div>
+        <div class="music-grid">
+          {%- for video in musica.videos %}
+          <article class="yt-lite reveal" data-id="{{ video.id }}" data-title="{{ video.titulo }}">
+            <img src="https://i.ytimg.com/vi/{{ video.id }}/maxresdefault.jpg" alt="{{ video.alt }}" loading="lazy" onerror="imgFallback(this)" />
+            <button class="yt-lite__play" aria-label="Reproducir">{{ ic.play(24) }}</button>
+            <span class="yt-lite__cap">{{ video.caption }}</span>
+          </article>
+          {%- endfor %}
         </div>
 
         <div class="spotify reveal">
@@ -159,11 +145,20 @@
       </div>
     </section>
 
-    <!-- ===== 4. EVENTOS ===== -->
+    <!-- ===== 4. INVITACIONES ===== -->
+    <section class="section" id="invitaciones">
+      <div class="container container--narrow">
+        <header class="section__title reveal"><h2>{{ invitaciones.titulo }}</h2></header>
+        <p class="section__desc reveal">{{ invitaciones.descripcion }}</p>
+        {{ ic.formulario(invitaciones, "formInvitacion") }}
+      </div>
+    </section>
+
+    <!-- ===== 5. EVENTOS ===== -->
     <section class="section" id="eventos">
       <div class="container">
         <header class="section__title reveal"><h2>{{ eventos.titulo }}</h2></header>
-        <div class="events">
+        <div class="eventos">
           {%- for evento in eventos.items %}
           <article class="event-card{% if evento.destacado %} event-card--soon{% endif %} tilt reveal">
             <div class="event-card__date"><strong>{{ evento.fechaPrincipal }}</strong><span>{{ evento.fechaSecundaria }}</span></div>
@@ -172,17 +167,63 @@
             <span class="pill{% if not evento.destacado %} pill--ghost{% endif %}">{{ evento.etiqueta }}</span>
           </article>
           {%- endfor %}
+          <p class="eventos__nota reveal">{{ eventos.nota }}</p>
         </div>
       </div>
     </section>
 
-    <!-- ===== 5. MERCH ===== -->
-    <section class="section" id="merch">
+    <!-- ===== 6. HONDURAS ADORA ===== -->
+    <section class="section section--festival" id="honduras-adora">
+      <div class="hero__pattern hero__pattern--soft" aria-hidden="true"></div>
+      <div class="container">
+        <header class="section__title section__title--light reveal"><h2>{{ hondurasAdora.titulo }}</h2></header>
+        <p class="festival-lead reveal">{{ hondurasAdora.lead }}</p>
+        <p class="festival-anfitriones reveal">{{ hondurasAdora.anfitriones }}</p>
+
+        {#- Carrusel sin pie de foto: basta con que las imagenes sean del
+            festival. Nombrar a cada artista invitado exigiria identificarlos
+            uno por uno, y equivocarse ahi es peor que no decir nada. #}
+        <div class="carrusel carrusel--fotos" data-galeria="honduras-adora">
+          <div class="carrusel__pista">
+            {%- for foto in hondurasAdora.galeria %}
+            <figure class="reveal"><button class="foto-zoom" type="button" data-indice="{{ loop.index0 }}" aria-label="Ampliar foto">{{ ic.foto(foto) }}</button></figure>
+            {%- endfor %}
+          </div>
+        </div>
+
+        <div class="festival-cta reveal">
+          <span class="festival-cta__year">{{ hondurasAdora.cta.anio }}</span>
+          <p>{{ hondurasAdora.cta.texto }}</p>
+          <a class="btn btn--white" href="{{ hondurasAdora.cta.href }}">{{ hondurasAdora.cta.boton }}</a>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===== 7. MERCH ===== -->
+    <section class="section section--merch" id="merch">
+      <div class="hero__pattern hero__pattern--soft" aria-hidden="true"></div>
       <div class="container">
         <header class="section__title reveal"><h2>{{ merch.titulo }}</h2></header>
         <div class="merch-grid">
           {%- for producto in merch.productos %}
-          <figure class="merch-card tilt reveal">{{ ic.foto(producto) }}<figcaption><strong>{{ producto.titulo }}</strong><span>{{ producto.subtitulo }}</span></figcaption></figure>
+          <figure class="merch-card tilt reveal" data-galeria="merch-{{ loop.index0 }}">
+            <button class="merch-card__zoom foto-zoom" type="button" data-indice="0" aria-label="Ampliar {{ producto.titulo }}">
+              {{ ic.foto(producto.vistas[0]) }}
+              <span class="merch-card__lupa" aria-hidden="true">Ver frente y espalda</span>
+            </button>
+            {#- La vista de espalda no se pinta en la tarjeta: existe solo para
+                que el visor tenga a donde avanzar al dar "siguiente". #}
+            <template data-vistas>
+              {%- for vista in producto.vistas %}
+              <img src="{{ vista.src }}" alt="{{ vista.alt }}" data-etiqueta="{{ vista.etiqueta }}" />
+              {%- endfor %}
+            </template>
+            <figcaption>
+              <strong>{{ producto.titulo }}</strong>
+              <span>{{ producto.subtitulo }}</span>
+              <span class="merch-card__precio">{{ producto.precio }}</span>
+            </figcaption>
+          </figure>
           {%- endfor %}
         </div>
         <div class="card card--white merch-cta reveal">
@@ -195,56 +236,26 @@
       </div>
     </section>
 
-    <!-- ===== 6. HONDURAS ADORA ===== -->
-    <section class="section section--festival" id="honduras-adora">
-      <div class="hero__pattern hero__pattern--soft" aria-hidden="true"></div>
-      <div class="container">
-        <header class="section__title section__title--light reveal"><h2>{{ hondurasAdora.titulo }}</h2></header>
-        <p class="festival-lead reveal">{{ hondurasAdora.lead }}</p>
-
-        {#- Carrusel sin pie de foto: basta con que las imagenes sean del
-            festival. Nombrar a cada artista invitado exigiria identificarlos
-            uno por uno, y equivocarse ahi es peor que no decir nada. #}
-        <div class="carrusel carrusel--fotos carrusel--{{ hondurasAdora.galeria | length }}">
-          <div class="carrusel__pista">
-            {%- for foto in hondurasAdora.galeria %}
-            <figure class="reveal">{{ ic.foto(foto) }}</figure>
-            {%- endfor %}
-          </div>
-        </div>
-
-        <div class="festival-cta reveal">
-          <span class="festival-cta__year">{{ hondurasAdora.cta.anio }}</span>
-          <p>{{ hondurasAdora.cta.texto }}</p>
-          <a class="btn btn--white" href="{{ hondurasAdora.cta.href }}" target="_blank" rel="noopener">{{ hondurasAdora.cta.boton }}</a>
-        </div>
-      </div>
-    </section>
-
-    <!-- ===== 7. INVITACIONES ===== -->
-    <section class="section" id="invitaciones">
-      <div class="container container--narrow">
-        <header class="section__title reveal"><h2>{{ invitaciones.titulo }}</h2></header>
-        <p class="section__desc reveal">{{ invitaciones.descripcion }}</p>
-        {{ ic.formulario(invitaciones, "formInvitacion") }}
-      </div>
-    </section>
-
     <!-- ===== 8. RECURSOS ===== -->
     <section class="section" id="recursos">
       <div class="container">
         <header class="section__title reveal"><h2>{{ recursos.titulo }}</h2></header>
         <p class="section__desc reveal">{{ recursos.descripcion }}</p>
+        {#- Tarjetas informativas, no enlaces: los archivos todavia no existen.
+            Antes eran <a href="#"> anulados con onclick, que anunciaban un
+            enlace a quien navega con teclado o lector de pantalla y luego no
+            iban a ningun lado. #}
         <div class="split split--3">
           {%- for tarjeta in recursos.tarjetas %}
-          <a class="card {{ tarjeta.clase }} tilt reveal resource" href="#" onclick="return false"><span class="resource__icon">{{ tarjeta.icono }}</span><h3>{{ tarjeta.titulo }}</h3><p>{{ tarjeta.descripcion }}</p></a>
+          <article class="card {{ tarjeta.clase }} tilt reveal resource"><span class="resource__icon">{{ tarjeta.icono }}</span><h3>{{ tarjeta.titulo }}</h3><p>{{ tarjeta.descripcion }}</p></article>
           {%- endfor %}
         </div>
+        <p class="recursos__nota reveal">{{ recursos.nota }}</p>
         <h3 class="subhead reveal">{{ recursos.subtituloGaleria }}</h3>
-        <div class="carrusel carrusel--fotos carrusel--{{ recursos.galeria | length }}">
+        <div class="carrusel carrusel--fotos" data-galeria="conciertos">
           <div class="carrusel__pista">
             {%- for foto in recursos.galeria %}
-            <figure class="reveal">{{ ic.foto(foto) }}</figure>
+            <figure class="reveal"><button class="foto-zoom" type="button" data-indice="{{ loop.index0 }}" aria-label="Ampliar foto">{{ ic.foto(foto) }}</button></figure>
             {%- endfor %}
           </div>
         </div>
@@ -255,9 +266,10 @@
     <section class="section" id="mahanaim">
       <div class="container">
         <header class="section__title reveal"><h2>{{ mahanaim.titulo }}</h2></header>
-        <div class="card card--purple reveal" style="margin-bottom:28px">
-          <p class="lead" style="margin:0">{{ mahanaim.lead }}</p>
+        <div class="card card--purple reveal mahanaim-lead">
+          <p class="lead">{{ mahanaim.lead }}</p>
         </div>
+        <h3 class="subhead reveal">{{ mahanaim.subtituloVideos }}</h3>
         <div class="music-grid">
           {%- for video in mahanaim.videos %}
           <article class="yt-lite reveal" data-id="{{ video.id }}" data-title="{{ video.titulo }}">{% if video.comentario %}<!-- {{ video.comentario }} -->{% endif %}
@@ -320,6 +332,25 @@
     </div>
   </footer>
 
-  <script src="script.js?v=17"></script>
+  {#- Visor de fotos. Vive fuera de las secciones porque se abre sobre toda la
+      pantalla, y nace vacio: la imagen se pone al abrirlo, asi que las fotos
+      grandes no se descargan mientras nadie las pida. #}
+  <div class="visor" id="visor" role="dialog" aria-modal="true" aria-label="Foto ampliada" hidden>
+    <button class="visor__cerrar" type="button" data-visor="cerrar" aria-label="Cerrar">
+      <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" aria-hidden="true"><path d="M5 5l14 14M19 5L5 19"/></svg>
+    </button>
+    <button class="visor__paso visor__paso--atras" type="button" data-visor="-1" aria-label="Foto anterior">
+      <svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 5l-8 7 8 7"/></svg>
+    </button>
+    <figure class="visor__marco">
+      <img id="visorImg" alt="" />
+      <figcaption id="visorPie"></figcaption>
+    </figure>
+    <button class="visor__paso visor__paso--siguiente" type="button" data-visor="1" aria-label="Foto siguiente">
+      <svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 5l8 7-8 7"/></svg>
+    </button>
+  </div>
+
+  <script src="script.js?v=18"></script>
 </body>
 </html>

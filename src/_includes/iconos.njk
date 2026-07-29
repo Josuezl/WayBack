@@ -35,28 +35,43 @@
 {%- endmacro -%}
 
 {#
-  Formulario que abre WhatsApp con los datos ya redactados.
+  Formulario que llega al correo de la banda.
 
-  No envia nada a ningun servidor: no hay backend ni servicio de correo, y
-  WhatsApp es el canal que la banda ya usa para todo. El JS arma el mensaje
-  con las etiquetas visibles de cada campo y abre wa.me.
+  El sitio es estatico: no hay servidor propio que reciba un POST. FormSubmit
+  hace de intermediario — recibe el envio y lo reenvia al correo. Se eligio
+  porque no necesita cuenta ni clave: el `action` es la direccion misma, y el
+  cliente la activa una sola vez confirmando desde su bandeja.
 
-  `datos` necesita: whatsapp, asunto, boton, campos[{name,label,tipo,requerido,ancho}]
+  El <form> es un POST real y funciona sin JavaScript. script.js lo intercepta
+  para enviarlo por fetch y mostrar el aviso sin sacar a la persona del sitio.
+
+  Campos que empiezan con guion bajo son instrucciones para FormSubmit, no
+  datos: _subject es el asunto del correo, _captcha lo salta, _template pide
+  el formato de tabla y _honey es la trampa para bots (invisible; si viene
+  llena, el envio se descarta).
+
+  `datos` necesita: correo, asunto, boton, gracias,
+  campos[{name,label,tipo,requerido,ancho}]
 #}
 {%- macro formulario(datos, id) -%}
 <form class="card card--white form reveal" id="{{ id }}" novalidate
-      data-whatsapp="{{ datos.whatsapp }}" data-asunto="{{ datos.asunto }}">
+      method="POST" action="https://formsubmit.co/{{ datos.correo }}"
+      data-correo="{{ datos.correo }}" data-gracias="{{ datos.gracias }}">
+  <input type="hidden" name="_subject" value="{{ datos.asunto }}" />
+  <input type="hidden" name="_captcha" value="false" />
+  <input type="hidden" name="_template" value="table" />
+  <input type="text" name="_honey" class="sr-only" tabindex="-1" autocomplete="off" aria-hidden="true" />
   {%- for campo in datos.campos %}
   <label class="field{% if campo.ancho == 'medio' %} field--medio{% endif %}">
     <span>{{ campo.label }}{% if campo.requerido %} *{% endif %}</span>
     {%- if campo.tipo == "textarea" %}
-    <textarea name="{{ campo.name }}" rows="4" data-label="{{ campo.label }}"{% if campo.requerido %} required{% endif %}></textarea>
+    <textarea name="{{ campo.label }}" rows="4"{% if campo.requerido %} required{% endif %}></textarea>
     {%- else %}
-    <input type="{{ campo.tipo }}" name="{{ campo.name }}" data-label="{{ campo.label }}"{% if campo.requerido %} required{% endif %}{% if campo.tipo == "tel" %} inputmode="tel"{% endif %} />
+    <input type="{{ campo.tipo }}" name="{{ campo.label }}"{% if campo.requerido %} required{% endif %}{% if campo.tipo == "tel" %} inputmode="tel"{% endif %} />
     {%- endif %}
   </label>
   {%- endfor %}
-  <button class="btn btn--green btn--block" type="submit">{{ ic_wa() }}{{ datos.boton }}</button>
+  <button class="btn btn--red btn--block" type="submit">{{ datos.boton }}</button>
 </form>
 {%- endmacro -%}
 

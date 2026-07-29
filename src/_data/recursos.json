@@ -21,23 +21,20 @@
       "descripcion": "Presets para recrear nuestro sonido."
     }
   ],
+  "nota": "Disponibles próximamente",
   "subtituloGaleria": "Galería de conciertos",
   "galeria": [
-    {
-      "src": "assets/concierto-1.webp",
-      "alt": "Público con las manos levantadas en Honduras Adora"
-    },
-    {
-      "src": "assets/concierto-2.webp",
-      "alt": "Vista del escenario durante Honduras Adora"
-    },
-    {
-      "src": "assets/concierto-3.webp",
-      "alt": "Luces y público en Honduras Adora"
-    },
-    {
-      "src": "assets/concierto-4.webp",
-      "alt": "Asistentes cantando en primera fila"
-    }
+    { "src": "assets/concierto-01.webp", "alt": "WayBack cantando en vivo" },
+    { "src": "assets/concierto-02.webp", "alt": "Vocalista de WayBack durante un concierto" },
+    { "src": "assets/concierto-03.webp", "alt": "Salto en escena durante un concierto de WayBack" },
+    { "src": "assets/concierto-04.webp", "alt": "WayBack en el escenario ante el público" },
+    { "src": "assets/concierto-05.webp", "alt": "Batería de WayBack en vivo" },
+    { "src": "assets/concierto-06.webp", "alt": "WayBack dirigiendo la adoración" },
+    { "src": "assets/concierto-07.webp", "alt": "Público con las manos levantadas en un concierto" },
+    { "src": "assets/concierto-08.webp", "alt": "Guitarrista de WayBack en vivo" },
+    { "src": "assets/concierto-09.webp", "alt": "WayBack ministrando en vivo" },
+    { "src": "assets/concierto-10.webp", "alt": "Batería de WayBack en blanco y negro" },
+    { "src": "assets/concierto-11.webp", "alt": "WayBack en un escenario grande" },
+    { "src": "assets/concierto-12.webp", "alt": "Voz femenina de WayBack en concierto" }
   ]
 }

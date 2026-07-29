@@ -116,27 +116,17 @@ collections:
         format: json
         fields:
           - { label: Título de la sección, name: titulo, widget: string }
-          - label: Próximos lanzamientos
-            name: proximos
+          - label: Lo más nuevo
+            name: destacado
             widget: object
+            hint: "El video que sale grande, arriba de los demás."
             fields:
+              - { label: Etiqueta amarilla, name: etiqueta, widget: string }
+              - { label: ID del video de YouTube, name: id, widget: string, hint: "Solo el ID, no el enlace. En youtube.com/watch?v=ABC123 el ID es ABC123." }
               - { label: Título, name: titulo, widget: string }
-              - label: Canciones
-                name: items
-                widget: list
-                field: { label: Canción, name: cancion, widget: string }
-          - label: Lanzamientos recientes
-            name: recientes
-            widget: object
-            fields:
-              - { label: Título, name: titulo, widget: string }
-              - label: Canciones
-                name: items
-                widget: list
-                fields:
-                  - { label: Canción, name: titulo, widget: string }
-                  - { label: Detalle, name: nota, widget: string, required: false }
-          - label: Videos del carrusel
+              - { label: Texto alternativo, name: alt, widget: string }
+              - { label: Pie del video, name: caption, widget: string }
+          - label: Demás videos
             name: videos
             widget: list
             summary: "{{fields.titulo}}"
@@ -164,6 +154,7 @@ collections:
               - { label: Lugar, name: lugar, widget: string }
               - { label: Etiqueta, name: etiqueta, widget: string }
               - { label: Destacado, name: destacado, widget: boolean, default: false, hint: "Lo resalta con otro color." }
+          - { label: Aviso al lado de las fechas, name: nota, widget: text, hint: "Se muestra junto a la tarjeta, para cuando no hay fechas confirmadas." }
 
       - name: merch
         label: Merch
@@ -178,8 +169,16 @@ collections:
             fields:
               - { label: Nombre, name: titulo, widget: string }
               - { label: Detalle, name: subtitulo, widget: string }
-              - { label: Texto alternativo, name: alt, widget: string }
-              - { label: Proporción del hueco, name: ph, widget: string, required: false, hint: "Déjalo así mientras no haya foto real." }
+              - { label: Precio, name: precio, widget: string, hint: "Por ejemplo: L 350.00" }
+              - label: Fotos
+                name: vistas
+                widget: list
+                summary: "{{fields.etiqueta}}"
+                hint: "La primera es la que se ve en la tarjeta. Las demás aparecen al ampliar."
+                fields:
+                  - { label: Imagen, name: src, widget: image, choose_url: false }
+                  - { label: Descripción para lectores de pantalla, name: alt, widget: string }
+                  - { label: Etiqueta, name: etiqueta, widget: string, hint: "Frente, Espalda…" }
           - label: Llamado a la acción
             name: cta
             widget: object
@@ -197,14 +196,13 @@ collections:
         fields:
           - { label: Título de la sección, name: titulo, widget: string }
           - { label: Texto principal, name: lead, widget: text }
+          - { label: Invitados de ediciones pasadas, name: anfitriones, widget: text }
           - label: Galería
             name: galeria
             widget: list
-            summary: "{{fields.caption}}"
             fields:
-              - { label: Texto alternativo, name: alt, widget: string }
-              - { label: Pie de foto, name: caption, widget: string }
-              - { label: Proporción del hueco, name: ph, widget: string, required: false }
+              - { label: Imagen, name: src, widget: image, choose_url: false }
+              - { label: Descripción para lectores de pantalla, name: alt, widget: string }
           - label: Llamado a la acción
             name: cta
             widget: object
@@ -221,6 +219,7 @@ collections:
         fields:
           - { label: Título de la sección, name: titulo, widget: string }
           - { label: Texto principal, name: lead, widget: text }
+          - { label: Subtítulo sobre los videos, name: subtituloVideos, widget: string }
           - label: Videos
             name: videos
             widget: list
@@ -230,6 +229,30 @@ collections:
               - { label: Título, name: titulo, widget: string }
               - { label: Texto alternativo, name: alt, widget: string }
               - { label: Pie del video, name: caption, widget: string }
+          # Sin declarar este objeto, Decap guardaría el archivo sin él: al
+          # escribir JSON conserva solo los campos que aparecen aquí, así que
+          # el formulario de Mahanaim desaparecería del sitio en cuanto el
+          # cliente guardara esta sección desde el panel.
+          - label: Formulario
+            name: formulario
+            widget: object
+            fields:
+              - { label: Título, name: titulo, widget: string }
+              - { label: Texto de introducción, name: descripcion, widget: text }
+              - { label: Correo que recibe los envíos, name: correo, widget: string }
+              - { label: Asunto del correo, name: asunto, widget: string }
+              - { label: Texto del botón, name: boton, widget: string }
+              - { label: Mensaje de gracias, name: gracias, widget: string }
+              - label: Campos del formulario
+                name: campos
+                widget: list
+                summary: "{{fields.label}}"
+                fields:
+                  - { label: Nombre interno, name: name, widget: string }
+                  - { label: Etiqueta visible, name: label, widget: string }
+                  - { label: Tipo, name: tipo, widget: select, options: [text, email, tel, textarea] }
+                  - { label: Obligatorio, name: requerido, widget: boolean, default: true }
+                  - { label: Ancho, name: ancho, widget: select, options: [medio, completo] }
 
       - name: invitaciones
         label: Invitaciones
@@ -238,9 +261,10 @@ collections:
         fields:
           - { label: Título, name: titulo, widget: string }
           - { label: Texto de introducción, name: descripcion, widget: text }
-          - { label: Número de WhatsApp, name: whatsapp, widget: string, hint: "Con código de país y sin signos, por ejemplo 50496236221." }
-          - { label: Asunto del mensaje, name: asunto, widget: string, hint: "Primera línea del mensaje que se abre en WhatsApp." }
+          - { label: Correo que recibe los envíos, name: correo, widget: string, hint: "A esta dirección llega cada formulario." }
+          - { label: Asunto del correo, name: asunto, widget: string }
           - { label: Texto del botón, name: boton, widget: string }
+          - { label: Mensaje de gracias, name: gracias, widget: string, hint: "Lo que se muestra después de enviar." }
           - label: Campos del formulario
             name: campos
             widget: list
@@ -268,13 +292,14 @@ collections:
               - { label: Descripción, name: descripcion, widget: string }
               - { label: Icono, name: icono, widget: string, hint: "Un emoji." }
               - { label: Color, name: clase, widget: select, options: ["card--blue", "card--purple", "card--red"] }
+          - { label: Aviso bajo las tarjetas, name: nota, widget: string, hint: "Mientras los archivos no estén listos." }
           - { label: Título de la galería, name: subtituloGaleria, widget: string }
           - label: Galería de conciertos
             name: galeria
             widget: list
             fields:
-              - { label: Texto alternativo, name: alt, widget: string }
-              - { label: Proporción del hueco, name: ph, widget: string, required: false }
+              - { label: Imagen, name: src, widget: image, choose_url: false }
+              - { label: Descripción para lectores de pantalla, name: alt, widget: string }
 
       - name: contacto
         label: Contacto / Newsletter
@@ -283,9 +308,10 @@ collections:
         fields:
           - { label: Título, name: titulo, widget: string }
           - { label: Texto de introducción, name: descripcion, widget: text }
-          - { label: Número de WhatsApp, name: whatsapp, widget: string }
-          - { label: Asunto del mensaje, name: asunto, widget: string }
+          - { label: Correo que recibe los envíos, name: correo, widget: string, hint: "A esta dirección llega cada formulario." }
+          - { label: Asunto del correo, name: asunto, widget: string }
           - { label: Texto del botón, name: boton, widget: string }
+          - { label: Mensaje de gracias, name: gracias, widget: string, hint: "Lo que se muestra después de enviar." }
           - label: Campos del formulario
             name: campos
             widget: list

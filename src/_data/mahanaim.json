@@ -1,6 +1,7 @@
 {
   "titulo": "Mahanaim Records",
-  "lead": "Mahanaim Records es un ministerio/ONG que apoya a personas que quieren lanzar su música y no tienen tanto recurso para lograrlo.",
+  "lead": "Mahanaim Records es nuestra casa productora, un ministerio que tiene como misión apoyar a personas que quieren lanzar su música para adorar a Jesús, y ser parte del mover de adoración local.",
+  "subtituloVideos": "Producciones recientes",
   "videos": [
     {
       "id": "FqAj3bXxmGs",
@@ -18,9 +19,10 @@
   "formulario": {
     "titulo": "¿Quieres lanzar tu música con nosotros?",
     "descripcion": "Cuéntanos de tu proyecto y Mahanaim Records te contacta.",
-    "whatsapp": "50496236221",
+    "correo": "waybackmusic@gmail.com",
     "asunto": "Servicios de Mahanaim Records",
-    "boton": "Enviar por WhatsApp",
+    "boton": "Enviar",
+    "gracias": "¡Gracias! Mahanaim Records revisará tu proyecto y te escribe.",
     "campos": [
       {
         "name": "nombre",

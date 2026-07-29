@@ -2,16 +2,38 @@
   "titulo": "Merch",
   "productos": [
     {
-      "src": "assets/merch-libre.webp",
-      "alt": "Camiseta azul Libre en Tu Presencia",
       "titulo": "Camiseta \"Libre en Tu Presencia\"",
-      "subtitulo": "Algodón · azul"
+      "subtitulo": "Algodón · azul",
+      "precio": "L 350.00",
+      "vistas": [
+        {
+          "src": "assets/merch-libre-frente.webp",
+          "alt": "Camiseta azul Libre en Tu Presencia, vista de frente",
+          "etiqueta": "Frente"
+        },
+        {
+          "src": "assets/merch-libre-espalda.webp",
+          "alt": "Camiseta azul Libre en Tu Presencia, vista de espalda",
+          "etiqueta": "Espalda"
+        }
+      ]
     },
     {
-      "src": "assets/merch-sisi.webp",
-      "alt": "Camiseta negra Sí Sí",
       "titulo": "Camiseta \"Sí Sí\"",
-      "subtitulo": "Algodón · negra, frente y espalda"
+      "subtitulo": "Algodón · negra",
+      "precio": "L 350.00",
+      "vistas": [
+        {
+          "src": "assets/merch-sisi-frente.webp",
+          "alt": "Camiseta negra Sí Sí, vista de frente",
+          "etiqueta": "Frente"
+        },
+        {
+          "src": "assets/merch-sisi-espalda.webp",
+          "alt": "Camiseta negra Sí Sí, vista de espalda",
+          "etiqueta": "Espalda"
+        }
+      ]
     }
   ],
   "cta": {

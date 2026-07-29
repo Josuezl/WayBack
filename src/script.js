@@ -101,7 +101,12 @@ document.addEventListener('DOMContentLoaded', () => {
   /* ---- Video de fondo del hero ---- */
   initHeroVideo();
 
-  /* ---- Carruseles continuos (videos y galería del festival) ---- */
+  /* ---- Visor de fotos ----
+     Antes que los carruseles a propósito: lee las fotos originales, y en
+     cuanto initCarrusel corre hay el doble de <figure> en el DOM. */
+  initVisor();
+
+  /* ---- Carruseles continuos (videos y galerías de fotos) ---- */
   document.querySelectorAll('.carrusel').forEach(initCarrusel);
 
   /* ---- YouTube lite-embed ---- */
@@ -117,8 +122,8 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   });
 
-  /* ---- Formularios que abren WhatsApp ---- */
-  document.querySelectorAll('form[data-whatsapp]').forEach(prepararFormularioWhatsApp);
+  /* ---- Formularios que llegan al correo de la banda ---- */
+  document.querySelectorAll('form[data-correo]').forEach(prepararFormularioCorreo);
 });
 
 /* ===================== Typewriter =====================
@@ -308,6 +313,15 @@ function initCarrusel(carrusel) {
   // Sin movimiento no hace falta duplicar nada: se deja deslizable a mano.
   if (matchMedia('(prefers-reduced-motion: reduce)').matches) return;
 
+  // La animacion recorre el 50% del ancho, que es un PORCENTAJE: con una
+  // duracion fija, una galeria de 12 fotos avanzaria al triple de velocidad
+  // que una de 4. Se mide la pista antes de duplicarla y se traduce a
+  // segundos a ritmo constante, asi que da igual cuantas fotos cargue el
+  // cliente desde el panel: todas se desplazan igual de rapido.
+  const PIXELES_POR_SEGUNDO = 65;
+  const recorrido = pista.scrollWidth;
+  if (recorrido) pista.style.animationDuration = `${Math.round(recorrido / PIXELES_POR_SEGUNDO)}s`;
+
   const copia = pista.cloneNode(true);
   copia.querySelectorAll('.yt-lite, figure').forEach(c => {
     c.setAttribute('aria-hidden', 'true');
@@ -324,38 +338,185 @@ function initCarrusel(carrusel) {
   carrusel.classList.add('is-duplicado');
 
   // Al abrir un video el carrusel se detiene: dejarlo deslizando mientras
-  // algo se reproduce no tiene defensa posible.
-  pista.addEventListener('click', () => carrusel.classList.add('is-paused'));
+  // algo se reproduce no tiene defensa posible. Solo aplica a los videos: en
+  // las galerias de fotos el clic abre el visor, que ya detiene y reanuda por
+  // su cuenta. Sin esta comprobacion, ver una foto dejaba el carrusel parado
+  // para siempre.
+  pista.addEventListener('click', (e) => {
+    if (e.target.closest('.yt-lite')) carrusel.classList.add('is-paused');
+  });
 }
 
-/* ===================== Formularios por WhatsApp =====================
-   No hay backend ni servicio de correo, y WhatsApp es el canal que la banda
-   ya usa para todo (el merch se pide por ahi). En vez de fingir un envio que
-   no ocurre —el formulario anterior decia "Gracias" sin mandar nada a ningun
-   lado— estos redactan el mensaje con lo que la persona escribio y abren
-   WhatsApp para que lo envie ella misma.
+/* ===================== Visor de fotos =====================
+   El cliente pidio que las galerias siguieran girando solas pero que ademas
+   se pudiera abrir una foto en grande y avanzar a mano.
 
-   Ventaja secundaria: el mensaje sale del numero de quien escribe, asi que la
-   banda puede responderle directo sin pedirle el contacto otra vez.
+   Las listas se arman UNA vez, al arrancar, leyendo el DOM antes de que
+   initCarrusel duplique las tarjetas. Cada boton lleva su indice en
+   data-indice, asi que una copia abre exactamente la misma foto que el
+   original sin que el visor tenga que saber que existen copias.
+
+   El merch guarda sus dos vistas en un <template>: la de espalda no se pinta
+   en la tarjeta, existe solo para que el visor tenga a donde avanzar. Al
+   estar en un template el navegador no la descarga hasta que se abre.
    ====================================================================== */
-function prepararFormularioWhatsApp(form) {
-  const numero = form.dataset.whatsapp;
-  if (!numero) return;
+function initVisor() {
+  const visor = document.getElementById('visor');
+  const img = document.getElementById('visorImg');
+  const pie = document.getElementById('visorPie');
+  if (!visor || !img || !pie) return;
 
-  form.addEventListener('submit', (e) => {
+  const grupos = new Map();
+  document.querySelectorAll('[data-galeria]').forEach((caja) => {
+    const plantilla = caja.querySelector('template[data-vistas]');
+    const fuente = plantilla
+      ? plantilla.content.querySelectorAll('img')
+      : caja.querySelectorAll('figure img');
+    grupos.set(caja.dataset.galeria, [...fuente].map((el) => ({
+      src: el.getAttribute('src'),
+      alt: el.alt,
+      etiqueta: el.dataset.etiqueta || '',
+    })));
+  });
+  if (!grupos.size) return;
+
+  let lista = [];
+  let indice = 0;
+  let focoPrevio = null;
+
+  function pintar() {
+    const foto = lista[indice];
+    img.src = foto.src;
+    img.alt = foto.alt;
+    const cuenta = lista.length > 1 ? `${indice + 1} de ${lista.length}` : '';
+    pie.textContent = [foto.etiqueta, cuenta].filter(Boolean).join(' · ');
+  }
+
+  function paso(n) {
+    indice = (indice + n + lista.length) % lista.length;
+    pintar();
+  }
+
+  function abrir(galeria, desde) {
+    const fotos = grupos.get(galeria);
+    if (!fotos || !fotos.length) return;
+    lista = fotos;
+    indice = Math.min(Math.max(desde, 0), fotos.length - 1);
+    focoPrevio = document.activeElement;
+    visor.dataset.soloUna = String(fotos.length < 2);
+    visor.hidden = false;
+    // Sin esto la pagina de atras se sigue desplazando bajo el visor.
+    document.body.style.overflow = 'hidden';
+    document.querySelectorAll('.carrusel').forEach(c => c.classList.add('is-visor'));
+    pintar();
+    visor.querySelector('.visor__cerrar').focus();
+  }
+
+  function cerrar() {
+    visor.hidden = true;
+    img.removeAttribute('src');
+    document.body.style.overflow = '';
+    document.querySelectorAll('.carrusel').forEach(c => c.classList.remove('is-visor'));
+    // Devuelve el foco a la foto desde la que se abrio: quien navega con
+    // teclado se quedaria al principio de la pagina si no.
+    if (focoPrevio && document.contains(focoPrevio)) focoPrevio.focus();
+  }
+
+  // Delegado en el documento porque las copias del carrusel nacen despues.
+  document.addEventListener('click', (e) => {
+    const boton = e.target.closest('.foto-zoom');
+    if (!boton) return;
+    const caja = boton.closest('[data-galeria]');
+    if (caja) abrir(caja.dataset.galeria, Number(boton.dataset.indice) || 0);
+  });
+
+  visor.querySelectorAll('[data-visor]').forEach((boton) => {
+    boton.addEventListener('click', () => {
+      if (boton.dataset.visor === 'cerrar') cerrar();
+      else paso(Number(boton.dataset.visor));
+    });
+  });
+
+  // Tocar el fondo cierra; tocar la foto o los botones, no.
+  visor.addEventListener('click', (e) => { if (e.target === visor) cerrar(); });
+
+  document.addEventListener('keydown', (e) => {
+    if (visor.hidden) return;
+    if (e.key === 'Escape') cerrar();
+    else if (e.key === 'ArrowRight') paso(1);
+    else if (e.key === 'ArrowLeft') paso(-1);
+  });
+
+  // Deslizar con el dedo: en el telefono es el gesto que la gente prueba
+  // primero, antes de buscar la flecha.
+  let inicioX = null;
+  visor.addEventListener('touchstart', (e) => { inicioX = e.touches[0].clientX; }, { passive: true });
+  visor.addEventListener('touchend', (e) => {
+    if (inicioX === null) return;
+    const recorrido = e.changedTouches[0].clientX - inicioX;
+    if (Math.abs(recorrido) > 55) paso(recorrido < 0 ? 1 : -1);
+    inicioX = null;
+  }, { passive: true });
+}
+
+/* ===================== Formularios por correo =====================
+   El cliente pidio que los formularios lleguen a waybackmusic@gmail.com. Un
+   sitio estatico no puede enviar correo por si solo, asi que FormSubmit hace
+   de intermediario. Se eligio porque no exige cuenta ni clave: la direccion
+   va en el `action` y se activa confirmando una vez desde la bandeja.
+
+   El <form> ya es un POST valido sin JavaScript. Esto solo lo intercepta para
+   enviarlo en segundo plano y responder ahi mismo, sin sacar a nadie del
+   sitio ni perder lo que escribio.
+
+   Si el envio falla se dice y se ofrece la direccion: es mejor que un
+   "Gracias" que no significa nada — que es justo lo que hacia la version
+   original de esta pagina.
+   ====================================================================== */
+function prepararFormularioCorreo(form) {
+  const correo = form.dataset.correo;
+  if (!correo) return;
+
+  form.addEventListener('submit', async (e) => {
     e.preventDefault();
 
     // La validacion nativa del navegador ya marca los campos faltantes.
     if (!form.checkValidity()) { form.reportValidity(); return; }
 
-    const lineas = [form.dataset.asunto || 'Mensaje desde el sitio', ''];
-    form.querySelectorAll('[data-label]').forEach((campo) => {
-      const valor = campo.value.trim();
-      if (valor) lineas.push(`${campo.dataset.label}: ${valor}`);
-    });
+    const boton = form.querySelector('button[type="submit"]');
+    const etiqueta = boton.textContent;
+    boton.disabled = true;
+    boton.textContent = 'Enviando…';
 
-    const texto = encodeURIComponent(lineas.join('\n'));
-    // noopener: sin esto la pestaña de WhatsApp podria manipular la nuestra.
-    window.open(`https://wa.me/${numero}?text=${texto}`, '_blank', 'noopener');
+    try {
+      const respuesta = await fetch(`https://formsubmit.co/ajax/${encodeURIComponent(correo)}`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json', Accept: 'application/json' },
+        body: JSON.stringify(Object.fromEntries(new FormData(form))),
+      });
+      if (!respuesta.ok) throw new Error(`HTTP ${respuesta.status}`);
+      avisar(form, form.dataset.gracias || '¡Gracias! Recibimos tu mensaje.', true);
+      form.reset();
+    } catch {
+      avisar(form, `No pudimos enviar el mensaje. Escríbenos a ${correo}.`, false);
+    } finally {
+      boton.disabled = false;
+      boton.textContent = etiqueta;
+    }
   });
+}
+
+/* Muestra la respuesta dentro del propio formulario. role="status" hace que
+   un lector de pantalla la anuncie: sin eso el envio seria silencioso para
+   quien no ve el cambio de color. */
+function avisar(form, texto, bien) {
+  let aviso = form.querySelector('.form__success');
+  if (!aviso) {
+    aviso = document.createElement('p');
+    aviso.className = 'form__success';
+    aviso.setAttribute('role', 'status');
+    form.appendChild(aviso);
+  }
+  aviso.classList.toggle('form__success--error', !bien);
+  aviso.textContent = texto;
 }

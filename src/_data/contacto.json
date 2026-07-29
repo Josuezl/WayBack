@@ -1,9 +1,10 @@
 {
   "titulo": "Mantente al día",
   "descripcion": "Déjanos tus datos y te avisamos de nuevos lanzamientos, conciertos y Honduras Adora.",
-  "whatsapp": "50496236221",
+  "correo": "waybackmusic@gmail.com",
   "asunto": "Quiero recibir noticias de WayBack",
   "boton": "Quiero enterarme",
+  "gracias": "¡Listo! Te avisamos de cada lanzamiento, concierto y Honduras Adora.",
   "campos": [
     {
       "name": "nombre",
