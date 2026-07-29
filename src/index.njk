@@ -27,7 +27,7 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Bungee&family=Unbounded:wght@500..800&family=Manrope:wght@400..800&display=swap" rel="stylesheet" />
 
-  <link rel="stylesheet" href="styles.css?v=18" />
+  <link rel="stylesheet" href="styles.css?v=19" />
 </head>
 <body>
   <!-- ===== NAV ===== -->
@@ -129,7 +129,7 @@
           <span class="yt-lite__cap">{{ musica.destacado.caption }}</span>
         </article>
 
-        <div class="music-grid">
+        <div class="music-grid music-grid--fila-centrada">
           {%- for video in musica.videos %}
           <article class="yt-lite reveal" data-id="{{ video.id }}" data-title="{{ video.titulo }}">
             <img src="https://i.ytimg.com/vi/{{ video.id }}/maxresdefault.jpg" alt="{{ video.alt }}" loading="lazy" onerror="imgFallback(this)" />
@@ -351,6 +351,6 @@
     </button>
   </div>
 
-  <script src="script.js?v=18"></script>
+  <script src="script.js?v=19"></script>
 </body>
 </html>

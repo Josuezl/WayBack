@@ -422,8 +422,45 @@ function initVisor() {
     if (focoPrevio && document.contains(focoPrevio)) focoPrevio.focus();
   }
 
+  // Se resuelve al APOYAR el dedo y se abre al soltar, en vez de escuchar
+  // `click` a secas.
+  //
+  // El carrusel no se detiene al tocarlo en un telefono: no hay hover. Entre
+  // que el dedo baja y sube, la foto ya se movio, asi que el elemento bajo el
+  // dedo al soltar es otro. Ante eso el navegador dispara el click sobre el
+  // ancestro comun de ambos —la pista, no el boton—, y `closest('.foto-zoom')`
+  // devolvia null: tocar una foto no hacia absolutamente nada. En el
+  // escritorio no se notaba porque el hover congela la pista antes del clic.
+  //
+  // Guardar el boton al apoyar lo vuelve inmune al movimiento. La distancia
+  // recorrida separa ademas el toque del arrastre: quien desliza el carrusel
+  // con el dedo no queria abrir una foto.
+  //
   // Delegado en el documento porque las copias del carrusel nacen despues.
+  const TOLERANCIA_TOQUE = 12; // px
+  let candidato = null;
+
+  document.addEventListener('pointerdown', (e) => {
+    const boton = e.target.closest('.foto-zoom');
+    candidato = boton ? { boton, x: e.clientX, y: e.clientY } : null;
+  });
+
+  document.addEventListener('pointercancel', () => { candidato = null; });
+
+  document.addEventListener('pointerup', (e) => {
+    if (!candidato) return;
+    const { boton, x, y } = candidato;
+    candidato = null;
+    if (Math.hypot(e.clientX - x, e.clientY - y) > TOLERANCIA_TOQUE) return;
+    const caja = boton.closest('[data-galeria]');
+    if (caja) abrir(caja.dataset.galeria, Number(boton.dataset.indice) || 0);
+  });
+
+  // Enter o Espacio sobre el boton: el navegador dispara `click` sin que haya
+  // pasado ningun puntero, y ahi `detail` vale 0. Los toques y clics reales
+  // traen detail >= 1, asi que esto no los duplica.
   document.addEventListener('click', (e) => {
+    if (e.detail !== 0) return;
     const boton = e.target.closest('.foto-zoom');
     if (!boton) return;
     const caja = boton.closest('[data-galeria]');
