@@ -3,6 +3,7 @@ module.exports = function (eleventyConfig) {
   eleventyConfig.addPassthroughCopy({ 'src/styles.css': 'styles.css' });
   eleventyConfig.addPassthroughCopy({ 'src/script.js': 'script.js' });
   eleventyConfig.addPassthroughCopy({ 'src/assets': 'assets' });
+  eleventyConfig.addPassthroughCopy({ 'src/robots.txt': 'robots.txt' });
 
   // El panel de Decap: HTML, configuracion y tema. Se copian sin tocar porque
   // Decap los lee crudos desde el navegador.

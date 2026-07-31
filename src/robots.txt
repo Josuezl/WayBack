@@ -1,0 +1,7 @@
+User-agent: *
+Allow: /
+
+# El panel de administración no tiene por qué aparecer en Google.
+Disallow: /admin/
+
+Sitemap: https://waybackoficial.org/sitemap.xml
