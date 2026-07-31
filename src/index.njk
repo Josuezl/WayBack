@@ -8,18 +8,23 @@
   <meta name="description" content="{{ site.descripcion }}" />
   <meta name="theme-color" content="{{ site.themeColor }}" />
 
-  <!-- Vista previa al compartir el enlace (WhatsApp, Facebook, etc.)
-       TODO producción: descomentar al apuntar waybackoficial.org. Las dos
-       etiquetas necesitan la URL ABSOLUTA; con una ruta relativa WhatsApp no
-       muestra nada. Hasta entonces el enlace se comparte sin imagen. -->
+  {#- Vista previa al compartir el enlace (WhatsApp, Facebook, etc.).
+      Las URLs van ABSOLUTAS a proposito: con una ruta relativa WhatsApp no
+      muestra imagen ninguna.
+      La imagen es JPEG y no WebP —el formato del resto del sitio— porque el
+      previsualizador de WhatsApp no dibuja WebP: saldria el enlace pelado. #}
   <meta property="og:type" content="{{ site.og.type }}" />
   <meta property="og:locale" content="{{ site.og.locale }}" />
   <meta property="og:site_name" content="{{ site.og.siteName }}" />
   <meta property="og:title" content="{{ site.og.titulo }}" />
   <meta property="og:description" content="{{ site.og.descripcion }}" />
-  <!-- <meta property="og:url" content="https://waybackoficial.org/" /> -->
-  <!-- <meta property="og:image" content="https://waybackoficial.org/assets/wayback-banda.webp" /> -->
+  <meta property="og:url" content="{{ site.url }}/" />
+  <meta property="og:image" content="{{ site.url }}/assets/og-wayback.jpg" />
+  <meta property="og:image:width" content="1200" />
+  <meta property="og:image:height" content="630" />
+  <meta property="og:image:alt" content="{{ hero.foto.alt }}" />
   <meta name="twitter:card" content="summary_large_image" />
+  <link rel="canonical" href="{{ site.url }}/" />
 
   <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='8' fill='%23e11d2e'/%3E%3Ctext x='16' y='23' font-size='17' font-family='Arial' font-weight='900' fill='white' text-anchor='middle'%3EW%3C/text%3E%3C/svg%3E" />
 
@@ -27,7 +32,7 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Bungee&family=Unbounded:wght@500..800&family=Manrope:wght@400..800&display=swap" rel="stylesheet" />
 
-  <link rel="stylesheet" href="styles.css?v=20" />
+  <link rel="stylesheet" href="styles.css?v=21" />
 </head>
 <body>
   <!-- ===== NAV ===== -->
@@ -351,6 +356,6 @@
     </button>
   </div>
 
-  <script src="script.js?v=20"></script>
+  <script src="script.js?v=21"></script>
 </body>
 </html>

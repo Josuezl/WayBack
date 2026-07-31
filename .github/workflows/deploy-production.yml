@@ -1,0 +1,130 @@
+name: Deploy production
+
+# Mismo mecanismo que agapehn.org: se compila aquí, se sube un tar, se
+# descomprime en una carpeta nueva y solo al final se mueve el symlink
+# `current`. El cambio es atómico — nadie ve el sitio a medio copiar — y si la
+# comprobación de salud falla, el symlink vuelve a la versión anterior.
+
+on:
+  push:
+    branches:
+      - main
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: production
+  cancel-in-progress: false
+
+jobs:
+  deploy:
+    name: Build, deploy, and verify
+    runs-on: ubuntu-latest
+    environment: production
+    timeout-minutes: 15
+
+    env:
+      VPS_HOST: ${{ secrets.VPS_HOST }}
+      VPS_PORT: ${{ secrets.VPS_PORT }}
+      VPS_USER: ${{ secrets.VPS_USER }}
+      DEPLOY_PATH: ${{ secrets.DEPLOY_PATH }}
+      HEALTHCHECK_HOST: waybackoficial.org
+
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803 # v6
+        with:
+          persist-credentials: false
+
+      - name: Set up Node.js
+        uses: actions/setup-node@249970729cb0ef3589644e2896645e5dc5ba9c38 # v6
+        with:
+          node-version: 22
+          cache: npm
+
+      - name: Install dependencies
+        run: npm ci
+
+      # `npm run build` encadena el postbuild, que compara el HTML generado
+      # contra reference/index.html. Si alguien tocó una plantilla sin querer,
+      # el despliegue se detiene aquí en vez de publicarse.
+      - name: Build and verify against the approved output
+        run: npm run build
+
+      - name: Configure repository SSH key
+        env:
+          VPS_SSH_KEY: ${{ secrets.VPS_SSH_KEY }}
+          VPS_KNOWN_HOSTS: ${{ secrets.VPS_KNOWN_HOSTS }}
+        run: |
+          set -euo pipefail
+          test -n "$VPS_HOST"
+          test -n "$VPS_PORT"
+          test -n "$VPS_USER"
+          test -n "$DEPLOY_PATH"
+          test "$DEPLOY_PATH" = "/srv/www/wayback"
+          test -n "$VPS_SSH_KEY"
+          test -n "$VPS_KNOWN_HOSTS"
+
+          SSH_KEY="$RUNNER_TEMP/deploy_key"
+          KNOWN_HOSTS="$RUNNER_TEMP/known_hosts"
+          printf '%s\n' "$VPS_SSH_KEY" > "$SSH_KEY"
+          printf '%s\n' "$VPS_KNOWN_HOSTS" > "$KNOWN_HOSTS"
+          chmod 600 "$SSH_KEY" "$KNOWN_HOSTS"
+          ssh-keygen -F "$VPS_HOST" -f "$KNOWN_HOSTS" >/dev/null
+
+      - name: Transfer compiled release
+        run: |
+          set -euo pipefail
+          SSH_KEY="$RUNNER_TEMP/deploy_key"
+          KNOWN_HOSTS="$RUNNER_TEMP/known_hosts"
+          SSH_OPTIONS=(
+            -i "$SSH_KEY"
+            -p "$VPS_PORT"
+            -o BatchMode=yes
+            -o IdentitiesOnly=yes
+            -o StrictHostKeyChecking=yes
+            -o UserKnownHostsFile="$KNOWN_HOSTS"
+          )
+          SCP_OPTIONS=(
+            -i "$SSH_KEY"
+            -P "$VPS_PORT"
+            -o BatchMode=yes
+            -o IdentitiesOnly=yes
+            -o StrictHostKeyChecking=yes
+            -o UserKnownHostsFile="$KNOWN_HOSTS"
+          )
+          release_id="${GITHUB_SHA}-${GITHUB_RUN_ID}-${GITHUB_RUN_ATTEMPT}"
+          local_archive="$RUNNER_TEMP/$release_id.tar.gz"
+          remote_archive="$DEPLOY_PATH/shared/.incoming-$release_id.tar.gz"
+
+          tar -C _site -czf "$local_archive" .
+          if ! scp "${SCP_OPTIONS[@]}" "$local_archive" \
+            "$VPS_USER@$VPS_HOST:$remote_archive"; then
+            ssh "${SSH_OPTIONS[@]}" "$VPS_USER@$VPS_HOST" \
+              "test '$DEPLOY_PATH' = '/srv/www/wayback' && rm -f -- '$remote_archive'"
+            exit 1
+          fi
+
+          ssh "${SSH_OPTIONS[@]}" "$VPS_USER@$VPS_HOST" \
+            "bash -s -- '$DEPLOY_PATH' '$release_id'" < scripts/install-release.sh
+
+      - name: Activate release and run health check
+        run: |
+          set -euo pipefail
+          SSH_KEY="$RUNNER_TEMP/deploy_key"
+          KNOWN_HOSTS="$RUNNER_TEMP/known_hosts"
+          SSH_OPTIONS=(
+            -i "$SSH_KEY"
+            -p "$VPS_PORT"
+            -o BatchMode=yes
+            -o IdentitiesOnly=yes
+            -o StrictHostKeyChecking=yes
+            -o UserKnownHostsFile="$KNOWN_HOSTS"
+          )
+          release_id="${GITHUB_SHA}-${GITHUB_RUN_ID}-${GITHUB_RUN_ATTEMPT}"
+
+          ssh "${SSH_OPTIONS[@]}" "$VPS_USER@$VPS_HOST" \
+            "bash -s -- '$DEPLOY_PATH' '$release_id' '$HEALTHCHECK_HOST'" \
+            < scripts/activate-release.sh
