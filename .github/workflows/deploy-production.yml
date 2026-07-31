@@ -69,9 +69,23 @@ jobs:
 
           SSH_KEY="$RUNNER_TEMP/deploy_key"
           KNOWN_HOSTS="$RUNNER_TEMP/known_hosts"
-          printf '%s\n' "$VPS_SSH_KEY" > "$SSH_KEY"
+
+          # La clave viaja en base64, en una sola línea. Pegada en crudo, una
+          # clave privada son ocho renglones, y basta con que el pegado le
+          # coma los saltos para que llegue rota: ssh falla con "error in
+          # libcrypto", que no dice nada de dónde está el problema. En una
+          # línea no hay nada que romper.
+          printf '%s' "$VPS_SSH_KEY" | tr -d '[:space:]' | base64 -d > "$SSH_KEY"
           printf '%s\n' "$VPS_KNOWN_HOSTS" > "$KNOWN_HOSTS"
           chmod 600 "$SSH_KEY" "$KNOWN_HOSTS"
+
+          # Falla aquí, con un mensaje entendible, en vez de tres pasos más
+          # adelante dentro de scp.
+          if ! ssh-keygen -y -f "$SSH_KEY" > /dev/null 2>&1; then
+            echo "El secreto VPS_SSH_KEY no descodifica a una clave válida." >&2
+            echo "Debe ser la salida de: base64 -i <clave> | tr -d '\\n'" >&2
+            exit 1
+          fi
           ssh-keygen -F "$VPS_HOST" -f "$KNOWN_HOSTS" >/dev/null
 
       - name: Transfer compiled release
