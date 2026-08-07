@@ -497,7 +497,7 @@ function initVisor() {
 }
 
 /* ===================== Formularios por correo =====================
-   El cliente pidio que los formularios lleguen a waybackmusic@gmail.com. Un
+   El cliente pidio que los formularios lleguen a waybackmusichn@gmail.com. Un
    sitio estatico no puede enviar correo por si solo, asi que FormSubmit hace
    de intermediario. Se eligio porque no exige cuenta ni clave: la direccion
    va en el `action` y se activa confirmando una vez desde la bandeja.
