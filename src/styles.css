@@ -117,7 +117,19 @@ a { color: inherit; text-decoration: none; }
   display: flex; align-items: center; justify-content: space-between;
   padding: 14px clamp(16px, 4vw, 36px); transition: .3s;
 }
-.nav.is-scrolled { background: rgba(255,247,236,.9); backdrop-filter: blur(12px); box-shadow: 0 2px 0 var(--ink); }
+/* El fondo esmerilado vive en un pseudo-elemento y NO en .nav a propósito:
+   un `backdrop-filter` sobre .nav convierte a la barra en el marco de
+   referencia de sus descendientes con position: fixed, y el panel del menú
+   móvil (.nav__links) se encogía a la altura de la barra en cuanto el
+   scroll activaba is-scrolled. El pseudo-elemento no es ancestro del panel,
+   así que puede llevar el blur sin ese efecto secundario. */
+.nav::before {
+  content: ""; position: absolute; inset: 0; z-index: -1;
+  background: rgba(255,247,236,.9); backdrop-filter: blur(12px);
+  opacity: 0; transition: opacity .3s;
+}
+.nav.is-scrolled { box-shadow: 0 2px 0 var(--ink); }
+.nav.is-scrolled::before { opacity: 1; }
 .brand { display: inline-flex; align-items: center; gap: 10px; font-family: var(--font-display); font-weight: 800; font-size: 1.05rem; }
 .brand__mark {
   width: 38px; height: 38px; border-radius: 11px; background: var(--rojo); color: #fff;

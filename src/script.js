@@ -345,6 +345,38 @@ function initCarrusel(carrusel) {
   pista.addEventListener('click', (e) => {
     if (e.target.closest('.yt-lite')) carrusel.classList.add('is-paused');
   });
+
+  // En pantallas tactiles el desplazamiento NO va por animacion CSS: animar
+  // transform promueve la pista duplicada a una capa compuesta enorme (24
+  // tarjetas por 3x de densidad) y Safari en iOS descarta esas capas sin
+  // avisar cuando anda corto de memoria — la galeria quedaba en blanco hasta
+  // el siguiente toque. Avanzar scrollLeft usa el pintado normal por
+  // mosaicos, que Safari no descarta. El resultado visible es el mismo
+  // carrusel continuo; el bucle respeta las mismas pausas (is-paused,
+  // is-visor) que la animacion.
+  if (matchMedia('(hover: none) and (pointer: coarse)').matches) {
+    pista.style.animation = 'none';
+    let posicion = 0;
+    let previo = null;
+    const avanzar = (ahora) => {
+      if (previo !== null &&
+          !carrusel.classList.contains('is-paused') &&
+          !carrusel.classList.contains('is-visor')) {
+        // El tope de 100ms evita el salto largo al volver de segundo plano:
+        // rAF se congela con la pestana y este delta puede ser de minutos.
+        posicion += Math.min((ahora - previo) / 1000, .1) * PIXELES_POR_SEGUNDO;
+        // La mitad se relee en cada vuelta porque las fotos cargan perezosas
+        // y el ancho real de la pista crece mientras tanto. scrollLeft no
+        // ensucia el layout, asi que esta lectura no fuerza reflow.
+        const mitad = pista.scrollWidth / 2;
+        if (mitad && posicion >= mitad) posicion -= mitad;
+        carrusel.scrollLeft = posicion;
+      }
+      previo = ahora;
+      requestAnimationFrame(avanzar);
+    };
+    requestAnimationFrame(avanzar);
+  }
 }
 
 /* ===================== Visor de fotos =====================
