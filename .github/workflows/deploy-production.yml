@@ -47,10 +47,12 @@ jobs:
       - name: Install dependencies
         run: npm ci
 
-      # `npm run build` encadena el postbuild, que compara el HTML generado
-      # contra reference/index.html. Si alguien tocó una plantilla sin querer,
-      # el despliegue se detiene aquí en vez de publicarse.
-      - name: Build and verify against the approved output
+      # Solo compila. La comparación contra reference/index.html NO corre aquí:
+      # el cliente edita contenido desde el panel (/admin) y cada guardado suyo
+      # cambia el HTML legítimamente — con ese chequeo en CI, ningún cambio del
+      # panel se publicaría. `npm run verify` queda como herramienta manual
+      # para cuando se toca la plantilla en desarrollo.
+      - name: Build
         run: npm run build
 
       - name: Configure repository SSH key

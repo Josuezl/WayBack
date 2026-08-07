@@ -42,17 +42,21 @@ normalizadas — ver más abajo.
 ### Cómo usar `reference/index.html`
 
 Nació como el HTML original congelado, para probar que la migración a Eleventy no cambiaba
-ni un pixel. Ese trabajo terminó. Hoy es la **salida aprobada**: el build falla si lo
-generado no coincide, así que atrapa cambios accidentales en secciones que no tocaste.
+ni un pixel. Hoy es una **herramienta manual de desarrollo**: sirve para atrapar cambios
+accidentales cuando tocas la plantilla, corriendo `npm run verify` a mano.
 
-**Cuando cambies algo a propósito, el build va a fallar. Eso es correcto, no un estorbo.**
-El procedimiento es:
+**Ya NO corre en CI.** El cliente edita contenido desde el panel (`/admin`) y cada guardado
+suyo cambia el HTML legítimamente; con este chequeo en el deploy, ningún cambio del panel
+se publicaría (pasó con el primer guardado real: deploy #6 falló). Por eso `npm run build`
+solo compila, y la comparación vive aparte en `npm run verify`.
+
+Cuando cambies la plantilla a propósito, el procedimiento manual es:
 
 ```bash
-npm run build                                   # falla y te dice la primera línea distinta
+npm run verify                                  # falla y te dice la primera línea distinta
 diff -u reference/index.html _site/index.html   # LEE este diff: ¿es solo lo que querías?
 cp _site/index.html reference/index.html        # solo si el diff es exactamente lo esperado
-npm run build                                   # vuelve a pasar
+npm run verify                                  # vuelve a pasar
 ```
 
 Revisar ese diff **es** la prueba. Copiar la referencia por reflejo, sin leerlo, convierte
@@ -70,13 +74,13 @@ npm install
 
 ```bash
 npm run dev     # eleventy --serve, recarga en vivo en http://localhost:8080
-npm run build   # genera _site/ y, vía postbuild, compara líneas normalizadas contra
-                # reference/index.html; falla el build si difieren (así falla el deploy de Vercel)
-npm run verify  # alias de build: siempre reconstruye antes de comparar, nunca compara contra
-                # un _site/ viejo
+npm run build   # genera _site/. Solo compila: es lo que corre el deploy.
+npm run verify  # build + comparación manual contra reference/index.html.
+                # Úsalo cuando toques la plantilla; siempre reconstruye antes
+                # de comparar, nunca compara contra un _site/ viejo.
 ```
 
-`npm run verify` (y el `postbuild` de `npm run build`) usan `tools/verify-html.mjs`, que
+`npm run verify` usa `tools/verify-html.mjs`, que
 **normaliza líneas** (recorta espacios y descarta líneas vacías) antes de comparar — no es una
 comparación byte a byte. Para el chequeo exacto de bytes hay que correr
 `diff -u reference/index.html _site/index.html` aparte; solo eso garantiza que no cambió nada,
