@@ -143,16 +143,19 @@ collections:
         format: json
         fields:
           - { label: Título de la sección, name: titulo, widget: string }
+          - { label: WhatsApp para boletos, name: whatsapp, widget: string, hint: "El número al que escribe quien toca el botón de boletos. Por ejemplo: 9623-6221." }
           - label: Eventos
             name: items
             widget: list
             summary: "{{fields.titulo}} — {{fields.fechaPrincipal}}"
             fields:
+              - { label: Afiche, name: afiche, widget: image, choose_url: false, required: false, hint: "Opcional. Se ve completo en la tarjeta y se amplía al tocarlo. Puede subirse en cualquier tamaño: el sitio lo reduce solo." }
               - { label: Fecha grande, name: fechaPrincipal, widget: string, hint: "El día, o el año si aún no hay fecha." }
               - { label: Fecha pequeña, name: fechaSecundaria, widget: string, hint: "Mes y año, o 'Por confirmar'." }
               - { label: Nombre del evento, name: titulo, widget: string }
               - { label: Lugar, name: lugar, widget: string }
-              - { label: Etiqueta, name: etiqueta, widget: string }
+              - { label: Etiqueta, name: etiqueta, widget: string, required: false, hint: "Opcional. Déjala vacía para que no aparezca." }
+              - { label: Texto del botón de boletos, name: boton, widget: string, required: false, default: "Quiero Boletos", hint: "Abre WhatsApp con el mensaje «Hola, quiero boletos para» y el nombre del evento. Déjalo vacío para que no aparezca el botón." }
               - { label: Destacado, name: destacado, widget: boolean, default: false, hint: "Lo resalta con otro color." }
           - { label: Aviso al lado de las fechas, name: nota, widget: text, hint: "Se muestra junto a la tarjeta, para cuando no hay fechas confirmadas." }
 

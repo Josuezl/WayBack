@@ -1,12 +1,14 @@
 {
   "titulo": "Eventos",
+  "whatsapp": "9623-6221",
   "items": [
     {
+      "afiche": "/assets/afiche-honduras-adora-2026.webp",
       "fechaPrincipal": "2026",
       "fechaSecundaria": "viernes 27 de noviembre",
       "titulo": "Honduras Adora 2026",
       "lugar": "Plaza Amor Viviente • Tegucigalpa",
-      "etiqueta": "¡Sé parte!",
+      "boton": "Quiero Boletos",
       "destacado": true
     }
   ],

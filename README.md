@@ -27,7 +27,7 @@ y el build produce HTML estático puro — sin JS de servidor ni framework en el
 │       ├── mahanaim.json
 │       ├── recursos.json
 │       └── footer.json
-├── eleventy.config.js     ← input/output dirs + passthrough de CSS/JS/assets
+├── eleventy.config.js     ← dirs, passthrough, shortcode `imagen` y filtro `whatsapp`
 ├── reference/index.html   ← HTML aprobado; el build falla si el generado no coincide
 ├── tools/verify-html.mjs  ← compara el build contra reference/ línea por línea
 ├── vercel.json            ← build command, output directory y headers de despliegue
@@ -35,7 +35,7 @@ y el build produce HTML estático puro — sin JS de servidor ni framework en el
 ```
 
 El build (`_site/`) es un `index.html` con `styles.css`, `script.js` y `assets/` copiados
-tal cual. El chequeo *byte a byte* real es `diff -u reference/index.html _site/index.html`
+tal cual, más `img/` con las fotos que reduce el shortcode `imagen` (ver *Imágenes del panel*). El chequeo *byte a byte* real es `diff -u reference/index.html _site/index.html`
 (debe salir vacío, exit code 0); `npm run verify` hace una comparación más liviana de líneas
 normalizadas — ver más abajo.
 
@@ -108,6 +108,26 @@ activarlo hacen falta tres cosas, ninguna en este repositorio:
    `informatica-hn/cms-auth`. Si falta, el login falla con *origin not allowed*.
 3. Una cuenta de GitHub para el editor, con acceso de escritura **solo** a este
    repositorio.
+
+### Imágenes del panel
+
+El cliente sube fotos tal como salen de la cámara o del diseñador: la de la banda pesaba
+5.9 MB y el afiche de Honduras Adora 8.3 MB. Para que eso no vuelva lento el sitio, la foto
+de la portada, la de Sobre Nosotros y los afiches de Eventos pasan por el shortcode
+`{% imagen src, ancho %}` (en `eleventy.config.js`). Con `@11ty/eleventy-img` genera en el build
+una copia WebP de ese ancho en `_site/img/` y la plantilla usa esa URL. El original se sigue
+copiando a `assets/`, pero la página ya no lo pide.
+
+- Es asíncrono: dentro de un bucle hay que usar `{% asyncEach %}`, no `{% for %}`.
+- Si la imagen no existe, **el build falla** con el nombre del archivo. Es a propósito: el
+  deploy se detiene y el sitio publicado se queda como estaba, en vez de salir con una
+  imagen rota.
+- Las galerías y el merch todavía no pasan por aquí; sus fotos ya están optimizadas a mano.
+
+En cada evento el panel ofrece un **afiche** opcional, que se ve completo y se amplía en el
+visor, y un **botón de boletos**. El botón abre WhatsApp al número de la sección con el
+mensaje "Hola, quiero boletos para" y el nombre del evento. Si su texto queda vacío, el
+botón no aparece; lo mismo pasa con la etiqueta.
 
 ### Pendientes antes de producción
 

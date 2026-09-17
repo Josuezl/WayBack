@@ -35,7 +35,7 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Bungee&family=Unbounded:wght@500..800&family=Manrope:wght@400..800&display=swap" rel="stylesheet" />
 
-  <link rel="stylesheet" href="styles.css?v=22" />
+  <link rel="stylesheet" href="styles.css?v=23" />
 </head>
 <body>
   <!-- ===== NAV ===== -->
@@ -78,7 +78,7 @@
 
         <figure class="hero__photo reveal">
           <div class="hero__photo-frame">
-            <img src="{{ hero.foto.src }}" alt="{{ hero.foto.alt }}" />
+            <img src="{% imagen hero.foto.src, 1600 %}" alt="{{ hero.foto.alt }}" />
           </div>
           <figcaption>{{ hero.foto.caption }}</figcaption>
         </figure>
@@ -115,7 +115,7 @@
           </div>
           <figure class="sobre__foto">
             <div class="sobre__foto-frame">
-              <img src="{{ sobre.foto.src }}" alt="{{ sobre.foto.alt }}" loading="lazy" />
+              <img src="{% imagen sobre.foto.src, 1600 %}" alt="{{ sobre.foto.alt }}" loading="lazy" />
             </div>
             <figcaption>{{ sobre.foto.caption }}</figcaption>
           </figure>
@@ -167,14 +167,31 @@
       <div class="container">
         <header class="section__title reveal"><h2>{{ eventos.titulo }}</h2></header>
         <div class="eventos">
-          {%- for evento in eventos.items %}
-          <article class="event-card{% if evento.destacado %} event-card--soon{% endif %} tilt reveal">
+          {#- asyncEach y no for: el shortcode `imagen` es asincrono y Nunjucks
+              no lo espera dentro de un for normal. #}
+          {%- asyncEach evento in eventos.items %}
+          <article class="event-card{% if evento.destacado %} event-card--soon{% endif %} tilt reveal"{% if evento.afiche %} data-galeria="evento-{{ loop.index0 }}"{% endif %}>
+            {%- if evento.afiche %}
+            <figure class="event-card__afiche">
+              <button class="foto-zoom" type="button" data-indice="0" aria-label="Ampliar afiche de {{ evento.titulo }}">
+                <img src="{% imagen evento.afiche, 1200 %}" alt="Afiche de {{ evento.titulo }}" loading="lazy" />
+              </button>
+            </figure>
+            {%- endif %}
             <div class="event-card__date"><strong>{{ evento.fechaPrincipal }}</strong><span>{{ evento.fechaSecundaria }}</span></div>
             <h3>{{ evento.titulo }}</h3>
             <p>{{ evento.lugar }}</p>
+            {%- if evento.etiqueta %}
             <span class="pill{% if not evento.destacado %} pill--ghost{% endif %}">{{ evento.etiqueta }}</span>
+            {%- endif %}
+            {%- if evento.boton and eventos.whatsapp %}
+            <a class="btn btn--green" href="{{ eventos.whatsapp | whatsapp('Hola, quiero boletos para ' + evento.titulo) }}" target="_blank" rel="noopener">
+              {{ ic.ic_wa(20) }}
+              {{ evento.boton }}
+            </a>
+            {%- endif %}
           </article>
-          {%- endfor %}
+          {%- endeach %}
           <p class="eventos__nota reveal">{{ eventos.nota }}</p>
         </div>
       </div>
@@ -359,6 +376,6 @@
     </button>
   </div>
 
-  <script src="script.js?v=22"></script>
+  <script src="script.js?v=23"></script>
 </body>
 </html>

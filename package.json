@@ -10,7 +10,8 @@
     "verify": "npm run build && npm run compare"
   },
   "devDependencies": {
-    "@11ty/eleventy": "^3.0.0"
+    "@11ty/eleventy": "^3.0.0",
+    "@11ty/eleventy-img": "^7.0.0"
   },
   "engines": {
     "node": "22.x"
