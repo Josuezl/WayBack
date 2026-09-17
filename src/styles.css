@@ -455,29 +455,35 @@ a { color: inherit; text-decoration: none; }
 
 /* ---------- Eventos ----------
    Queda una sola fecha en cartelera, así que la tarjeta se acompaña del aviso
-   de la gira en vez de estirarse sola a todo lo ancho. */
+   de la gira en vez de estirarse sola a todo lo ancho.
+   Es ancha a pedido del cliente: el afiche tiene que leerse sin abrirlo. Con
+   520px el afiche 4:5 mide unos 450 x 560 y la tarjeta entera cabe todavia en
+   una pantalla de laptop. */
 .eventos {
-  display: grid; grid-template-columns: minmax(240px, 340px) 1fr;
-  gap: clamp(20px, 4vw, 40px); align-items: center;
+  display: grid; grid-template-columns: minmax(280px, 520px) 1fr;
+  gap: clamp(20px, 4vw, 48px); align-items: center;
 }
 .eventos__nota {
   font-family: var(--font-display); font-weight: 700;
   font-size: clamp(1.05rem, 2.6vw, 1.5rem); line-height: 1.3; max-width: 22ch;
 }
-@media (max-width: 720px) {
-  .eventos { grid-template-columns: 1fr; }
+/* Se apila antes que el resto (900 y no 720): con la tarjeta ancha, en una
+   tablet el aviso quedaria apretado en una columna angosta. Apilada no pasa de
+   520px, o en una tablet el afiche ocuparia varias pantallas de alto. */
+@media (max-width: 900px) {
+  .eventos { grid-template-columns: minmax(0, 520px); }
   .eventos__nota { max-width: none; }
 }
 .event-card {
-  background: #fff; border: 3px solid var(--ink); border-radius: 22px; padding: 26px;
+  background: #fff; border: 3px solid var(--ink); border-radius: 22px; padding: 30px;
   box-shadow: 6px 6px 0 var(--ink); transition: transform .25s var(--ease), box-shadow .25s; position: relative;
 }
 .event-card--soon { background: var(--azul-cielo); color: #fff; }
-.event-card__date { display: flex; align-items: baseline; gap: 8px; margin-bottom: 12px; }
-.event-card__date strong { font-family: var(--font-display); font-weight: 800; font-size: 1.82rem; line-height: 1; }
-.event-card__date span { font-weight: 700; font-size: .8rem; text-transform: uppercase; letter-spacing: .08em; }
-.event-card h3 { font-family: var(--font-display); font-weight: 700; font-size: 1.08rem; }
-.event-card p { color: var(--muted); font-size: .92rem; margin-bottom: 16px; }
+.event-card__date { display: flex; align-items: baseline; gap: 10px; margin-bottom: 12px; }
+.event-card__date strong { font-family: var(--font-display); font-weight: 800; font-size: 2.3rem; line-height: 1; }
+.event-card__date span { font-weight: 700; font-size: .9rem; text-transform: uppercase; letter-spacing: .08em; }
+.event-card h3 { font-family: var(--font-display); font-weight: 700; font-size: 1.4rem; }
+.event-card p { color: var(--muted); font-size: 1.02rem; margin-bottom: 18px; }
 .event-card--soon p { color: rgba(255,255,255,.9); }
 /* El afiche va completo, sin recortar: trae fecha, lugar y precio escritos. */
 .event-card__afiche {
