@@ -35,7 +35,7 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Bungee&family=Unbounded:wght@500..800&family=Manrope:wght@400..800&display=swap" rel="stylesheet" />
 
-  <link rel="stylesheet" href="styles.css?v=25" />
+  <link rel="stylesheet" href="styles.css?v=26" />
 </head>
 <body>
   <!-- ===== NAV ===== -->
@@ -182,20 +182,18 @@
               </button>
             </figure>
             {%- endif %}
-            <div class="event-card__info">
-              <div class="event-card__date"><strong>{{ evento.fechaPrincipal }}</strong><span>{{ evento.fechaSecundaria }}</span></div>
-              <h3>{{ evento.titulo }}</h3>
-              <p>{{ evento.lugar }}</p>
-              {%- if evento.etiqueta %}
-              <span class="pill{% if not evento.destacado %} pill--ghost{% endif %}">{{ evento.etiqueta }}</span>
-              {%- endif %}
-              {%- if evento.boton and eventos.whatsapp %}
-              <a class="btn btn--green" href="{{ eventos.whatsapp | whatsapp('Hola, quiero boletos para ' + evento.titulo) }}" target="_blank" rel="noopener">
-                {{ ic.ic_wa(20) }}
-                {{ evento.boton }}
-              </a>
-              {%- endif %}
-            </div>
+            <div class="event-card__date"><strong>{{ evento.fechaPrincipal }}</strong><span>{{ evento.fechaSecundaria }}</span></div>
+            <h3>{{ evento.titulo }}</h3>
+            <p>{{ evento.lugar }}</p>
+            {%- if evento.etiqueta %}
+            <span class="pill{% if not evento.destacado %} pill--ghost{% endif %}">{{ evento.etiqueta }}</span>
+            {%- endif %}
+            {%- if evento.boton and eventos.whatsapp %}
+            <a class="btn btn--green" href="{{ eventos.whatsapp | whatsapp('Hola, quiero boletos para ' + evento.titulo) }}" target="_blank" rel="noopener">
+              {{ ic.ic_wa(20) }}
+              {{ evento.boton }}
+            </a>
+            {%- endif %}
           </article>
           {%- endeach %}
           <p class="eventos__nota reveal">{{ eventos.nota }}</p>
@@ -388,6 +386,6 @@
     </button>
   </div>
 
-  <script src="script.js?v=25"></script>
+  <script src="script.js?v=26"></script>
 </body>
 </html>
