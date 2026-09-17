@@ -220,6 +220,7 @@ collections:
         file: src/_data/mahanaim.json
         format: json
         fields:
+          - { label: Mostrar en la página, name: mostrar, widget: boolean, default: true, required: false, hint: "Apágalo para ocultar esta sección y su enlace del menú. El contenido se queda guardado." }
           - { label: Título de la sección, name: titulo, widget: string }
           - { label: Texto principal, name: lead, widget: text }
           - { label: Subtítulo sobre los videos, name: subtituloVideos, widget: string }
@@ -284,6 +285,7 @@ collections:
         file: src/_data/recursos.json
         format: json
         fields:
+          - { label: Mostrar en la página, name: mostrar, widget: boolean, default: true, required: false, hint: "Apágalo para ocultar esta sección y su enlace del menú. El contenido se queda guardado." }
           - { label: Título, name: titulo, widget: string }
           - { label: Texto de introducción, name: descripcion, widget: text }
           - label: Tarjetas de recursos

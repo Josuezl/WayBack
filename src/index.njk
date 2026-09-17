@@ -42,8 +42,12 @@
   <header class="nav" id="nav">
     <a href="#hero" class="brand"><span class="brand__mark">W</span> {{ site.marca }}</a>
     <nav class="nav__links" id="navLinks" aria-label="Navegación principal">
+      {#- Una seccion apagada desde el panel se lleva su enlace: si no, el menu
+          llevaria a un lugar que no existe. #}
       {%- for enlace in site.nav %}
+      {%- if not ((enlace.href == "#recursos" and recursos.mostrar === false) or (enlace.href == "#mahanaim" and mahanaim.mostrar === false)) %}
       <a href="{{ enlace.href }}">{{ enlace.texto }}</a>
+      {%- endif %}
       {%- endfor %}
     </nav>
     <button class="nav__toggle" id="navToggle" aria-label="Abrir menú" aria-expanded="false"><span></span><span></span><span></span></button>
@@ -262,6 +266,9 @@
         </div>
       </div>
     </section>
+    {#- Recursos y Mahanaim se pueden apagar desde el panel ("Mostrar en la
+        pagina") sin perder su contenido. Sin el campo se muestran. #}
+    {%- if recursos.mostrar !== false %}
 
     <!-- ===== 8. RECURSOS ===== -->
     <section class="section" id="recursos">
@@ -288,6 +295,8 @@
         </div>
       </div>
     </section>
+    {%- endif %}
+    {%- if mahanaim.mostrar !== false %}
 
     <!-- ===== 9. MAHANAIM RECORDS ===== -->
     <section class="section" id="mahanaim">
@@ -314,6 +323,7 @@
         </div>
       </div>
     </section>
+    {%- endif %}
 
     <!-- ===== 10. CONTACTO / NEWSLETTER ===== -->
     <section class="section section--cta" id="contacto">

@@ -153,21 +153,18 @@ Lo que falta viene del cliente, no es trabajo de código:
 - **IDs de YouTube.** Los `data-id` de la sección Música son placeholders
   (`VIDEO_LIBRE`, `VIDEO_SALVADOR`, `VIDEO_LIBRO`). El de ISA LOPEZ (`FqAj3bXxmG`) tiene
   10 caracteres y los IDs de YouTube tienen 11 — hay que confirmarlo.
-## Secciones retiradas
+## Secciones ocultas
 
-Dos secciones se quitaron a propósito, para no mostrarle al cliente cosas que no funcionan.
-Se reponen si las pide:
+Invitaciones y Recursos se retiraron una vez (`f46f7e2`) y volvieron con la estructura de diez
+secciones que confirmó el cliente (`e862350`).
 
-- **Invitaciones.** Era un formulario que validaba y mostraba "✓ ¡Gracias!" pero **no enviaba
-  nada a ningún lado** — quien lo llenara se quedaba esperando una respuesta que nunca
-  llegaría. Su llamado a la acción vive ahora en el botón "Quiero participar" de Honduras
-  Adora, que abre WhatsApp con un mensaje ya redactado. Para reponerla hace falta primero
-  conectarla a un servicio de correo o a un endpoint en el VPS.
-- **Recursos.** Pistas, acordes y patches para músicos. Los tres enlaces estaban desactivados
-  (`href="#"` con `onclick="return false"`) esperando archivos del cliente.
+Hoy **Recursos** y **Mahanaim Records** están ocultas a pedido del cliente, "por ahora". No se
+borraron: cada una tiene en el panel el interruptor **Mostrar en la página** (`"mostrar": false`
+en su JSON). Apagado, la plantilla no emite la sección ni su enlace del menú; el contenido se
+queda guardado y el cliente puede volver a mostrarlas sin tocar código. Sin el campo, la
+sección se muestra.
 
-El CSS de ambas sigue en `styles.css` y el manejador de formularios sigue en `script.js`, sin
-uso. No estorban y facilitan reponerlas; si se decide que no vuelven, se pueden borrar.
+Ojo: la galería de fotos de conciertos vive dentro de Recursos, así que también queda oculta.
 
 ## Personalizar
 
