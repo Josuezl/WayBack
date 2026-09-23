@@ -21,6 +21,13 @@
       "ancho": "medio"
     },
     {
+      "requerido": true,
+      "name": "fecha",
+      "label": "Fecha del evento",
+      "tipo": "text",
+      "ancho": "completo"
+    },
+    {
       "name": "ciudad",
       "label": "Ciudad",
       "tipo": "text",
